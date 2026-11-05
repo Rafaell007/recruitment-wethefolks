@@ -17,7 +17,7 @@ Gzip is shown for reference: it is roughly what travels over the wire; images an
 | assets/border-C_4FMR7J.png | 3.6 KB | 2.9 KB |
 | assets/gameplay-DXvPeWNa.png | 62.0 KB | 56.3 KB |
 | assets/gesture-CRZOgs_U.png | 2.5 KB | 2.5 KB |
-| assets/index-CR19-RDE.js | 46.1 KB | 11.9 KB |
+| assets/index-CnVj1r3j.js | 115.4 KB | 38.7 KB |
 | assets/index-DjUrldCb.css | 1.8 KB | 0.6 KB |
 | assets/logo-mWy3tcIQ.png | 1.8 KB | 1.0 KB |
 | assets/player-JfSesYtM.png | 1.0 KB | 1.0 KB |
@@ -32,6 +32,6 @@ Gzip is shown for reference: it is roughly what travels over the wire; images an
 | assets/txt8-OWvqqDfw.png | 1.4 KB | 1.4 KB |
 | assets/txt9-90KxYCfB.png | 1.6 KB | 1.6 KB |
 | index.html | 1.0 KB | 0.5 KB |
-| **total (26 files)** | **163.0 KB** | **115.9 KB** |
+| **total (26 files)** | **232.3 KB** | **142.7 KB** |
 
-**OK**: 5.6% of the budget used.
+**OK**: 7.9% of the budget used.

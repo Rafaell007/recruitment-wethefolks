@@ -1,7 +1,7 @@
 // One run of the game: player physics and the gut scroll. No DOM, no canvas (render.js draws it),
 // so it can be tested and reset without touching the page.
 import { STAGE, PLAYER, GUT, PHYSICS, GET_READY } from './config.js';
-import { LEVEL, PLAYER_HIT as HIT, GET_READY_END, rampSpeed } from './level.js';
+import { LEVEL, PLAYER_HIT as HIT, rampSpeed } from './level.js';
 import hitboxes from './hitboxes.json';
 import { circleHitsMask } from './collision.js';
 
@@ -57,8 +57,8 @@ export function createGame({ onEnd = () => {} } = {}) {
     const ease = k * k * (3 - 2 * k);
     state.scroll = Math.min(state.scroll + rampSpeed(state.scroll, scrollEnd) * ease * dt, scrollEnd);
 
-    if (state.phase === 'getReady') { // hover: no gravity, the start screen's obstacles pass below
-      if (state.scroll >= GET_READY_END) state.phase = 'playing';
+    if (state.phase === 'getReady') { // hover over the empty gut: no gravity yet
+      if (state.runTime >= GET_READY.hover) state.phase = 'playing';
     } else {
       // Semi-implicit Euler: speed first, then position with the new speed (stable, Flappy feel).
       p.vy = Math.min(p.vy + PHYSICS.gravity * dt, PHYSICS.maxFall);

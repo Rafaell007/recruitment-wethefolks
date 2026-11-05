@@ -36,7 +36,10 @@ export const PHYSICS = {
 
 export const SPEED = { start: 110, end: 150 }; // px/s world scroll, ramped by distance (level.js)
 // Get ready (task: "a short 'get ready' moment before obstacles arrive"): after the first tap the
-// player hovers while the start screen's obstacles pass below it. It ends by distance
-// (GET_READY_END in level.js); here only how gently the world starts moving.
-export const GET_READY = { easeIn: 0.6 }; // s from standstill to full speed
+// start screen's obstacles pop away, the gut eases into motion from standstill and the player
+// hovers over an empty gut. Gravity starts after `hover`; the first obstacle comes ~1.3 s later.
+export const GET_READY = {
+  easeIn: 0.6, // s from standstill to full speed
+  hover: 1.5,  // s
+};
 export const STEP = 1 / 120;                   // s, fixed physics step (same jump at 60/90/120 Hz)

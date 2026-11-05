@@ -7,7 +7,7 @@ import hitboxes from './hitboxes.json';
 // Obstacle size in CSS px (asset px / 2), straight from the measured PNGs.
 const size = (name) => M.images[`01_game/${name}.png`].size;
 
-// The first four obstacles copy design/01-start.png (D12). The mockup draws them smaller
+// Obstacle as placed in design/01-start.png (D12). The mockup draws them smaller
 // (scale 0.68–0.94), but we render at 1.0 (the "50% of the asset" rule), centred on the
 // mockup's box, so they sit where the designer put them.
 function fromDesign(name) {
@@ -20,27 +20,38 @@ function fromDesign(name) {
   };
 }
 
-// The four obstacles of the start screen. During get ready they pass below the hovering player,
-// so the real game starts on an empty stretch of gut instead of right above the worm.
-const DESIGN_OBSTACLES = ['bac6', 'txt1', 'bac2', 'txt2'].map(fromDesign);
+// Start screen props: the four obstacles of the mockup, exactly where it shows them. They are
+// not part of the run: on the first tap they pop away (intro.js) and the run starts on an
+// empty gut. Each obstacle then appears exactly once in the run itself (LEVEL).
+export const START_PROPS = ['bac6', 'txt1', 'bac2', 'txt2']
+  .map(fromDesign)
+  .map((o) => ({ ...o, ...size(o.name) }));
 
-// Hand-placed after those, 145 px apart. The first one arrives ~1.5 s after get ready ends.
+// The run opens with the start screen's obstacles at their design heights (Stress, Tabu, ...),
+// then the rest. One obstacle per column, evenly spaced: the mockup's pairs (bacterium over
+// Stress, worm next to Tabu) left only an ~86 px lane under the clouds twice in a row; split up,
+// the spare room around the player's circle doubles (11 → 22 px, BFS on game.js).
 // y keeps every obstacle inside the band that is always cloud-free (236–566.5,
 // notes/drafts/cloud-band.mjs), so texts are always readable.
+const FIRST_X = 400; // off screen at the tap even on the widest phone (visible right ≤ 383)
+const GAP = 115;     // 15 obstacles between 400 and 2010, the last fully passed before the gut ends
 export const LEVEL = [
-  ...DESIGN_OBSTACLES,
-  { name: 'txt3', x: 560, y: 250 },
-  { name: 'bac3', x: 705, y: 470 },
-  { name: 'txt7', x: 850, y: 236 },
-  { name: 'bac4', x: 995, y: 420 },
-  { name: 'txt4', x: 1140, y: 470 },
-  { name: 'bac5', x: 1285, y: 260 },
-  { name: 'txt6', x: 1430, y: 236 },
-  { name: 'bac1', x: 1575, y: 480 },
-  { name: 'txt8', x: 1720, y: 413 },
-  { name: 'txt9', x: 1865, y: 236 },
-  { name: 'txt5', x: 2010, y: 385 },
-].map((o) => ({ ...o, ...size(o.name) })); // add w, h
+  { name: 'bac6', y: fromDesign('bac6').y },
+  { name: 'txt1', y: fromDesign('txt1').y }, // Stress
+  { name: 'bac2', y: fromDesign('bac2').y },
+  { name: 'txt2', y: fromDesign('txt2').y }, // Tabu
+  { name: 'txt3', y: 250 },
+  { name: 'bac3', y: 470 },
+  { name: 'txt7', y: 236 },
+  { name: 'bac4', y: 420 },
+  { name: 'txt4', y: 470 },
+  { name: 'bac5', y: 260 },
+  { name: 'txt6', y: 236 },
+  { name: 'bac1', y: 480 },
+  { name: 'txt8', y: 413 },
+  { name: 'txt9', y: 236 },
+  { name: 'txt5', y: 385 },
+].map((o, i) => ({ ...o, x: FIRST_X + i * GAP, ...size(o.name) })); // add x, w, h
 
 // Gentle difficulty ramp: 110 → 150 px/s over the distance travelled.
 export function rampSpeed(scroll, scrollEnd) {
@@ -56,8 +67,3 @@ export const PLAYER_HIT = {
   dy: hitboxes.player.y / 2,
   r: hitboxes.player.r / 2,
 };
-
-// Get ready ends by distance, not time: once the last start-screen obstacle is fully behind the
-// player's circle (+8 px), whatever the speed or frame rate. ≈ 284.5.
-export const GET_READY_END =
-  Math.max(...DESIGN_OBSTACLES.map((o) => o.x + size(o.name).w)) - (PLAYER_HIT.cx - PLAYER_HIT.r) + 8;

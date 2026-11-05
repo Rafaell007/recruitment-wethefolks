@@ -43,6 +43,22 @@ function drawObstacles(ctx, view, images, scroll) {
   }
 }
 
+// Start screen props (intro.js): drawn around their centre, so the pop shrinks them in place.
+// They live in gut-world coordinates like the obstacles, so they ride along once the gut moves.
+function drawProps(ctx, props, images, scroll) {
+  for (const o of props) {
+    if (o.alpha <= 0 || o.scale <= 0) continue;
+    const cx = o.x - scroll + o.w / 2;
+    const cy = o.y + o.h / 2;
+    ctx.save();
+    ctx.globalAlpha = o.alpha;
+    ctx.translate(cx, cy);
+    ctx.scale(o.scale, o.scale);
+    ctx.drawImage(images.obstacles[o.name], -o.w / 2, -o.h / 2, o.w, o.h);
+    ctx.restore();
+  }
+}
+
 // Get ready: the player bobs gently (±1.5 px, 2 Hz), so the ignored taps don't look like a freeze.
 // Drawn only, the hitbox stays put; the first obstacles pass ~24 px below, far more than 1.5 px.
 const BOB = { amp: 1.5, hz: 2 };
@@ -117,7 +133,7 @@ export function createCanvas(gameEl) {
   }
 
   // state comes from game.js, alpha from the loop (0..1 between the last two physics steps).
-  function draw(state, images, alpha) {
+  function draw(state, images, alpha, props = []) {
     const v = view;
     // 1 unit = 1 stage px; the canvas starts at v.left, so shift by it.
     ctx.setTransform(v.ratio, 0, 0, v.ratio, -v.left * v.ratio, 0);
@@ -127,6 +143,7 @@ export function createCanvas(gameEl) {
     clipPlayfield(ctx, v);
     const scroll = lerp(state.prevScroll, state.scroll, alpha);
     drawGut(ctx, v, images.gut, scroll);
+    drawProps(ctx, props, images, scroll);
     drawObstacles(ctx, v, images, scroll);
 
     const p = state.player;

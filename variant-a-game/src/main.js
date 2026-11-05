@@ -7,6 +7,7 @@ import { createCanvas } from './render.js';
 import { createGame } from './game.js';
 import { createLoop } from './loop.js';
 import { LEVEL } from './level.js';
+import { createIntro } from './intro.js';
 import gutUrl from '../assets-opt/01_game/gameplay.png';
 import playerUrl from '../assets-opt/01_game/player.png';
 
@@ -28,10 +29,11 @@ function onEnd(result, hitBy) {
 
 const game = createGame({ onEnd });
 const canvas = createCanvas(document.getElementById('game'));
+const intro = createIntro(document.getElementById('gesture'));
 let images = null; // drawn only once loaded
 
 function render(alpha) {
-  if (images) canvas.draw(game.state, images, alpha);
+  if (images) canvas.draw(game.state, images, alpha, intro.props);
 }
 const loop = createLoop(game.update, render);
 
@@ -56,6 +58,7 @@ function loadImage(src) {
 function onTap(e) {
   if (e.type === 'touchstart') e.preventDefault(); // no emulated mouse event = no double jump
   if (game.state.phase === 'over') return; // replay comes with the endcards (M6)
+  if (game.state.phase === 'ready') intro.clear(); // start screen obstacles pop away
   game.jump();
   stage.classList.add('is-running'); // D5: tutorial + headline fade out on the first tap
   loop.start(); // idempotent

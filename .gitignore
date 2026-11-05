@@ -11,3 +11,6 @@ Thumbs.db
 # Node (if a bundler is used)
 node_modules/
 dist/
+
+# Local research / planning notes
+notes/

@@ -1,0 +1,23 @@
+{
+  "name": "wethefolks-rich-media-ads",
+  "private": true,
+  "version": "0.1.0",
+  "description": "We The Folks take-home: Variant A (Gut Run game ad) and Variant B (fireplace ad).",
+  "type": "module",
+  "engines": {
+    "node": ">=20.19"
+  },
+  "scripts": {
+    "dev": "vite",
+    "dev:host": "vite --host",
+    "build": "npm run build:a",
+    "build:a": "vite build --mode variant-a",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "gsap": "3.15.0"
+  },
+  "devDependencies": {
+    "vite": "8.3.5"
+  }
+}

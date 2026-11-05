@@ -8,24 +8,39 @@ Gzip is shown for reference: it is roughly what travels over the wire; images an
 |---|---:|---:|
 | assets/applause-B3GvzpR7.mp3 | 236.0 KB | 233.8 KB |
 | assets/bac1-9kF1up_S.png | 2.3 KB | 2.4 KB |
+| assets/bac1-BdQ3h3cO.png | 1.8 KB | 1.1 KB |
+| assets/bac2-Bol8HURO.png | 1.4 KB | 0.6 KB |
 | assets/bac2-OodDenjs.png | 1.3 KB | 1.3 KB |
+| assets/bac3-CQEDxdxB.png | 1.6 KB | 0.9 KB |
 | assets/bac3-CjOCAd-t.png | 1.2 KB | 1.3 KB |
 | assets/bac4-B5VC4vnU.png | 1.3 KB | 1.4 KB |
+| assets/bac4-Cx7gN5Xh.png | 2.2 KB | 1.4 KB |
+| assets/bac5-BY6vnZZW.png | 1.6 KB | 0.8 KB |
 | assets/bac5-CNoaJX2O.png | 1.9 KB | 1.9 KB |
 | assets/bac6-C2SNrnIh.png | 2.0 KB | 2.0 KB |
 | assets/bg-Xq7k2m6c.jpg | 3.3 KB | 0.3 KB |
 | assets/bg_texture-DRgT6ZPR.png | 14.5 KB | 14.0 KB |
 | assets/border-C_4FMR7J.png | 3.6 KB | 2.9 KB |
+| assets/bubble-BQbufMrl.png | 3.7 KB | 3.2 KB |
+| assets/bubble-BzWuU5c5.png | 3.7 KB | 3.2 KB |
 | assets/cartoon-crash-boing-C1SDasCn.mp3 | 34.3 KB | 32.3 KB |
 | assets/celebrative-happy-woohoo-cheer-2-BGrEDbrG.mp3 | 20.9 KB | 20.0 KB |
+| assets/cta-CgH_bIqX.png | 1.5 KB | 1.6 KB |
+| assets/cta-DpWUtxAP.png | 1.8 KB | 1.8 KB |
 | assets/fail-7diYam9k.mp3 | 66.6 KB | 64.9 KB |
 | assets/funny-game-loop-DX0804ke.mp3 | 451.8 KB | 445.1 KB |
 | assets/gameplay-DXvPeWNa.png | 62.0 KB | 56.3 KB |
 | assets/gesture-CRZOgs_U.png | 2.5 KB | 2.5 KB |
-| assets/index-FYkeC2PL.js | 118.1 KB | 39.9 KB |
-| assets/index-KARqEYbb.css | 1.8 KB | 0.6 KB |
+| assets/happy-CxViPCf6.png | 2.2 KB | 1.6 KB |
+| assets/hl-BwLe5eDM.png | 6.6 KB | 5.8 KB |
+| assets/hl-DXXSmPau.png | 6.7 KB | 6.0 KB |
+| assets/index-C_A2n8kV.css | 2.9 KB | 1.0 KB |
+| assets/index-D6nPjD2V.js | 121.4 KB | 41.0 KB |
+| assets/konfetti-BboccHEZ.png | 11.9 KB | 11.2 KB |
 | assets/logo-mWy3tcIQ.png | 1.8 KB | 1.0 KB |
 | assets/player-JfSesYtM.png | 1.0 KB | 1.0 KB |
+| assets/replay-KkoKL3eB.png | 2.0 KB | 2.0 KB |
+| assets/sad-sZkSaSuo.png | 2.7 KB | 2.0 KB |
 | assets/tut-CdkEpLRm.png | 4.1 KB | 3.3 KB |
 | assets/txt1-C9x9If_N.png | 1.3 KB | 1.3 KB |
 | assets/txt2-CSxfl7eU.png | 1.0 KB | 1.1 KB |
@@ -36,7 +51,7 @@ Gzip is shown for reference: it is roughly what travels over the wire; images an
 | assets/txt7-B7as4Xaf.png | 0.8 KB | 0.8 KB |
 | assets/txt8-OWvqqDfw.png | 1.4 KB | 1.4 KB |
 | assets/txt9-90KxYCfB.png | 1.6 KB | 1.6 KB |
-| index.html | 1.0 KB | 0.5 KB |
-| **total (31 files)** | **1044.6 KB** | **940.0 KB** |
+| index.html | 3.5 KB | 1.3 KB |
+| **total (46 files)** | **1102.7 KB** | **985.4 KB** |
 
-**OK**: 35.7% of the budget used.
+**OK**: 37.6% of the budget used.

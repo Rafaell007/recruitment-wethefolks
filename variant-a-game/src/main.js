@@ -95,11 +95,16 @@ document.querySelectorAll('.endcard button').forEach((btn) => {
 
 const game = createGame({ onEnd });
 const canvas = createCanvas(document.getElementById('game'));
-const intro = createIntro(document.getElementById('gesture'));
+const intro = createIntro({
+  gesture: document.getElementById('gesture'),
+  tut: document.getElementById('tut'),
+  stage,
+  onFrame: () => render(1), // the loop doesn't run on the start screen
+});
 let images = null; // drawn only once loaded
 
 function render(alpha) {
-  if (images) canvas.draw(game.state, images, alpha, intro.props);
+  if (images) canvas.draw(game.state, images, alpha, intro.props, intro.player);
 }
 const loop = createLoop(game.update, render);
 
@@ -172,6 +177,17 @@ Promise.all([
   LEVEL.forEach((o, i) => { obstacles[o.name] = obstacleImgs[i]; });
   images = { gut, player, obstacles };
   render(1);
+  // The entrance starts once everything it animates can be drawn. The first frame after the
+  // images load is a heavy one (decoding full-screen layers): start two frames later, and never
+  // let one slow frame skip more than 33 ms of a tween (GSAP's default kicks in only at 500 ms).
+  gsap.ticker.lagSmoothing(50, 33);
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    intro.play();
+    listen(); // not earlier: a tap before play() would start the entrance in the middle of a run
+  }));
+});
+
+function listen() {
   // Pointer Events exist from iOS 13; iOS 12 (D10) only has touch events.
   if (window.PointerEvent) {
     viewport.addEventListener('pointerdown', onTap);
@@ -182,4 +198,4 @@ Promise.all([
   // Touchstart / pointerdown aren't a "user activation" for audio on iOS:
   // unlock again when the finger lifts (idempotent).
   viewport.addEventListener(window.PointerEvent ? 'pointerup' : 'touchend', audio.unlock);
-});
+}

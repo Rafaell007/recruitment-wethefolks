@@ -133,7 +133,7 @@ export function createCanvas(gameEl) {
   }
 
   // state comes from game.js, alpha from the loop (0..1 between the last two physics steps).
-  function draw(state, images, alpha, props = []) {
+  function draw(state, images, alpha, props = [], intro = { dy: 0, scale: 1, alpha: 1 }) {
     const v = view;
     // 1 unit = 1 stage px; the canvas starts at v.left, so shift by it.
     ctx.setTransform(v.ratio, 0, 0, v.ratio, -v.left * v.ratio, 0);
@@ -150,9 +150,12 @@ export function createCanvas(gameEl) {
     const y = lerp(p.prevY, p.y, alpha);
     // Visual tilt only (the hitbox is a circle): nose up when rising, down when falling.
     const tilt = (p.vy / PHYSICS.maxFall) * PLAYER.maxTilt;
+    // intro: the start screen entrance (intro.js), drawing only like the tilt and the bob.
     ctx.save();
-    ctx.translate(PLAYER.x + PLAYER.w / 2, y + bobOffset(state) + PLAYER.h / 2);
+    ctx.globalAlpha = intro.alpha;
+    ctx.translate(PLAYER.x + PLAYER.w / 2, y + intro.dy + bobOffset(state) + PLAYER.h / 2);
     ctx.rotate(tilt);
+    ctx.scale(intro.scale, intro.scale);
     ctx.drawImage(images.player, -PLAYER.w / 2, -PLAYER.h / 2, PLAYER.w, PLAYER.h);
     ctx.restore();
 

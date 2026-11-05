@@ -59,16 +59,20 @@ img {
   -webkit-user-drag: none;
 }
 
-/* D5: the tutorial and the headline leave on the first tap (placeholder fade; the GSAP
-   intro/outro comes with the start screen animation). */
-#tut,
-#gesture {
-  transition: opacity 0.25s ease-out;
+/* Until the intro starts (intro.js): no flash of the headline/hand before the images load. */
+#stage:not(.is-intro) #tut,
+#stage:not(.is-intro) #gesture {
+  visibility: hidden;
 }
 
+/* D5: the tutorial and the headline leave on the first tap (a short CSS fade; it starts from
+   wherever the intro was, intro.js clears its inline styles on that tap).
+   Transition only on the way out: GSAP drives the opacity during the intro, and a transition
+   on the same property would lag behind every tween frame (and, on replay, leave the old 0). */
 .is-running #tut,
 .is-running #gesture {
   opacity: 0;
+  transition: opacity 0.25s ease-out;
 }
 
 /* Paused run (main.js): the hand comes back as the resume prompt. */
@@ -83,6 +87,9 @@ img {
   top: 452px;
   width: 86.5px;
   height: 96px;
+  /* Near the fingertip: the hand "presses" with the finger (intro.js). Set once here, a
+     transformOrigin inside gsap.from() would be tweened too. */
+  transform-origin: 30% 20%;
 }
 
 /* Endcard: above every game layer (incl. .bleed-edge), below the mute button. Starts at the

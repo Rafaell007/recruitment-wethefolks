@@ -16,14 +16,19 @@ const FAIL_BAC = [
   [69, 127, 51, 42],
   [207, 141.5, 29, 27.5],
 ];
+const KONFETTI_MOUTH = '112px 178px'; // opening of the party popper (design/03-win-endcard.png)
+const HAPPY_FEET = '180px 406px'; // bottom centre of happy.png's bbox: the hops land on it
 
 export function createEndcard(cards) {
   let tl = null;
 
-  // Origins once, in CSS: GSAP only animates the transform itself.
+  // Origins once, in CSS: GSAP only animates the transform itself. (Not as transformOrigin in
+  // gsap.from(): there the origin is tweened too, from this value to the layer's centre.)
   for (const [result, card] of Object.entries(cards)) {
     card.querySelector('.bubble').style.transformOrigin = centre(BUBBLE[result]);
   }
+  cards.win.querySelector('.konfetti').style.transformOrigin = KONFETTI_MOUTH;
+  cards.win.querySelector('.happy').style.transformOrigin = HAPPY_FEET;
   cards.fail.querySelectorAll('.bac').forEach((el, i) => {
     el.style.transformOrigin = centre(FAIL_BAC[i]);
   });
@@ -42,8 +47,22 @@ export function createEndcard(cards) {
       tl.from(q('.sad'), { y: -120, opacity: 0, duration: 0.8, ease: 'bounce.out' }, 0.2)
         .from(q('.bac'), { scale: 0, duration: 0.4, ease: 'back.out(2)', stagger: 0.08 }, 0.45);
     }
+    if (result === 'win') {
+      // The popper fires: confetti grows out of the cone's opening, fast start, soft stop.
+      tl.from(q('.konfetti'), {
+        scale: 0.3, opacity: 0, duration: 0.9, ease: 'expo.out',
+      }, 0.15)
+        // Happy poo jumps up from below, then two small hops of joy (yoyo: up, down, up, down).
+        .from(q('.happy'), {
+          y: 60, opacity: 0, duration: 0.6, ease: 'back.out(2.5)',
+        }, 0.3)
+        .to(q('.happy'), { y: -14, duration: 0.22, ease: 'power2.out', yoyo: true, repeat: 3 }, 0.95);
+    }
     tl.from(q('.hl'), { y: 20, opacity: 0, duration: 0.5, ease: 'power3.out' }, 0.7)
-      .from(q('button'), { scale: 0.8, opacity: 0, duration: 0.4, ease: 'back.out(2)', stagger: 0.1 }, 0.95);
+      .from(q('button'), { scale: 0.8, opacity: 0, duration: 0.4, ease: 'back.out(2)', stagger: 0.1 }, 0.95)
+      // Three gentle pulses of the main CTA, then it rests at its design size.
+      // repeat 5 = odd, so the yoyo ends back at scale 1 (no stop half-way up).
+      .to(q('.cta'), { scale: 1.04, duration: 0.6, ease: 'sine.inOut', yoyo: true, repeat: 5 }, '+=0.2');
   }
 
   function reset() {

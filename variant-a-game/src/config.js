@@ -34,5 +34,6 @@ export const PHYSICS = {
   maxFall: 520,       // px/s, so a long fall stays readable
 };
 
-export const SPEED = { start: 110, end: 150 }; // px/s world scroll; the ramp comes in M4
+export const SPEED = { start: 110, end: 150 }; // px/s world scroll, ramped by distance (level.js)
+export const GET_READY = 1.2; // s after the first tap: the player hovers, the world already moves (D12)
 export const STEP = 1 / 120;                   // s, fixed physics step (same jump at 60/90/120 Hz)

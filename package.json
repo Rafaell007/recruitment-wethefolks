@@ -15,7 +15,9 @@
     "preview": "vite preview",
     "measure:a": "node tools/measure.mjs variant-a-game",
     "compress:a": "node tools/compress.mjs variant-a-game",
-    "size": "node tools/size-report.mjs"
+    "size": "node tools/size-report.mjs",
+    "hitboxes:a": "node tools/hitboxes.mjs variant-a-game",
+    "test": "node --test variant-a-game/test/*.test.js"
   },
   "dependencies": {
     "gsap": "3.15.0"

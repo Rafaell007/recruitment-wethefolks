@@ -11,13 +11,20 @@
     "dev": "vite",
     "dev:host": "vite --host",
     "build": "npm run build:a",
-    "build:a": "vite build --mode variant-a",
-    "preview": "vite preview"
+    "build:a": "vite build --mode variant-a && node tools/size-report.mjs variant-a-game",
+    "preview": "vite preview",
+    "measure:a": "node tools/measure.mjs variant-a-game",
+    "compress:a": "node tools/compress.mjs variant-a-game",
+    "size": "node tools/size-report.mjs"
   },
   "dependencies": {
     "gsap": "3.15.0"
   },
   "devDependencies": {
+    "sharp": "0.35.5",
     "vite": "8.3.5"
+  },
+  "optionalDependencies": {
+    "ffmpeg-static": "5.3.0"
   }
 }

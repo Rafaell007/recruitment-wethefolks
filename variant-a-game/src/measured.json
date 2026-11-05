@@ -1,0 +1,660 @@
+{
+  "generatedBy": "node tools/measure.mjs variant-a-game",
+  "unit": "CSS px (asset px / 2)",
+  "images": {
+    "01_game/bac1.png": {
+      "size": {
+        "w": 62.5,
+        "h": 59.5
+      },
+      "fullFrame": false,
+      "bbox": {
+        "x": 0,
+        "y": 0,
+        "w": 62.5,
+        "h": 59.5
+      },
+      "inDesign": {
+        "design": "start",
+        "found": false
+      }
+    },
+    "01_game/bac2.png": {
+      "size": {
+        "w": 21.5,
+        "h": 77
+      },
+      "fullFrame": false,
+      "bbox": {
+        "x": 0,
+        "y": 0,
+        "w": 21.5,
+        "h": 77
+      },
+      "inDesign": {
+        "design": "start",
+        "x": 278,
+        "y": 336.5,
+        "w": 15.7,
+        "h": 56.2,
+        "scale": 0.73,
+        "score": 8.03
+      }
+    },
+    "01_game/bac3.png": {
+      "size": {
+        "w": 79,
+        "h": 28
+      },
+      "fullFrame": false,
+      "bbox": {
+        "x": 0,
+        "y": 0,
+        "w": 79,
+        "h": 28
+      },
+      "inDesign": {
+        "design": "start",
+        "found": false
+      }
+    },
+    "01_game/bac4.png": {
+      "size": {
+        "w": 69,
+        "h": 34
+      },
+      "fullFrame": false,
+      "bbox": {
+        "x": 0,
+        "y": 0,
+        "w": 69,
+        "h": 34
+      },
+      "inDesign": {
+        "design": "start",
+        "found": false
+      }
+    },
+    "01_game/bac5.png": {
+      "size": {
+        "w": 53.5,
+        "h": 43.5
+      },
+      "fullFrame": false,
+      "bbox": {
+        "x": 0,
+        "y": 0,
+        "w": 53.5,
+        "h": 43.5
+      },
+      "inDesign": {
+        "design": "start",
+        "found": false
+      }
+    },
+    "01_game/bac6.png": {
+      "size": {
+        "w": 50,
+        "h": 47.5
+      },
+      "fullFrame": false,
+      "bbox": {
+        "x": 0,
+        "y": 0,
+        "w": 50,
+        "h": 47.5
+      },
+      "inDesign": {
+        "design": "start",
+        "x": 94,
+        "y": 330.5,
+        "w": 34,
+        "h": 32.3,
+        "scale": 0.68,
+        "score": 2.63
+      }
+    },
+    "01_game/bg_texture.png": {
+      "size": {
+        "w": 360,
+        "h": 640
+      },
+      "fullFrame": true,
+      "bbox": {
+        "x": 0,
+        "y": 104.5,
+        "w": 360,
+        "h": 457
+      }
+    },
+    "01_game/gameplay.png": {
+      "size": {
+        "w": 2528,
+        "h": 640
+      },
+      "fullFrame": false,
+      "bbox": {
+        "x": 0,
+        "y": 112,
+        "w": 2528,
+        "h": 528
+      }
+    },
+    "01_game/player.png": {
+      "size": {
+        "w": 42,
+        "h": 41
+      },
+      "fullFrame": false,
+      "bbox": {
+        "x": 0,
+        "y": 0,
+        "w": 42,
+        "h": 41
+      },
+      "inDesign": {
+        "design": "start",
+        "x": 55.5,
+        "y": 258.5,
+        "w": 42,
+        "h": 41,
+        "scale": 1,
+        "score": 0
+      }
+    },
+    "01_game/tut.png": {
+      "size": {
+        "w": 360,
+        "h": 640
+      },
+      "fullFrame": true,
+      "bbox": {
+        "x": 58.5,
+        "y": 90,
+        "w": 243,
+        "h": 51.5
+      }
+    },
+    "01_game/txt1.png": {
+      "size": {
+        "w": 23,
+        "h": 94
+      },
+      "fullFrame": false,
+      "bbox": {
+        "x": 0,
+        "y": 0,
+        "w": 23,
+        "h": 94
+      },
+      "inDesign": {
+        "design": "start",
+        "x": 100.5,
+        "y": 373.5,
+        "w": 21.6,
+        "h": 88.4,
+        "scale": 0.94,
+        "score": 2.53
+      }
+    },
+    "01_game/txt2.png": {
+      "size": {
+        "w": 34,
+        "h": 113
+      },
+      "fullFrame": false,
+      "bbox": {
+        "x": 0,
+        "y": 0,
+        "w": 34,
+        "h": 113
+      },
+      "inDesign": {
+        "design": "start",
+        "x": 302.5,
+        "y": 392,
+        "w": 32,
+        "h": 106.2,
+        "scale": 0.94,
+        "score": 2.17
+      }
+    },
+    "01_game/txt3.png": {
+      "size": {
+        "w": 23.5,
+        "h": 60.5
+      },
+      "fullFrame": false,
+      "bbox": {
+        "x": 0,
+        "y": 0,
+        "w": 23.5,
+        "h": 60.5
+      },
+      "inDesign": {
+        "design": "start",
+        "found": false,
+        "rejected": "overlaps 01_game/txt2.png (better match)"
+      }
+    },
+    "01_game/txt4.png": {
+      "size": {
+        "w": 29,
+        "h": 84.5
+      },
+      "fullFrame": false,
+      "bbox": {
+        "x": 0,
+        "y": 0,
+        "w": 29,
+        "h": 84.5
+      },
+      "inDesign": {
+        "design": "start",
+        "found": false
+      }
+    },
+    "01_game/txt5.png": {
+      "size": {
+        "w": 30,
+        "h": 181
+      },
+      "fullFrame": false,
+      "bbox": {
+        "x": 0,
+        "y": 0,
+        "w": 30,
+        "h": 181
+      },
+      "inDesign": {
+        "design": "start",
+        "found": false
+      }
+    },
+    "01_game/txt6.png": {
+      "size": {
+        "w": 20.5,
+        "h": 144.5
+      },
+      "fullFrame": false,
+      "bbox": {
+        "x": 0,
+        "y": 0,
+        "w": 20.5,
+        "h": 144.5
+      },
+      "inDesign": {
+        "design": "start",
+        "found": false
+      }
+    },
+    "01_game/txt7.png": {
+      "size": {
+        "w": 29.5,
+        "h": 81.5
+      },
+      "fullFrame": false,
+      "bbox": {
+        "x": 0,
+        "y": 0,
+        "w": 29.5,
+        "h": 81.5
+      },
+      "inDesign": {
+        "design": "start",
+        "found": false
+      }
+    },
+    "01_game/txt8.png": {
+      "size": {
+        "w": 18.5,
+        "h": 153
+      },
+      "fullFrame": false,
+      "bbox": {
+        "x": 0,
+        "y": 0,
+        "w": 18.5,
+        "h": 153
+      },
+      "inDesign": {
+        "design": "start",
+        "found": false
+      }
+    },
+    "01_game/txt9.png": {
+      "size": {
+        "w": 25.5,
+        "h": 156.5
+      },
+      "fullFrame": false,
+      "bbox": {
+        "x": 0,
+        "y": 0,
+        "w": 25.5,
+        "h": 156.5
+      },
+      "inDesign": {
+        "design": "start",
+        "found": false
+      }
+    },
+    "02_endcard/fail/bac1.png": {
+      "size": {
+        "w": 360,
+        "h": 640
+      },
+      "fullFrame": true,
+      "bbox": {
+        "x": 133.5,
+        "y": 94.5,
+        "w": 22,
+        "h": 78.5
+      }
+    },
+    "02_endcard/fail/bac2.png": {
+      "size": {
+        "w": 360,
+        "h": 640
+      },
+      "fullFrame": true,
+      "bbox": {
+        "x": 236.5,
+        "y": 207.5,
+        "w": 43.5,
+        "h": 15.5
+      }
+    },
+    "02_endcard/fail/bac3.png": {
+      "size": {
+        "w": 360,
+        "h": 640
+      },
+      "fullFrame": true,
+      "bbox": {
+        "x": 54,
+        "y": 215,
+        "w": 66,
+        "h": 32
+      }
+    },
+    "02_endcard/fail/bac4.png": {
+      "size": {
+        "w": 360,
+        "h": 640
+      },
+      "fullFrame": true,
+      "bbox": {
+        "x": 69,
+        "y": 127,
+        "w": 51,
+        "h": 42
+      }
+    },
+    "02_endcard/fail/bac5.png": {
+      "size": {
+        "w": 360,
+        "h": 640
+      },
+      "fullFrame": true,
+      "bbox": {
+        "x": 207,
+        "y": 141.5,
+        "w": 29,
+        "h": 27.5
+      }
+    },
+    "02_endcard/fail/bubble.png": {
+      "size": {
+        "w": 360,
+        "h": 640
+      },
+      "fullFrame": true,
+      "bbox": {
+        "x": 34.5,
+        "y": 74,
+        "w": 290.5,
+        "h": 322.5
+      }
+    },
+    "02_endcard/fail/cta.png": {
+      "size": {
+        "w": 186,
+        "h": 38.5
+      },
+      "fullFrame": false,
+      "bbox": {
+        "x": 0,
+        "y": 0,
+        "w": 186,
+        "h": 38.5
+      },
+      "inDesign": {
+        "design": "fail",
+        "x": 39.5,
+        "y": 483,
+        "w": 180.4,
+        "h": 37.3,
+        "scale": 0.97,
+        "score": 4.93
+      }
+    },
+    "02_endcard/fail/hl.png": {
+      "size": {
+        "w": 360,
+        "h": 640
+      },
+      "fullFrame": true,
+      "bbox": {
+        "x": 39.5,
+        "y": 353,
+        "w": 305.5,
+        "h": 96
+      }
+    },
+    "02_endcard/fail/replay.png": {
+      "size": {
+        "w": 185.5,
+        "h": 40.5
+      },
+      "fullFrame": false,
+      "bbox": {
+        "x": 0,
+        "y": 0,
+        "w": 185.5,
+        "h": 40.5
+      },
+      "inDesign": {
+        "design": "fail",
+        "x": 39.5,
+        "y": 539,
+        "w": 179.9,
+        "h": 39.3,
+        "scale": 0.97,
+        "score": 4.18
+      }
+    },
+    "02_endcard/fail/sad.png": {
+      "size": {
+        "w": 360,
+        "h": 640
+      },
+      "fullFrame": true,
+      "bbox": {
+        "x": 120,
+        "y": 183,
+        "w": 120,
+        "h": 116.5
+      }
+    },
+    "02_endcard/win/bubble.png": {
+      "size": {
+        "w": 360,
+        "h": 640
+      },
+      "fullFrame": true,
+      "bbox": {
+        "x": 34.5,
+        "y": 84,
+        "w": 290.5,
+        "h": 322.5
+      }
+    },
+    "02_endcard/win/cta.png": {
+      "size": {
+        "w": 214,
+        "h": 45.5
+      },
+      "fullFrame": false,
+      "bbox": {
+        "x": 0,
+        "y": 0,
+        "w": 214,
+        "h": 45.5
+      },
+      "inDesign": {
+        "design": "win",
+        "x": 30.5,
+        "y": 560.5,
+        "w": 207.6,
+        "h": 44.1,
+        "scale": 0.97,
+        "score": 4.28
+      }
+    },
+    "02_endcard/win/happy.png": {
+      "size": {
+        "w": 360,
+        "h": 640
+      },
+      "fullFrame": true,
+      "bbox": {
+        "x": 138,
+        "y": 324,
+        "w": 83.5,
+        "h": 82
+      }
+    },
+    "02_endcard/win/hl.png": {
+      "size": {
+        "w": 360,
+        "h": 640
+      },
+      "fullFrame": true,
+      "bbox": {
+        "x": 28,
+        "y": 433,
+        "w": 295.5,
+        "h": 91
+      }
+    },
+    "02_endcard/win/konfetti.png": {
+      "size": {
+        "w": 360,
+        "h": 640
+      },
+      "fullFrame": true,
+      "bbox": {
+        "x": 0,
+        "y": 82,
+        "w": 258.5,
+        "h": 290.5
+      }
+    },
+    "bg.jpg": {
+      "size": {
+        "w": 360,
+        "h": 640
+      },
+      "fullFrame": true,
+      "bbox": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 640
+      }
+    },
+    "border.png": {
+      "size": {
+        "w": 360,
+        "h": 640
+      },
+      "fullFrame": true,
+      "bbox": {
+        "x": 0,
+        "y": 168.5,
+        "w": 360,
+        "h": 471.5
+      }
+    },
+    "gesture.png": {
+      "size": {
+        "w": 86.5,
+        "h": 96
+      },
+      "fullFrame": false,
+      "bbox": {
+        "x": 0,
+        "y": 0,
+        "w": 86.5,
+        "h": 96
+      },
+      "inDesign": {
+        "design": "start",
+        "x": 147.5,
+        "y": 452,
+        "w": 86.5,
+        "h": 96,
+        "scale": 1,
+        "score": 5.23
+      }
+    },
+    "logo.png": {
+      "size": {
+        "w": 360,
+        "h": 640
+      },
+      "fullFrame": true,
+      "bbox": {
+        "x": 0,
+        "y": 0,
+        "w": 360,
+        "h": 58
+      }
+    }
+  },
+  "variantA": {
+    "stage": {
+      "w": 360,
+      "h": 640
+    },
+    "player": {
+      "x": 55.5,
+      "y": 258.5,
+      "w": 42,
+      "h": 41,
+      "cx": 76.5,
+      "cy": 279
+    },
+    "gut": {
+      "scrollX": 2,
+      "offsetY": 0,
+      "score": 11.46,
+      "scrollLength": 2168
+    },
+    "playfieldClipTop": 168.5,
+    "bounds": {
+      "alphaEdge": 128,
+      "centerColumn": {
+        "top": 231.5,
+        "bottom": 577.5,
+        "free": 346
+      },
+      "spriteColumns": {
+        "top": 234.5,
+        "bottom": 573.5,
+        "free": 339
+      }
+    }
+  }
+}

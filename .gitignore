@@ -14,3 +14,6 @@ dist/
 
 # Local research / planning notes
 notes/
+
+# Decision log: kept local until the end, committed once final
+DECISIONS.md

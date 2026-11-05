@@ -4,9 +4,11 @@ const STAGE_W = 360;
 const STAGE_H = 640;
 
 // Safe area = everything important, measured from the design files.
-// Width: x 28–332 (the win headline starts at x=28; outside are only decorations).
+// Width: x 11–349. The fail headline (hl.png at 50%) ends at x=345, plus 4 px so its full stop
+// never sits flush with the screen edge (measured on 430x932: 0 px gap at 345). The stage is
+// centred, so the area is symmetric around x=180. Outside are only decorations.
 // Height: y 0–606 (from the logo bar down to the bottom of the win CTA).
-const SAFE_W = 304;
+const SAFE_W = 338;
 const SAFE_H = 606;
 
 // Pure maths, no DOM: easy to reason about and to test with any screen size.

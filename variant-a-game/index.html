@@ -1,12 +1,27 @@
 <!doctype html>
 <html lang="de">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>Gut Run</title>
-  </head>
-  <body>
-    <div id="ad"></div>
-    <script type="module" src="./src/main.js"></script>
-  </body>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Gut Run</title>
+</head>
+
+<body>
+  <div id="ad">
+    <div id="stage">
+      <div class="bleed"></div>
+      <img class="layer" src="./assets-opt/bg.jpg" alt="" />
+      <img class="layer texture" src="./assets-opt/01_game/bg_texture.png" alt="" />
+      <div class="layer" id="game"></div>
+      <img class="layer" src="./assets-opt/border.png" alt="" />
+      <img class="layer" src="./assets-opt/logo.png" alt="" />
+      <div class="bleed-edge"></div>
+      <img class="layer" id="tut" src="./assets-opt/01_game/tut.png" alt="Bringe Poo durch den Darm ans Ziel." />
+      <img class="gesture" id="gesture" src="./assets-opt/gesture.png" alt="Tap to run" />
+    </div>
+  </div>
+  <script type="module" src="./src/main.js"></script>
+</body>
+
 </html>

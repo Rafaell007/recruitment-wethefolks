@@ -9,6 +9,7 @@ import { createGame } from './game.js';
 import { createLoop } from './loop.js';
 import { LEVEL } from './level.js';
 import { createIntro } from './intro.js';
+import { createEndcard } from './endcard.js';
 import { createAudio } from './audio.js';
 import { watchVisibility } from './visibility.js';
 import gutUrl from '../assets-opt/01_game/gameplay.png';
@@ -28,7 +29,7 @@ const obstacleUrl = (name) => obstacleUrls[`../assets-opt/01_game/${name}.png`];
 const viewport = document.getElementById('ad');
 const stage = document.getElementById('stage');
 const muteBtn = document.getElementById('mute');
-const endcards = { fail: document.getElementById('fail'), win: document.getElementById('win') };
+const endcard = createEndcard({ fail: document.getElementById('fail'), win: document.getElementById('win') });
 
 // Task: every CTA opens the landing page in a new window through the click tag.
 const clickTag = window.clickTag || 'https://example.com/landing';
@@ -67,7 +68,7 @@ function onEnd(result, hitBy) {
 
 function showEndcard(result) {
   stage.classList.add('is-end');
-  endcards[result].hidden = false;
+  endcard.show(result);
   if (result === 'fail') audio.play('fail');
 }
 
@@ -76,8 +77,7 @@ function replay() {
   if (endDelay) endDelay.kill();
   endDelay = null;
   audio.stopAll(); // no sound carried into the next run
-  endcards.fail.hidden = true;
-  endcards.win.hidden = true;
+  endcard.reset(); // kills the entrance, hides both cards
   stage.classList.remove('is-end', 'is-running', 'is-paused');
   paused = false;
   intro.reset(); // start screen props back, the hand taps again

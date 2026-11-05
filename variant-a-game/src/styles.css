@@ -49,6 +49,8 @@ body {
    headline band, only below the top edge of the frame (y=168.5, top of border.png's bbox).
    The asset itself starts at y=104.5, so it has to be clipped. */
 .texture {
+  /* Safari before 13.1 (iOS 12–13.3) only knows the prefixed property. */
+  -webkit-clip-path: inset(168.5px 0 0 0);
   clip-path: inset(168.5px 0 0 0);
 }
 
@@ -124,6 +126,17 @@ img {
    the hole reaches the stage edge, so the cover never hides the game drawn there (navy bg under
    navy bleed cannot make a seam anyway). evenodd = the inner polygon is cut out of the outer one. */
 .bleed-edge {
+  /* Prefixed copy for Safari before 13.1 (iOS 12–13.3): without any clip this element would
+     paint the flat bands over the whole stage. */
+  -webkit-clip-path: polygon(
+    evenodd,
+    0 0, 1080px 0, 1080px 1920px, 0 1920px, 0 0,
+    361px 641px, 719px 641px,
+    719px 866px, 720px 866px, 720px 1211.5px, 719px 1211.5px,
+    719px 1279px, 361px 1279px,
+    361px 1214px, 360px 1214px, 360px 863px, 361px 863px,
+    361px 641px
+  );
   clip-path: polygon(
     evenodd,
     0 0, 1080px 0, 1080px 1920px, 0 1920px, 0 0,

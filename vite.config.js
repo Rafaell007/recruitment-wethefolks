@@ -1,5 +1,6 @@
 import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
+import { Features } from 'lightningcss';
 
 // Every variant is built on its own so that each shipped ad is self-contained:
 // its own folder in dist/, its own copy of GSAP, no chunks shared with another ad.
@@ -14,13 +15,21 @@ const VARIANTS = {
 };
 
 const shared = {
+  css: {
+    // The CSS minifier (Lightning CSS) believes Safari 12 needs no -webkit-clip-path and deletes
+    // the prefixed line we wrote by hand; on iOS 12–13.3 the stage would then be covered by the
+    // edge cover. Vendor prefixes are therefore left exactly as written in styles.css.
+    lightningcss: { exclude: Features.VendorPrefixes },
+  },
   // Relative URLs: the ad has to work from whatever folder or CDN path the ad server puts it in.
   base: './',
   build: {
     // No base64 inlining: every asset stays a separate, compressed file, so the weight
     // report is honest and images are not 33% bigger as data URIs.
     assetsInlineLimit: 0,
-    target: 'es2020',
+    // Support floor: iOS 12+ (last iOS for iPhone 5s/6; GSAP 3 runs there; <script type="module">
+    // needs Safari 11+ anyway). Newer syntax in our code (?., ??) is rewritten for these browsers.
+    target: ['safari12', 'chrome64', 'firefox67', 'edge79'],
     // One bundle per page, nothing to preload: skip Vite's modulepreload polyfill.
     modulePreload: { polyfill: false },
   },

@@ -43,6 +43,16 @@ export function createIntro(gestureEl) {
     idle();
   }
 
+  // Pause hint (main.js): the same tapping-hand loop, shown again until the resume tap.
+  function showHint() {
+    gsap.set(gestureEl, { clearProps: 'transform' });
+    idle();
+  }
+  function hideHint() {
+    if (hand) hand.kill();
+    hand = null;
+  }
+
   idle();
-  return { props, clear, reset };
+  return { props, clear, reset, showHint, hideHint };
 }

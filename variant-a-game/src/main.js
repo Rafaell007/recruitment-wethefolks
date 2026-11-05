@@ -1,6 +1,7 @@
 // Entry point of the Gut Run ad.
 // Will hold the state machine LOADING → START → GET_READY → PLAYING → CRASH → FAIL | WIN (M4+).
 import './styles.css';
+import { gsap } from 'gsap';
 import { initStage } from './stage.js';
 import { mountDesignOverlay, debugFlags } from './debug.js';
 import { createCanvas } from './render.js';
@@ -9,6 +10,7 @@ import { createLoop } from './loop.js';
 import { LEVEL } from './level.js';
 import { createIntro } from './intro.js';
 import { createAudio } from './audio.js';
+import { watchVisibility } from './visibility.js';
 import gutUrl from '../assets-opt/01_game/gameplay.png';
 import playerUrl from '../assets-opt/01_game/player.png';
 import musicUrl from '../assets-opt/music/background_music/funny-game-loop.mp3';
@@ -68,8 +70,39 @@ function loadImage(src) {
   });
 }
 
+let paused = false; // run frozen while hidden; the next tap resumes it
+
+// Task: pause game and sound while the tab or ad is hidden, resume cleanly. There is no pause
+// screen in the design, so the start screen's "tab to run" hand comes back as the resume prompt.
+watchVisibility(viewport, (visible) => {
+  if (!visible) {
+    audio.suspend();
+    gsap.globalTimeline.pause(); // every tween: hand, pop, later the endcards
+    if (loop.running) { // only a run can be frozen
+      loop.stop();
+      paused = true;
+    }
+    return;
+  }
+  gsap.globalTimeline.resume();
+  if (paused) {
+    stage.classList.add('is-paused'); // the "tab to run" hand again
+    intro.showHint();
+  } else {
+    audio.resume(); // start screen / endcard: nothing to miss, carry on
+  }
+});
+
 function onTap(e) {
   if (e.type === 'touchstart') e.preventDefault(); // no emulated mouse event = no double jump
+  if (paused) { // this tap only resumes, the next one jumps
+    paused = false;
+    stage.classList.remove('is-paused');
+    intro.hideHint();
+    audio.unlock(); // a gesture: iOS lets the audio resume
+    loop.start(); // resets the frame clock: no time jump after the pause
+    return;
+  }
   if (game.state.phase === 'over') return; // replay comes with the endcards (M6)
   audio.unlock(); // first tap creates the audio context (autoplay rules)
   if (game.state.phase === 'ready') audio.music(true);

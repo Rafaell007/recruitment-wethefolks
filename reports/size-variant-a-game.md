@@ -22,8 +22,8 @@ Gzip is shown for reference: it is roughly what travels over the wire; images an
 | assets/funny-game-loop-DX0804ke.mp3 | 451.8 KB | 445.1 KB |
 | assets/gameplay-DXvPeWNa.png | 62.0 KB | 56.3 KB |
 | assets/gesture-CRZOgs_U.png | 2.5 KB | 2.5 KB |
-| assets/index-Bpd29fXP.js | 117.4 KB | 39.6 KB |
-| assets/index-DjUrldCb.css | 1.8 KB | 0.6 KB |
+| assets/index-FYkeC2PL.js | 118.1 KB | 39.9 KB |
+| assets/index-KARqEYbb.css | 1.8 KB | 0.6 KB |
 | assets/logo-mWy3tcIQ.png | 1.8 KB | 1.0 KB |
 | assets/player-JfSesYtM.png | 1.0 KB | 1.0 KB |
 | assets/tut-CdkEpLRm.png | 4.1 KB | 3.3 KB |
@@ -37,6 +37,6 @@ Gzip is shown for reference: it is roughly what travels over the wire; images an
 | assets/txt8-OWvqqDfw.png | 1.4 KB | 1.4 KB |
 | assets/txt9-90KxYCfB.png | 1.6 KB | 1.6 KB |
 | index.html | 1.0 KB | 0.5 KB |
-| **total (31 files)** | **1043.8 KB** | **939.8 KB** |
+| **total (31 files)** | **1044.6 KB** | **940.0 KB** |
 
-**OK**: 35.6% of the budget used.
+**OK**: 35.7% of the budget used.

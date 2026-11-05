@@ -71,6 +71,11 @@ img {
   opacity: 0;
 }
 
+/* Paused run (main.js): the hand comes back as the resume prompt. */
+.is-running.is-paused #gesture {
+  opacity: 1;
+}
+
 /* Measured in design/01-start.png by tools/measure.mjs (asset 173x192 px). */
 .gesture {
   position: absolute;

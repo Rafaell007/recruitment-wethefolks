@@ -2,17 +2,31 @@
 // Will hold the state machine LOADING → START → GET_READY → PLAYING → CRASH → FAIL | WIN (M4+).
 import './styles.css';
 import { initStage } from './stage.js';
-import { mountDesignOverlay } from './debug.js';
+import { mountDesignOverlay, debugFlags } from './debug.js';
 import { createCanvas } from './render.js';
 import { createGame } from './game.js';
 import { createLoop } from './loop.js';
+import { LEVEL } from './level.js';
 import gutUrl from '../assets-opt/01_game/gameplay.png';
 import playerUrl from '../assets-opt/01_game/player.png';
+
+// bac1–6 and txt1–9: Vite turns each file into a hashed URL, keyed by path.
+const obstacleUrls = import.meta.glob('../assets-opt/01_game/{bac,txt}*.png', {
+  eager: true, query: '?url', import: 'default',
+});
+const obstacleUrl = (name) => obstacleUrls[`../assets-opt/01_game/${name}.png`];
 
 const viewport = document.getElementById('ad');
 const stage = document.getElementById('stage');
 
-const game = createGame();
+// The run is over: freeze on the last frame. Endcards and sounds come in M5/M6.
+function onEnd(result, hitBy) {
+  loop.stop();
+  render(1);
+  if (debugFlags.debug) console.info(`[debug] run over: ${result}${hitBy ? ` (hit ${hitBy})` : ''}`);
+}
+
+const game = createGame({ onEnd });
 const canvas = createCanvas(document.getElementById('game'));
 let images = null; // drawn only once loaded
 
@@ -41,12 +55,20 @@ function loadImage(src) {
 
 function onTap(e) {
   if (e.type === 'touchstart') e.preventDefault(); // no emulated mouse event = no double jump
+  if (game.state.phase === 'over') return; // replay comes with the endcards (M6)
   game.jump();
+  stage.classList.add('is-running'); // D5: tutorial + headline fade out on the first tap
   loop.start(); // idempotent
 }
 
-Promise.all([loadImage(gutUrl), loadImage(playerUrl)]).then(([gut, player]) => {
-  images = { gut, player };
+Promise.all([
+  loadImage(gutUrl),
+  loadImage(playerUrl),
+  Promise.all(LEVEL.map((o) => loadImage(obstacleUrl(o.name)))),
+]).then(([gut, player, obstacleImgs]) => {
+  const obstacles = {};
+  LEVEL.forEach((o, i) => { obstacles[o.name] = obstacleImgs[i]; });
+  images = { gut, player, obstacles };
   render(1);
   // Pointer Events exist from iOS 13; iOS 12 (D10) only has touch events.
   if (window.PointerEvent) {

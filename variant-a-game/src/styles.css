@@ -59,6 +59,18 @@ img {
   -webkit-user-drag: none;
 }
 
+/* D5: the tutorial and the headline leave on the first tap (placeholder fade; the GSAP
+   intro/outro comes with the start screen animation). */
+#tut,
+#gesture {
+  transition: opacity 0.25s ease-out;
+}
+
+.is-running #tut,
+.is-running #gesture {
+  opacity: 0;
+}
+
 /* Measured in design/01-start.png by tools/measure.mjs (asset 173x192 px). */
 .gesture {
   position: absolute;

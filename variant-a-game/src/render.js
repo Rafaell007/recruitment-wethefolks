@@ -1,5 +1,8 @@
 // Canvas for the playfield (gut, obstacles, player). Lives in #game, between the texture and border.png.
-import { STAGE, PLAYER, GUT, PHYSICS, BLEED_GUT_BAND } from './config.js';
+import { STAGE, PLAYER, GUT, PHYSICS, BLEED_GUT_BAND, GET_READY } from './config.js';
+import { LEVEL, PLAYER_HIT } from './level.js';
+import hitboxes from './hitboxes.json';
+import { debugFlags } from './debug.js';
 
 const MAX_DPR = 2; // 3x phones: ~2.25x more pixels to fill each frame for almost no visible gain
 
@@ -30,11 +33,69 @@ function drawGut(ctx, view, img, scroll) {
     x0, 0, x1 - x0, STAGE.h);
 }
 
+// Obstacles whose image overlaps the visible part of the screen (stage px, interpolated scroll).
+function drawObstacles(ctx, view, images, scroll) {
+  const right = view.left + view.width;
+  for (const o of LEVEL) {
+    const x = o.x - scroll;
+    if (x + o.w < view.left || x > right) continue;
+    ctx.drawImage(images.obstacles[o.name], x, o.y, o.w, o.h);
+  }
+}
+
+// Get ready: the player bobs gently (±1.5 px, 2 Hz), so the ignored taps don't look like a freeze.
+// Drawn only, the hitbox stays put; the first obstacles pass ~24 px below, far more than 1.5 px.
+const BOB = { amp: 1.5, hz: 2 };
+const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
+function bobOffset(state) {
+  if (state.phase !== 'getReady' || (reducedMotion && reducedMotion.matches)) return 0;
+  const t = GET_READY - state.getReadyLeft;
+  return Math.sin(t * BOB.hz * 2 * Math.PI) * BOB.amp;
+}
+
+// ?debug=1: the masks the game really tests (tools/hitboxes.mjs), not the image rectangles.
+// Masks are in asset px, 2 per stage px.
+function drawMask(ctx, mask, mx, my) {
+  for (let y = 0; y < mask.rows.length; y++) {
+    const row = mask.rows[y];
+    for (let i = 0; i < row.length; i += 2) {
+      ctx.fillRect(mx + row[i] / 2, my + y / 2, (row[i + 1] - row[i]) / 2, 0.5);
+    }
+  }
+}
+
+function drawHitboxes(ctx, view, state, scroll, y) {
+  const right = view.left + view.width;
+  ctx.fillStyle = 'rgba(255, 0, 80, 0.45)';
+  drawMask(ctx, hitboxes.clouds, hitboxes.clouds.x / 2, 0);
+  ctx.fillStyle = 'rgba(0, 200, 255, 0.6)'; // cyan: pink would vanish on the pink texts
+  for (const o of LEVEL) {
+    const x = o.x - scroll;
+    if (x + o.w < view.left || x > right) continue;
+    drawMask(ctx, hitboxes.obstacles[o.name], x, o.y);
+  }
+  ctx.beginPath();
+  ctx.arc(PLAYER_HIT.cx, y + PLAYER_HIT.dy, PLAYER_HIT.r, 0, 2 * Math.PI);
+  ctx.fillStyle = state.result === 'fail' ? 'rgba(255, 0, 0, 0.7)' : 'rgba(0, 255, 120, 0.5)';
+  ctx.fill();
+}
+
 export function createCanvas(gameEl) {
   const canvas = document.createElement('canvas');
   canvas.style.position = 'absolute';
   gameEl.appendChild(canvas);
   const ctx = canvas.getContext('2d');
+
+  // ?debug=1 draws on its own canvas on top of the whole stage: border.png lies above the game
+  // canvas and would hide the cloud masks, which are exactly the shape of its clouds.
+  let dbg = null;
+  if (debugFlags.debug) {
+    const c = document.createElement('canvas');
+    c.style.cssText = 'position:absolute;top:0;pointer-events:none;';
+    gameEl.parentNode.appendChild(c);
+    dbg = { canvas: c, ctx: c.getContext('2d') };
+  }
+  const sized = dbg ? [canvas, dbg.canvas] : [canvas];
   let view = { left: 0, width: STAGE.w, ratio: 1 };
 
   // fit = { scale, x, y } from stage.js, vw = visible screen width in CSS px.
@@ -46,11 +107,13 @@ export function createCanvas(gameEl) {
     // Canvas pixels per stage px: stage scale × screen density, so it is sharp on every phone.
     const ratio = fit.scale * Math.min(window.devicePixelRatio || 1, MAX_DPR);
 
-    canvas.width = Math.round(width * ratio);
-    canvas.height = Math.round(STAGE.h * ratio);
-    canvas.style.left = `${left}px`;
-    canvas.style.width = `${width}px`;
-    canvas.style.height = `${STAGE.h}px`;
+    for (const c of sized) {
+      c.width = Math.round(width * ratio);
+      c.height = Math.round(STAGE.h * ratio);
+      c.style.left = `${left}px`;
+      c.style.width = `${width}px`;
+      c.style.height = `${STAGE.h}px`;
+    }
     view = { left, width, ratio };
   }
 
@@ -63,16 +126,28 @@ export function createCanvas(gameEl) {
 
     ctx.save();
     clipPlayfield(ctx, v);
-    drawGut(ctx, v, images.gut, lerp(state.prevScroll, state.scroll, alpha));
+    const scroll = lerp(state.prevScroll, state.scroll, alpha);
+    drawGut(ctx, v, images.gut, scroll);
+    drawObstacles(ctx, v, images, scroll);
 
     const p = state.player;
     const y = lerp(p.prevY, p.y, alpha);
     // Visual tilt only (the hitbox is a circle): nose up when rising, down when falling.
     const tilt = (p.vy / PHYSICS.maxFall) * PLAYER.maxTilt;
-    ctx.translate(PLAYER.x + PLAYER.w / 2, y + PLAYER.h / 2);
+    ctx.save();
+    ctx.translate(PLAYER.x + PLAYER.w / 2, y + bobOffset(state) + PLAYER.h / 2);
     ctx.rotate(tilt);
     ctx.drawImage(images.player, -PLAYER.w / 2, -PLAYER.h / 2, PLAYER.w, PLAYER.h);
     ctx.restore();
+
+    ctx.restore();
+
+    if (dbg) {
+      const d = dbg.ctx;
+      d.setTransform(v.ratio, 0, 0, v.ratio, -v.left * v.ratio, 0);
+      d.clearRect(v.left, 0, v.width, STAGE.h);
+      drawHitboxes(d, v, state, scroll, y);
+    }
   }
 
   return { canvas, ctx, resize, draw, get view() { return view; } };

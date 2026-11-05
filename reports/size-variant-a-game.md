@@ -6,7 +6,32 @@ Gzip is shown for reference: it is roughly what travels over the wire; images an
 
 | file | raw | gzip |
 |---|---:|---:|
-| index.html | 0.2 KB | 0.2 KB |
-| **total (1 files)** | **0.2 KB** | **0.2 KB** |
+| assets/bac1-9kF1up_S.png | 2.3 KB | 2.4 KB |
+| assets/bac2-OodDenjs.png | 1.3 KB | 1.3 KB |
+| assets/bac3-CjOCAd-t.png | 1.2 KB | 1.3 KB |
+| assets/bac4-B5VC4vnU.png | 1.3 KB | 1.4 KB |
+| assets/bac5-CNoaJX2O.png | 1.9 KB | 1.9 KB |
+| assets/bac6-C2SNrnIh.png | 2.0 KB | 2.0 KB |
+| assets/bg-Xq7k2m6c.jpg | 3.3 KB | 0.3 KB |
+| assets/bg_texture-DRgT6ZPR.png | 14.5 KB | 14.0 KB |
+| assets/border-C_4FMR7J.png | 3.6 KB | 2.9 KB |
+| assets/gameplay-DXvPeWNa.png | 62.0 KB | 56.3 KB |
+| assets/gesture-CRZOgs_U.png | 2.5 KB | 2.5 KB |
+| assets/index-CMl031T8.js | 46.0 KB | 11.8 KB |
+| assets/index-DjUrldCb.css | 1.8 KB | 0.6 KB |
+| assets/logo-mWy3tcIQ.png | 1.8 KB | 1.0 KB |
+| assets/player-JfSesYtM.png | 1.0 KB | 1.0 KB |
+| assets/tut-CdkEpLRm.png | 4.1 KB | 3.3 KB |
+| assets/txt1-C9x9If_N.png | 1.3 KB | 1.3 KB |
+| assets/txt2-CSxfl7eU.png | 1.0 KB | 1.1 KB |
+| assets/txt3-BA-s830H.png | 0.6 KB | 0.6 KB |
+| assets/txt4-C_9Kkr4a.png | 1.0 KB | 1.1 KB |
+| assets/txt5-B_Sl7Atc.png | 2.1 KB | 2.1 KB |
+| assets/txt6-RLD2zsUn.png | 1.5 KB | 1.5 KB |
+| assets/txt7-B7as4Xaf.png | 0.8 KB | 0.8 KB |
+| assets/txt8-OWvqqDfw.png | 1.4 KB | 1.4 KB |
+| assets/txt9-90KxYCfB.png | 1.6 KB | 1.6 KB |
+| index.html | 1.0 KB | 0.5 KB |
+| **total (26 files)** | **162.9 KB** | **115.8 KB** |
 
-**OK**: 0.0% of the budget used.
+**OK**: 5.6% of the budget used.

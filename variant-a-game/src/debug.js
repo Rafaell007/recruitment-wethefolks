@@ -1,4 +1,8 @@
-// Debug switches, read once from the URL. Later milestones add ?debug=1 (hitboxes, FPS) and ?god=1.
+// Debug switches, read once from the URL.
+//
+// ?debug=1                  draws the real hitboxes (player circle, obstacle and cloud masks)
+//                           and logs how each run ended. Works in the build too, so it can be
+//                           checked on a phone.
 //
 // ?overlay=start|fail|win   lays the design PNG over the stage, 1:1 with the 360x640 logical stage
 // &overlayMode=fade|diff     fade (default): design at 50% opacity on top of the build
@@ -11,6 +15,7 @@
 const params = new URLSearchParams(window.location.search);
 
 export const debugFlags = {
+  debug: params.get('debug') === '1',
   overlay: params.get('overlay'), // 'start' | 'fail' | 'win' | null
   overlayMode: params.get('overlayMode') === 'diff' ? 'diff' : 'fade',
 };

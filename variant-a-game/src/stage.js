@@ -29,13 +29,16 @@ export function computeFit(vw, vh) {
  * Keeps the stage fitted to the visible screen.
  * @param {HTMLElement} viewport the visible screen (#ad): the whole tab, or the iframe the ad runs in
  * @param {HTMLElement} stage the 360x640 design stage (#stage)
+ * @param {(fit: {scale: number, x: number, y: number}, vw: number) => void} [onFit]
+ *   called after every re-fit, so the game canvas can match the new size and sharpness
  */
-export function initStage(viewport, stage) {
+export function initStage(viewport, stage, onFit) {
   let current = { scale: 1, x: 0, y: 0 };
 
   function fit() {
     current = computeFit(viewport.clientWidth, viewport.clientHeight);
     stage.style.transform = `translate(${current.x}px, ${current.y}px) scale(${current.scale})`;
+    if (onFit) onFit(current, viewport.clientWidth);
   }
 
   // Browsers without dvh: there 100vh includes the area under the toolbars, so the bottom

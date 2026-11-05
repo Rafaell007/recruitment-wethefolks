@@ -123,8 +123,10 @@ img {
    pink frame shows through as a thin grey/dark seam (verified by screenshots with bg.jpg and
    logo.png hidden one at a time). The cover paints over that 1 px with the exact colour the art
    has at its edge. Exception: along the gut band at the sides (left 223–574, right 226–571.5)
-   the hole reaches the stage edge, so the cover never hides the game drawn there (navy bg under
-   navy bleed cannot make a seam anyway). evenodd = the inner polygon is cut out of the outer one. */
+   the hole runs out past the box edge (-1 / 1081 px, not on it, so no edge is shared), because the
+   game canvas spans the whole visible width (D11) and the gut must show in the side bleed too
+   (navy bg under navy bleed cannot make a seam anyway). evenodd = the inner polygon is cut out
+   of the outer one. */
 .bleed-edge {
   /* Prefixed copy for Safari before 13.1 (iOS 12–13.3): without any clip this element would
      paint the flat bands over the whole stage. */
@@ -132,18 +134,18 @@ img {
     evenodd,
     0 0, 1080px 0, 1080px 1920px, 0 1920px, 0 0,
     361px 641px, 719px 641px,
-    719px 866px, 720px 866px, 720px 1211.5px, 719px 1211.5px,
+    719px 866px, 1081px 866px, 1081px 1211.5px, 719px 1211.5px,
     719px 1279px, 361px 1279px,
-    361px 1214px, 360px 1214px, 360px 863px, 361px 863px,
+    361px 1214px, -1px 1214px, -1px 863px, 361px 863px,
     361px 641px
   );
   clip-path: polygon(
     evenodd,
     0 0, 1080px 0, 1080px 1920px, 0 1920px, 0 0,
     361px 641px, 719px 641px,
-    719px 866px, 720px 866px, 720px 1211.5px, 719px 1211.5px,
+    719px 866px, 1081px 866px, 1081px 1211.5px, 719px 1211.5px,
     719px 1279px, 361px 1279px,
-    361px 1214px, 360px 1214px, 360px 863px, 361px 863px,
+    361px 1214px, -1px 1214px, -1px 863px, 361px 863px,
     361px 641px
   );
 }

@@ -85,10 +85,77 @@ img {
   height: 96px;
 }
 
+/* Endcard: above every game layer (incl. .bleed-edge), below the mute button. Starts at the
+   bottom of the logo bar (y=58), so the logo stays visible as in the designs. */
+.endcard {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 360px;
+  height: 640px;
+}
+
+/* Navy of bg.jpg (measured: flat #0b1e49), as a plain box instead of the image: a box has no
+   soft outer pixel row (M2 seam), so nothing of the frozen game shows through at the stage edge.
+   It runs 120 px past the stage on the sides and 200 px below: more than any phone's bleed
+   (worst case 23 px at the sides, 27 px below, D4). Not wider on purpose: the endcard fades in,
+   and a huge layer that fades costs GPU memory on phones. */
+.endcard::before {
+  content: '';
+  position: absolute;
+  left: -120px;
+  right: -120px;
+  top: 58px;
+  bottom: -200px;
+  background: #0b1e49;
+}
+
+/* Very wide windows (desktop preview) see past that box: the bleed behind turns navy too. */
+.is-end .bleed {
+  background: linear-gradient(to bottom, #ffffff 0 698px, #0b1e49 698px);
+}
+
+/* Cut-out buttons: size = asset at 50%, top-left corner from the design (the design draws them
+   at 0.97; the 50% rule wins, the top-left corner keeps them in line with the headline). */
+.endcard button {
+  position: absolute;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.endcard button img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+#fail .cta {
+  left: 39.5px;
+  top: 483px;
+  width: 186px;
+  height: 38.5px;
+}
+
+#fail .replay {
+  left: 39.5px;
+  top: 539px;
+  width: 185.5px;
+  height: 40.5px;
+}
+
+#win .cta {
+  left: 30.5px;
+  top: 560.5px;
+  width: 214px;
+  height: 45.5px;
+}
+
 /* Mute toggle. The assets have no speaker icon, but the task asks for "a small mute toggle", so
    this is a small inline SVG (the only graphic not from the assets, noted in the README). It sits
    in the white logo bar, right of the logo (logo.png covers x 124–236), inside the D4 safe zone
-   (right edge 328 <= 332). 44x44 = Apple's minimum touch target; the visible icon is only 20 px. */
+   (right edge 328 <= 349). 44x44 = Apple's minimum touch target; the visible icon is only 20 px. */
 .mute {
   position: absolute;
   left: 284px;

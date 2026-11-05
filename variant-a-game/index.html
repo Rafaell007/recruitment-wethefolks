@@ -19,6 +19,38 @@
       <div class="bleed-edge"></div>
       <img class="layer" id="tut" src="./assets-opt/01_game/tut.png" alt="Bringe Poo durch den Darm ans Ziel." />
       <img class="gesture" id="gesture" src="./assets-opt/gesture.png" alt="Tap to run" />
+      <!-- Endcards: hidden until the run ends (main.js). Above every game layer; their navy
+           background starts below the logo bar (styles.css). Full-frame layers (360x640) need no
+           position; cta/replay are cut out, so CSS places them (top-left corner measured in the
+           designs, size = asset at 50%). -->
+      <div class="endcard" id="fail" hidden>
+        <img class="layer" src="./assets-opt/02_endcard/fail/bubble.png" alt="" />
+        <img class="layer" src="./assets-opt/02_endcard/fail/bac1.png" alt="" />
+        <img class="layer" src="./assets-opt/02_endcard/fail/bac2.png" alt="" />
+        <img class="layer" src="./assets-opt/02_endcard/fail/bac3.png" alt="" />
+        <img class="layer" src="./assets-opt/02_endcard/fail/bac4.png" alt="" />
+        <img class="layer" src="./assets-opt/02_endcard/fail/bac5.png" alt="" />
+        <img class="layer" src="./assets-opt/02_endcard/fail/sad.png" alt="" />
+        <img class="layer" src="./assets-opt/02_endcard/fail/hl.png"
+          alt="Poo, das tat weh! Erfahre jetzt, was deinem Darm guttut." />
+        <button class="cta" type="button" data-click="cta">
+          <img src="./assets-opt/02_endcard/fail/cta.png" alt="Jetzt informieren!" />
+        </button>
+        <button class="replay" type="button" data-click="replay">
+          <img src="./assets-opt/02_endcard/fail/replay.png" alt="Nochmal spielen" />
+        </button>
+      </div>
+      <!-- Confetti under the poo: measured against design/03-win-endcard.png (error 0.72 vs 1.43 /255). -->
+      <div class="endcard" id="win" hidden>
+        <img class="layer" src="./assets-opt/02_endcard/win/bubble.png" alt="" />
+        <img class="layer" src="./assets-opt/02_endcard/win/konfetti.png" alt="" />
+        <img class="layer" src="./assets-opt/02_endcard/win/happy.png" alt="" />
+        <img class="layer" src="./assets-opt/02_endcard/win/hl.png"
+          alt="Poo, tut das gut! Wenn du weißt, was dein Darm braucht." />
+        <button class="cta" type="button" data-click="cta">
+          <img src="./assets-opt/02_endcard/win/cta.png" alt="Jetzt mehr erfahren" />
+        </button>
+      </div>
       <!-- Last in #stage: stays above the game and, later, the endcards. -->
       <button class="mute" id="mute" type="button" aria-label="Ton aus" aria-pressed="false">
         <svg viewBox="0 0 24 24" aria-hidden="true">

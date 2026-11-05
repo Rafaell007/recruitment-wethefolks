@@ -28,30 +28,70 @@ const obstacleUrl = (name) => obstacleUrls[`../assets-opt/01_game/${name}.png`];
 const viewport = document.getElementById('ad');
 const stage = document.getElementById('stage');
 const muteBtn = document.getElementById('mute');
+const endcards = { fail: document.getElementById('fail'), win: document.getElementById('win') };
+
+// Task: every CTA opens the landing page in a new window through the click tag.
+const clickTag = window.clickTag || 'https://example.com/landing';
 
 // Created right away: the sounds download in the background while the start screen shows.
 const audio = createAudio({
   urls: { music: musicUrl, crash: crashUrl, fail: failUrl, cheer: cheerUrl, applause: applauseUrl },
 });
 
-// The tap on the button must not reach #ad: no game start, no jump, no resume from pause.
+// Taps on a button must not reach #ad: no game start, no jump, no resume from pause.
 // All three types, because iOS 12 (D10) sends touchstart/mousedown instead of pointerdown.
-['pointerdown', 'touchstart', 'mousedown'].forEach((type) => {
-  muteBtn.addEventListener(type, (e) => e.stopPropagation());
-});
+function isolate(el) {
+  ['pointerdown', 'touchstart', 'mousedown'].forEach((type) => {
+    el.addEventListener(type, (e) => e.stopPropagation());
+  });
+}
+
+isolate(muteBtn);
 muteBtn.addEventListener('click', () => {
   audio.setMuted(!audio.muted);
   muteBtn.setAttribute('aria-pressed', String(audio.muted));
 });
 
-// The run is over: freeze on the last frame. Endcards (and fail.mp3 with them) come in M6.
+let endDelay = null; // GSAP delayed call: paused with the rest while hidden, killed on replay
+
+// The run is over: freeze on the last frame, then the endcard.
 function onEnd(result, hitBy) {
   loop.stop();
   audio.music(false); // fades out instead of cutting off
   audio.play(result === 'fail' ? 'crash' : 'win');
   render(1);
+  // Fail: the crash stays on screen for a moment, so the player sees what they hit.
+  endDelay = gsap.delayedCall(result === 'fail' ? 0.7 : 0.3, () => showEndcard(result));
   if (debugFlags.debug) console.info(`[debug] run over: ${result}${hitBy ? ` (hit ${hitBy})` : ''}`);
 }
+
+function showEndcard(result) {
+  stage.classList.add('is-end');
+  endcards[result].hidden = false;
+  if (result === 'fail') audio.play('fail');
+}
+
+// Back to the start screen; the next tap starts a new run the same way the first one did.
+function replay() {
+  if (endDelay) endDelay.kill();
+  endDelay = null;
+  audio.stopAll(); // no sound carried into the next run
+  endcards.fail.hidden = true;
+  endcards.win.hidden = true;
+  stage.classList.remove('is-end', 'is-running', 'is-paused');
+  paused = false;
+  intro.reset(); // start screen props back, the hand taps again
+  game.reset();
+  render(1);
+}
+
+document.querySelectorAll('.endcard button').forEach((btn) => {
+  isolate(btn);
+  btn.addEventListener('click', () => {
+    if (btn.dataset.click === 'cta') window.open(clickTag, '_blank');
+    else replay();
+  });
+});
 
 const game = createGame({ onEnd });
 const canvas = createCanvas(document.getElementById('game'));
@@ -114,7 +154,7 @@ function onTap(e) {
     loop.start(); // resets the frame clock: no time jump after the pause
     return;
   }
-  if (game.state.phase === 'over') return; // replay comes with the endcards (M6)
+  if (game.state.phase === 'over') return; // only the endcard's buttons act now
   audio.unlock(); // first tap creates the audio context (autoplay rules)
   if (game.state.phase === 'ready') audio.music(true);
   if (game.state.phase === 'ready') intro.clear(); // start screen obstacles pop away

@@ -6,6 +6,7 @@ Gzip is shown for reference: it is roughly what travels over the wire; images an
 
 | file | raw | gzip |
 |---|---:|---:|
+| assets/applause-B3GvzpR7.mp3 | 236.0 KB | 233.8 KB |
 | assets/bac1-9kF1up_S.png | 2.3 KB | 2.4 KB |
 | assets/bac2-OodDenjs.png | 1.3 KB | 1.3 KB |
 | assets/bac3-CjOCAd-t.png | 1.2 KB | 1.3 KB |
@@ -15,9 +16,13 @@ Gzip is shown for reference: it is roughly what travels over the wire; images an
 | assets/bg-Xq7k2m6c.jpg | 3.3 KB | 0.3 KB |
 | assets/bg_texture-DRgT6ZPR.png | 14.5 KB | 14.0 KB |
 | assets/border-C_4FMR7J.png | 3.6 KB | 2.9 KB |
+| assets/cartoon-crash-boing-C1SDasCn.mp3 | 34.3 KB | 32.3 KB |
+| assets/celebrative-happy-woohoo-cheer-2-BGrEDbrG.mp3 | 20.9 KB | 20.0 KB |
+| assets/fail-7diYam9k.mp3 | 66.6 KB | 64.9 KB |
+| assets/funny-game-loop-DX0804ke.mp3 | 451.8 KB | 445.1 KB |
 | assets/gameplay-DXvPeWNa.png | 62.0 KB | 56.3 KB |
 | assets/gesture-CRZOgs_U.png | 2.5 KB | 2.5 KB |
-| assets/index-CnVj1r3j.js | 115.4 KB | 38.7 KB |
+| assets/index-Bpd29fXP.js | 117.4 KB | 39.6 KB |
 | assets/index-DjUrldCb.css | 1.8 KB | 0.6 KB |
 | assets/logo-mWy3tcIQ.png | 1.8 KB | 1.0 KB |
 | assets/player-JfSesYtM.png | 1.0 KB | 1.0 KB |
@@ -32,6 +37,6 @@ Gzip is shown for reference: it is roughly what travels over the wire; images an
 | assets/txt8-OWvqqDfw.png | 1.4 KB | 1.4 KB |
 | assets/txt9-90KxYCfB.png | 1.6 KB | 1.6 KB |
 | index.html | 1.0 KB | 0.5 KB |
-| **total (26 files)** | **232.3 KB** | **142.7 KB** |
+| **total (31 files)** | **1043.8 KB** | **939.8 KB** |
 
-**OK**: 7.9% of the budget used.
+**OK**: 35.6% of the budget used.

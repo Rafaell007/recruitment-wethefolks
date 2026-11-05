@@ -8,8 +8,14 @@ import { createGame } from './game.js';
 import { createLoop } from './loop.js';
 import { LEVEL } from './level.js';
 import { createIntro } from './intro.js';
+import { createAudio } from './audio.js';
 import gutUrl from '../assets-opt/01_game/gameplay.png';
 import playerUrl from '../assets-opt/01_game/player.png';
+import musicUrl from '../assets-opt/music/background_music/funny-game-loop.mp3';
+import crashUrl from '../assets-opt/music/crash/cartoon-crash-boing.mp3';
+import failUrl from '../assets-opt/music/endcard_fail/fail.mp3';
+import cheerUrl from '../assets-opt/music/endcard_win/celebrative-happy-woohoo-cheer-2.mp3';
+import applauseUrl from '../assets-opt/music/endcard_win/applause.mp3';
 
 // bac1–6 and txt1–9: Vite turns each file into a hashed URL, keyed by path.
 const obstacleUrls = import.meta.glob('../assets-opt/01_game/{bac,txt}*.png', {
@@ -20,9 +26,16 @@ const obstacleUrl = (name) => obstacleUrls[`../assets-opt/01_game/${name}.png`];
 const viewport = document.getElementById('ad');
 const stage = document.getElementById('stage');
 
-// The run is over: freeze on the last frame. Endcards and sounds come in M5/M6.
+// Created right away: the sounds download in the background while the start screen shows.
+const audio = createAudio({
+  urls: { music: musicUrl, crash: crashUrl, fail: failUrl, cheer: cheerUrl, applause: applauseUrl },
+});
+
+// The run is over: freeze on the last frame. Endcards (and fail.mp3 with them) come in M6.
 function onEnd(result, hitBy) {
   loop.stop();
+  audio.music(false); // fades out instead of cutting off
+  audio.play(result === 'fail' ? 'crash' : 'win');
   render(1);
   if (debugFlags.debug) console.info(`[debug] run over: ${result}${hitBy ? ` (hit ${hitBy})` : ''}`);
 }
@@ -58,6 +71,8 @@ function loadImage(src) {
 function onTap(e) {
   if (e.type === 'touchstart') e.preventDefault(); // no emulated mouse event = no double jump
   if (game.state.phase === 'over') return; // replay comes with the endcards (M6)
+  audio.unlock(); // first tap creates the audio context (autoplay rules)
+  if (game.state.phase === 'ready') audio.music(true);
   if (game.state.phase === 'ready') intro.clear(); // start screen obstacles pop away
   game.jump();
   stage.classList.add('is-running'); // D5: tutorial + headline fade out on the first tap
@@ -80,4 +95,7 @@ Promise.all([
     viewport.addEventListener('touchstart', onTap, { passive: false });
     viewport.addEventListener('mousedown', onTap);
   }
+  // Touchstart / pointerdown aren't a "user activation" for audio on iOS:
+  // unlock again when the finger lifts (idempotent).
+  viewport.addEventListener(window.PointerEvent ? 'pointerup' : 'touchend', audio.unlock);
 });

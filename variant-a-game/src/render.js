@@ -1,5 +1,5 @@
 // Canvas for the playfield (gut, obstacles, player). Lives in #game, between the texture and border.png.
-import { STAGE, PLAYER, GUT, PHYSICS, BLEED_GUT_BAND, GET_READY } from './config.js';
+import { STAGE, PLAYER, GUT, PHYSICS, BLEED_GUT_BAND } from './config.js';
 import { LEVEL, PLAYER_HIT } from './level.js';
 import hitboxes from './hitboxes.json';
 import { debugFlags } from './debug.js';
@@ -49,8 +49,7 @@ const BOB = { amp: 1.5, hz: 2 };
 const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
 function bobOffset(state) {
   if (state.phase !== 'getReady' || (reducedMotion && reducedMotion.matches)) return 0;
-  const t = GET_READY - state.getReadyLeft;
-  return Math.sin(t * BOB.hz * 2 * Math.PI) * BOB.amp;
+  return Math.sin(state.runTime * BOB.hz * 2 * Math.PI) * BOB.amp;
 }
 
 // ?debug=1: the masks the game really tests (tools/hitboxes.mjs), not the image rectangles.

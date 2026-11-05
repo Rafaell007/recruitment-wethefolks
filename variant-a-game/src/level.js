@@ -20,21 +20,25 @@ function fromDesign(name) {
   };
 }
 
-// Hand-placed after the first four. y keeps every obstacle inside the band that is
-// always cloud-free (236–566.5, notes/drafts/cloud-band.mjs), so texts are always readable.
-// Checked by a solver: passable with ~11 px to spare at every gap.
+// The four obstacles of the start screen. During get ready they pass below the hovering player,
+// so the real game starts on an empty stretch of gut instead of right above the worm.
+const DESIGN_OBSTACLES = ['bac6', 'txt1', 'bac2', 'txt2'].map(fromDesign);
+
+// Hand-placed after those, 145 px apart. The first one arrives ~1.5 s after get ready ends.
+// y keeps every obstacle inside the band that is always cloud-free (236–566.5,
+// notes/drafts/cloud-band.mjs), so texts are always readable.
 export const LEVEL = [
-  fromDesign('bac6'), fromDesign('txt1'), fromDesign('bac2'), fromDesign('txt2'),
-  { name: 'txt3', x: 480, y: 250 },
-  { name: 'bac3', x: 640, y: 470 },
-  { name: 'txt7', x: 800, y: 236 },
-  { name: 'bac4', x: 950, y: 420 },
-  { name: 'txt4', x: 1100, y: 470 },
-  { name: 'bac5', x: 1250, y: 260 },
-  { name: 'txt6', x: 1400, y: 236 },
-  { name: 'bac1', x: 1550, y: 480 },
-  { name: 'txt8', x: 1700, y: 413 },
-  { name: 'txt9', x: 1850, y: 236 },
+  ...DESIGN_OBSTACLES,
+  { name: 'txt3', x: 560, y: 250 },
+  { name: 'bac3', x: 705, y: 470 },
+  { name: 'txt7', x: 850, y: 236 },
+  { name: 'bac4', x: 995, y: 420 },
+  { name: 'txt4', x: 1140, y: 470 },
+  { name: 'bac5', x: 1285, y: 260 },
+  { name: 'txt6', x: 1430, y: 236 },
+  { name: 'bac1', x: 1575, y: 480 },
+  { name: 'txt8', x: 1720, y: 413 },
+  { name: 'txt9', x: 1865, y: 236 },
   { name: 'txt5', x: 2010, y: 385 },
 ].map((o) => ({ ...o, ...size(o.name) })); // add w, h
 
@@ -52,3 +56,8 @@ export const PLAYER_HIT = {
   dy: hitboxes.player.y / 2,
   r: hitboxes.player.r / 2,
 };
+
+// Get ready ends by distance, not time: once the last start-screen obstacle is fully behind the
+// player's circle (+8 px), whatever the speed or frame rate. ≈ 284.5.
+export const GET_READY_END =
+  Math.max(...DESIGN_OBSTACLES.map((o) => o.x + size(o.name).w)) - (PLAYER_HIT.cx - PLAYER_HIT.r) + 8;

@@ -35,5 +35,8 @@ export const PHYSICS = {
 };
 
 export const SPEED = { start: 110, end: 150 }; // px/s world scroll, ramped by distance (level.js)
-export const GET_READY = 1.2; // s after the first tap: the player hovers, the world already moves (D12)
+// Get ready (task: "a short 'get ready' moment before obstacles arrive"): after the first tap the
+// player hovers while the start screen's obstacles pass below it. It ends by distance
+// (GET_READY_END in level.js); here only how gently the world starts moving.
+export const GET_READY = { easeIn: 0.6 }; // s from standstill to full speed
 export const STEP = 1 / 120;                   // s, fixed physics step (same jump at 60/90/120 Hz)

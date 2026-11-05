@@ -1,7 +1,7 @@
 // One run of the game: player physics and the gut scroll. No DOM, no canvas (render.js draws it),
 // so it can be tested and reset without touching the page.
 import { STAGE, PLAYER, GUT, PHYSICS, GET_READY } from './config.js';
-import { LEVEL, PLAYER_HIT as HIT, rampSpeed } from './level.js';
+import { LEVEL, PLAYER_HIT as HIT, GET_READY_END, rampSpeed } from './level.js';
 import hitboxes from './hitboxes.json';
 import { circleHitsMask } from './collision.js';
 
@@ -12,7 +12,7 @@ export function createGame({ onEnd = () => {} } = {}) {
   const state = {
     // 'ready' = start screen, player waits | 'getReady' = hover after the first tap | 'playing' | 'over'
     phase: 'ready',
-    getReadyLeft: 0, // s
+    runTime: 0,      // s since the first tap
     result: null,    // null | 'win' | 'fail'
     hitBy: null,     // null | 'clouds' | obstacle name
     scroll: GUT.startScroll,
@@ -24,7 +24,7 @@ export function createGame({ onEnd = () => {} } = {}) {
 
   function reset() {
     state.phase = 'ready';
-    state.getReadyLeft = 0;
+    state.runTime = 0;
     state.result = state.hitBy = null;
     state.scroll = state.prevScroll = GUT.startScroll;
     const p = state.player;
@@ -38,7 +38,6 @@ export function createGame({ onEnd = () => {} } = {}) {
   function jump() {
     if (state.phase === 'ready') {
       state.phase = 'getReady';
-      state.getReadyLeft = GET_READY;
       return;
     }
     if (state.phase !== 'playing') return;
@@ -51,11 +50,15 @@ export function createGame({ onEnd = () => {} } = {}) {
     p.prevY = p.y;
     if (state.phase !== 'getReady' && state.phase !== 'playing') return;
 
-    // The world already moves during get ready (the level solver assumes the same).
-    state.scroll = Math.min(state.scroll + rampSpeed(state.scroll, scrollEnd) * dt, scrollEnd);
-    if (state.phase === 'getReady') { // hover: no gravity, the first obstacles pass below
-      state.getReadyLeft -= dt;
-      if (state.getReadyLeft <= 0) state.phase = 'playing';
+    // The world moves from the first tap. It eases in from standstill (smoothstep), so the start
+    // screen turns into the game without a jolt.
+    state.runTime += dt;
+    const k = Math.min(state.runTime / GET_READY.easeIn, 1);
+    const ease = k * k * (3 - 2 * k);
+    state.scroll = Math.min(state.scroll + rampSpeed(state.scroll, scrollEnd) * ease * dt, scrollEnd);
+
+    if (state.phase === 'getReady') { // hover: no gravity, the start screen's obstacles pass below
+      if (state.scroll >= GET_READY_END) state.phase = 'playing';
     } else {
       // Semi-implicit Euler: speed first, then position with the new speed (stable, Flappy feel).
       p.vy = Math.min(p.vy + PHYSICS.gravity * dt, PHYSICS.maxFall);

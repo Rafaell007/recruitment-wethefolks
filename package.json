@@ -17,7 +17,7 @@
     "compress:a": "node tools/compress.mjs variant-a-game",
     "size": "node tools/size-report.mjs",
     "hitboxes:a": "node tools/hitboxes.mjs variant-a-game",
-    "test": "node --test variant-a-game/test/*.test.js"
+    "test": "vitest run variant-a-game/test"
   },
   "dependencies": {
     "gsap": "3.15.0"
@@ -25,7 +25,8 @@
   "devDependencies": {
     "lightningcss": "1.33.0",
     "sharp": "0.35.5",
-    "vite": "8.3.5"
+    "vite": "8.3.5",
+    "vitest": "4.1.12"
   },
   "optionalDependencies": {
     "ffmpeg-static": "5.3.0"

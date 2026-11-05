@@ -27,10 +27,21 @@ const obstacleUrl = (name) => obstacleUrls[`../assets-opt/01_game/${name}.png`];
 
 const viewport = document.getElementById('ad');
 const stage = document.getElementById('stage');
+const muteBtn = document.getElementById('mute');
 
 // Created right away: the sounds download in the background while the start screen shows.
 const audio = createAudio({
   urls: { music: musicUrl, crash: crashUrl, fail: failUrl, cheer: cheerUrl, applause: applauseUrl },
+});
+
+// The tap on the button must not reach #ad: no game start, no jump, no resume from pause.
+// All three types, because iOS 12 (D10) sends touchstart/mousedown instead of pointerdown.
+['pointerdown', 'touchstart', 'mousedown'].forEach((type) => {
+  muteBtn.addEventListener(type, (e) => e.stopPropagation());
+});
+muteBtn.addEventListener('click', () => {
+  audio.setMuted(!audio.muted);
+  muteBtn.setAttribute('aria-pressed', String(audio.muted));
 });
 
 // The run is over: freeze on the last frame. Endcards (and fail.mp3 with them) come in M6.

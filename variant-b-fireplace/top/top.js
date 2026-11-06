@@ -1,6 +1,3 @@
-import { openClickTag } from '../src/shared/clicktag.js';
-import { mountDesignOverlay } from '../src/shared/dev/overlay.js';
+import { mountPart } from '../src/shared/part.js';
 
-const ad = document.getElementById('ad');
-ad.addEventListener('click', openClickTag);
-mountDesignOverlay(ad, 'top', { width: 1032, height: 250 });
+mountPart('top', { width: 1032, height: 250 });

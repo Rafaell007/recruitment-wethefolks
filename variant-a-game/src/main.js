@@ -1,59 +1,36 @@
-// Entry point of the Gut Run ad.
-// Will hold the state machine LOADING → START → GET_READY → PLAYING → CRASH → FAIL | WIN (M4+).
+// Entry point of the Gut Run ad: creates the modules and runs the flow of a run
+// (start screen → first tap → run → endcard → replay), plus the pause while the ad isn't visible.
 import './styles/main.css';
 import { gsap } from 'gsap';
 import { initStage } from './view/stage.js';
-import { mountDesignOverlay, debugFlags } from './dev/debug.js';
 import { createCanvas } from './view/render.js';
 import { createGame } from './core/game.js';
 import { createLoop } from './core/loop.js';
 import { LEVEL } from './core/level.js';
 import { createIntro } from './ui/intro.js';
 import { createEndcard } from './ui/endcard.js';
+import { initMute } from './ui/mute.js';
 import { createAudio } from './platform/audio.js';
 import { watchVisibility } from './platform/visibility.js';
-import gutUrl from '../assets-opt/01_game/gameplay.png';
-import playerUrl from '../assets-opt/01_game/player.png';
-import musicUrl from '../assets-opt/music/background_music/funny-game-loop.mp3';
-import crashUrl from '../assets-opt/music/crash/cartoon-crash-boing.mp3';
-import failUrl from '../assets-opt/music/endcard_fail/fail.mp3';
-import cheerUrl from '../assets-opt/music/endcard_win/celebrative-happy-woohoo-cheer-2.mp3';
-import applauseUrl from '../assets-opt/music/endcard_win/applause.mp3';
-
-// bac1–6 and txt1–9: Vite turns each file into a hashed URL, keyed by path.
-const obstacleUrls = import.meta.glob('../assets-opt/01_game/{bac,txt}*.png', {
-  eager: true, query: '?url', import: 'default',
-});
-const obstacleUrl = (name) => obstacleUrls[`../assets-opt/01_game/${name}.png`];
+import { onTap, onRelease, isolate } from './platform/input.js';
+import { mountDesignOverlay, debugFlags } from './dev/debug.js';
+import { SOUNDS, loadGameImages } from './assets.js';
 
 const viewport = document.getElementById('ad');
 const stage = document.getElementById('stage');
-const muteBtn = document.getElementById('mute');
 const endcard = createEndcard({ fail: document.getElementById('fail'), win: document.getElementById('win') });
 
 // Task: every CTA opens the landing page in a new window through the click tag.
 const clickTag = window.clickTag || 'https://example.com/landing';
 
 // Created right away: the sounds download in the background while the start screen shows.
-const audio = createAudio({
-  urls: { music: musicUrl, crash: crashUrl, fail: failUrl, cheer: cheerUrl, applause: applauseUrl },
-});
-
-// Taps on a button must not reach #ad: no game start, no jump, no resume from pause.
-// All three types, because iOS 12 (D10) sends touchstart/mousedown instead of pointerdown.
-function isolate(el) {
-  ['pointerdown', 'touchstart', 'mousedown'].forEach((type) => {
-    el.addEventListener(type, (e) => e.stopPropagation());
-  });
-}
-
-isolate(muteBtn);
-muteBtn.addEventListener('click', () => {
-  audio.setMuted(!audio.muted);
-  muteBtn.setAttribute('aria-pressed', String(audio.muted));
-});
+const audio = createAudio({ urls: SOUNDS });
+initMute(document.getElementById('mute'), audio);
 
 let endDelay = null; // GSAP delayed call: paused with the rest while hidden, killed on replay
+let paused = false; // run frozen while hidden; the next tap resumes it
+let hidden = false; // watchVisibility says no: background tab, scrolled away, or landscape
+let introReady = false; // images loaded and painted: the intro may start
 
 // The run is over: freeze on the last frame, then the endcard.
 function onEnd(result, hitBy) {
@@ -117,25 +94,14 @@ initStage(viewport, stage, (fit, vw) => {
 });
 mountDesignOverlay(stage);
 
-function loadImage(src) {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => resolve(img);
-    img.onerror = () => reject(new Error(`Image failed to load: ${src}`));
-    img.src = src;
-  });
-}
-
-let paused = false; // run frozen while hidden; the next tap resumes it
-let hidden = false; // watchVisibility says no: background tab, scrolled away, or landscape
-let introReady = false; // images loaded and painted: the intro may start
-
 // The intro starts once its images are ready AND the ad is seen (portrait, on screen), so it is
 // never played to nobody nor shown half-set. Once only: a replay uses intro.reset().
 function startIntro() {
   if (!introReady || hidden || stage.classList.contains('is-intro')) return;
   intro.play();
-  listen(); // not earlier: a tap before play() would start the entrance in the middle of a run
+  // Not earlier: a tap before play() would start the entrance in the middle of a run.
+  onTap(viewport, tap);
+  onRelease(viewport, audio.unlock); // iOS: audio may only start when the finger lifts
 }
 
 // Task: pause game and sound while the tab or ad is hidden, resume cleanly. There is no pause
@@ -144,7 +110,7 @@ watchVisibility(viewport, (visible) => {
   hidden = !visible;
   if (!visible) {
     audio.suspend();
-    gsap.globalTimeline.pause(); // every tween: hand, pop, later the endcards
+    gsap.globalTimeline.pause(); // every tween: hand, pop, endcards
     if (loop.running) { // only a run can be frozen
       loop.stop();
       paused = true;
@@ -161,8 +127,7 @@ watchVisibility(viewport, (visible) => {
   }
 });
 
-function onTap(e) {
-  if (e.type === 'touchstart') e.preventDefault(); // no emulated mouse event = no double jump
+function tap() {
   if (hidden) return; // landscape: taps still arrive, the game waits for portrait
   if (paused) { // this tap only resumes, the next one jumps
     paused = false;
@@ -174,41 +139,24 @@ function onTap(e) {
   }
   if (game.state.phase === 'over') return; // only the endcard's buttons act now
   audio.unlock(); // first tap creates the audio context (autoplay rules)
-  if (game.state.phase === 'ready') audio.music(true);
-  if (game.state.phase === 'ready') intro.clear(); // start screen obstacles pop away
+  if (game.state.phase === 'ready') {
+    audio.music(true);
+    intro.clear(); // start screen obstacles pop away
+  }
   game.jump();
-  stage.classList.add('is-running'); // D5: tutorial + headline fade out on the first tap
+  stage.classList.add('is-running'); // tutorial + headline fade out on the first tap
   loop.start(); // idempotent
 }
 
-Promise.all([
-  loadImage(gutUrl),
-  loadImage(playerUrl),
-  Promise.all(LEVEL.map((o) => loadImage(obstacleUrl(o.name)))),
-]).then(([gut, player, obstacleImgs]) => {
-  const obstacles = {};
-  LEVEL.forEach((o, i) => { obstacles[o.name] = obstacleImgs[i]; });
-  images = { gut, player, obstacles };
+loadGameImages(LEVEL.map((o) => o.name)).then((loaded) => {
+  images = loaded;
   render(1);
-  // The first frame after the
-  // images load is a heavy one (decoding full-screen layers): start two frames later, and never
-  // let one slow frame skip more than 33 ms of a tween (GSAP's default kicks in only at 500 ms).
+  // The first frame after the images load is a heavy one (decoding full-screen layers): start
+  // two frames later, and never let one slow frame skip more than 33 ms of a tween (GSAP's
+  // default kicks in only at 500 ms).
   gsap.ticker.lagSmoothing(50, 33);
   requestAnimationFrame(() => requestAnimationFrame(() => {
     introReady = true;
     startIntro();
   }));
 });
-
-function listen() {
-  // Pointer Events exist from iOS 13; iOS 12 (D10) only has touch events.
-  if (window.PointerEvent) {
-    viewport.addEventListener('pointerdown', onTap);
-  } else {
-    viewport.addEventListener('touchstart', onTap, { passive: false });
-    viewport.addEventListener('mousedown', onTap);
-  }
-  // Touchstart / pointerdown aren't a "user activation" for audio on iOS:
-  // unlock again when the finger lifts (idempotent).
-  viewport.addEventListener(window.PointerEvent ? 'pointerup' : 'touchend', audio.unlock);
-}

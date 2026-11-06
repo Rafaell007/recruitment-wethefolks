@@ -55,6 +55,21 @@
     <iframe class="right" src="./right/right.html" width="320" height="975" scrolling="no" title="Fireplace right"></iframe>
     <div class="site"></div>
   </main>
+  <script>
+    // Start coordinator: once all three parts are ready, give them one shared start time.
+    const frames = [...document.querySelectorAll('iframe')].map((f) => f.contentWindow);
+    const ready = new Set();
+    addEventListener('message', (e) => {
+      const d = e.data;
+      if (!frames.includes(e.source) || !d || d.tag !== 'wtf-fireplace' || d.kind !== 'ready') return;
+      e.source.postMessage({ tag: 'wtf-fireplace', kind: 'hold' }, '*');
+      ready.add(d.part);
+      if (ready.size === frames.length) {
+        const at = Date.now() + 150; // every frame gets the message before this moment
+        for (const w of frames) w.postMessage({ tag: 'wtf-fireplace', kind: 'start', at }, '*');
+      }
+    });
+  </script>
 </body>
 
 </html>

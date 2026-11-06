@@ -20,7 +20,7 @@ Gzip is shown for reference: it is roughly what travels over the wire; images an
 | left/assets/left-tkTP_GGR.css | 0.1 KB | 0.1 KB |
 | left/assets/logo-BGW4ipID.png | 2.1 KB | 2.0 KB |
 | left/left.html | 0.8 KB | 0.4 KB |
-| preview.html | 0.5 KB | 0.2 KB |
+| preview.html | 1.6 KB | 0.8 KB |
 | right/assets/bg-CnK9vGP6.jpg | 378.0 KB | 375.3 KB |
 | right/assets/box-B2Yc8wcx.png | 0.3 KB | 0.2 KB |
 | right/assets/cta-DgfsAA7C.png | 1.3 KB | 1.3 KB |

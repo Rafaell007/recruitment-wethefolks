@@ -54,4 +54,8 @@ _TODO_
 
 ## How I used AI
 
-_TODO_
+I worked with Claude Code as a pair programmer: research (browser support, ad specs), the measurement, compression and hitbox scripts, the game engine modules, and Playwright checks that read real pixels in Chrome. I wrote the layout and UI parts myself and went through every module before committing it. Where it went wrong:
+
+- **It built for a typical web app, not for an ad.** The first build targeted ES2020, and fallbacks for older phones were filed as "known issues". With paid impressions a broken older phone is lost budget, so I set the floor to iOS 12. Checking the *built* CSS afterwards showed that the minifier silently deleted the `-webkit-clip-path` I had added for old Safari, which would have covered the whole game there. Lesson: check the build, not the source.
+- **It guessed instead of measuring.** A thin grey line showed along the stage edge. The first fix (snapping the scale to whole pixels) looked right on one screenshot, but the line was still there. A Playwright script that scanned the edge pixels with layers hidden one by one found the real cause: the browser softens the outer pixel row of scaled images. The fix is the edge cover described in DECISIONS.md.
+- **"Solvable" isn't "playable".** A path search said the first level was passable, but in play the get-ready hover ended right above the worm. I moved the start-screen obstacles out of the run.

@@ -41,7 +41,7 @@ core/        game logic without the DOM: config, level, game state + physics, co
 view/        stage scaling to the viewport, canvas drawing
 ui/          start screen intro, endcards, mute button (DOM + GSAP)
 platform/    browser APIs: Web Audio, visibility/pause, tap input with old iOS fallback
-dev/         ?overlay= design overlay (dev only, not in the build)
+dev/         ?debug=1 flags (hitboxes), ?overlay= design overlay (dev server only, not in the build)
 data/        generated JSON: measured positions, hitbox masks
 styles/      CSS split by screen, colour tokens
 ```

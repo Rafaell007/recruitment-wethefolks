@@ -127,10 +127,21 @@ function loadImage(src) {
 }
 
 let paused = false; // run frozen while hidden; the next tap resumes it
+let hidden = false; // watchVisibility says no: background tab, scrolled away, or landscape
+let introReady = false; // images loaded and painted: the intro may start
+
+// The intro starts once its images are ready AND the ad is seen (portrait, on screen), so it is
+// never played to nobody nor shown half-set. Once only: a replay uses intro.reset().
+function startIntro() {
+  if (!introReady || hidden || stage.classList.contains('is-intro')) return;
+  intro.play();
+  listen(); // not earlier: a tap before play() would start the entrance in the middle of a run
+}
 
 // Task: pause game and sound while the tab or ad is hidden, resume cleanly. There is no pause
 // screen in the design, so the start screen's "tab to run" hand comes back as the resume prompt.
 watchVisibility(viewport, (visible) => {
+  hidden = !visible;
   if (!visible) {
     audio.suspend();
     gsap.globalTimeline.pause(); // every tween: hand, pop, later the endcards
@@ -141,6 +152,7 @@ watchVisibility(viewport, (visible) => {
     return;
   }
   gsap.globalTimeline.resume();
+  startIntro(); // the ad loaded while hidden (landscape, below the fold): its entrance starts now
   if (paused) {
     stage.classList.add('is-paused'); // the "tab to run" hand again
     intro.showHint();
@@ -151,6 +163,7 @@ watchVisibility(viewport, (visible) => {
 
 function onTap(e) {
   if (e.type === 'touchstart') e.preventDefault(); // no emulated mouse event = no double jump
+  if (hidden) return; // landscape: taps still arrive, the game waits for portrait
   if (paused) { // this tap only resumes, the next one jumps
     paused = false;
     stage.classList.remove('is-paused');
@@ -177,13 +190,13 @@ Promise.all([
   LEVEL.forEach((o, i) => { obstacles[o.name] = obstacleImgs[i]; });
   images = { gut, player, obstacles };
   render(1);
-  // The entrance starts once everything it animates can be drawn. The first frame after the
+  // The first frame after the
   // images load is a heavy one (decoding full-screen layers): start two frames later, and never
   // let one slow frame skip more than 33 ms of a tween (GSAP's default kicks in only at 500 ms).
   gsap.ticker.lagSmoothing(50, 33);
   requestAnimationFrame(() => requestAnimationFrame(() => {
-    intro.play();
-    listen(); // not earlier: a tap before play() would start the entrance in the middle of a run
+    introReady = true;
+    startIntro();
   }));
 });
 

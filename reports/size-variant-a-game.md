@@ -34,8 +34,8 @@ Gzip is shown for reference: it is roughly what travels over the wire; images an
 | assets/happy-CxViPCf6.png | 2.2 KB | 1.6 KB |
 | assets/hl-BwLe5eDM.png | 6.6 KB | 5.8 KB |
 | assets/hl-DXXSmPau.png | 6.7 KB | 6.0 KB |
+| assets/index-CIPbWqFX.js | 121.7 KB | 41.1 KB |
 | assets/index-C_A2n8kV.css | 2.9 KB | 1.0 KB |
-| assets/index-D6nPjD2V.js | 121.4 KB | 41.0 KB |
 | assets/konfetti-BboccHEZ.png | 11.9 KB | 11.2 KB |
 | assets/logo-mWy3tcIQ.png | 1.8 KB | 1.0 KB |
 | assets/player-JfSesYtM.png | 1.0 KB | 1.0 KB |
@@ -52,6 +52,6 @@ Gzip is shown for reference: it is roughly what travels over the wire; images an
 | assets/txt8-OWvqqDfw.png | 1.4 KB | 1.4 KB |
 | assets/txt9-90KxYCfB.png | 1.6 KB | 1.6 KB |
 | index.html | 3.5 KB | 1.3 KB |
-| **total (46 files)** | **1102.7 KB** | **985.4 KB** |
+| **total (46 files)** | **1103.0 KB** | **985.5 KB** |
 
 **OK**: 37.6% of the budget used.

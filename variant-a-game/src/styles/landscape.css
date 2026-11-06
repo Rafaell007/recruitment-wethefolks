@@ -1,0 +1,18 @@
+/* A phone turned sideways: the ad is paused (same query as platform/visibility.js) and the stage
+   is small in the middle. The side bleed would stretch the cloud colours into long stripes and
+   show the gut cut off, so the sides go plain. Taps are ignored here, so no "tap" hint either. */
+@media (orientation: landscape) and (max-height: 500px) {
+  .bleed,
+  .bleed-edge {
+    background: linear-gradient(to bottom, var(--white) 0 698px, var(--navy) 698px);
+  }
+
+  #game {
+    -webkit-clip-path: inset(0);
+    clip-path: inset(0);
+  }
+
+  #gesture {
+    visibility: hidden;
+  }
+}

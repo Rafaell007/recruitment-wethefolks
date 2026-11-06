@@ -1,10 +1,10 @@
 // The fixed level (D13): every obstacle once, readable, and passed before the gut ends.
 import { test, expect } from 'vitest';
 import { readdirSync } from 'node:fs';
-import { LEVEL, PLAYER_HIT } from '../src/level.js';
-import { GUT } from '../src/config.js';
-import { computeFit } from '../src/stage.js';
-import hitboxes from '../src/hitboxes.json';
+import { LEVEL, PLAYER_HIT } from '../src/core/level.js';
+import { GUT } from '../src/core/config.js';
+import { computeFit } from '../src/view/stage.js';
+import hitboxes from '../src/data/hitboxes.json';
 
 // Obstacle files in the asset folder: bac1–6, txt1–9.
 const files = readdirSync(new URL('../assets/01_game', import.meta.url))

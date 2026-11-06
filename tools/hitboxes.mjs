@@ -4,7 +4,7 @@
 //
 //   node tools/hitboxes.mjs variant-a-game
 //
-// Writes <variant>/src/hitboxes.json. Everything is in asset px (2x); the game converts.
+// Writes <variant>/src/data/hitboxes.json. Everything is in asset px (2x); the game converts.
 import { readFile, writeFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { loadRGBA } from './lib/image.mjs';
@@ -67,7 +67,7 @@ if (variant !== 'variant-a-game') {
 }
 const dir = join(ROOT, variant);
 const assets = join(dir, 'assets-opt');
-const { variantA: measured } = JSON.parse(await readFile(join(dir, 'src/measured.json'), 'utf8'));
+const { variantA: measured } = JSON.parse(await readFile(join(dir, 'src/data/measured.json'), 'utf8'));
 
 const player = await loadRGBA(join(assets, '01_game/player.png'));
 const circle = inscribedCircle(player);
@@ -95,7 +95,7 @@ const json = {
   clouds,
 };
 const out = JSON.stringify(json);
-await writeFile(join(dir, 'src/hitboxes.json'), out + '\n');
+await writeFile(join(dir, 'src/data/hitboxes.json'), out + '\n');
 
 // Cross-check against measure.mjs: first and last cloud rows on the player's centre column,
 // counted from the player's start centre (should equal measured.bounds.centerColumn).

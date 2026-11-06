@@ -1,6 +1,6 @@
 // audio.js against a fake AudioContext: autoplay rules, no doubled loops, a clean replay.
 import { test, expect, vi, beforeEach, afterEach } from 'vitest';
-import { createAudio } from '../src/audio.js';
+import { createAudio } from '../src/platform/audio.js';
 
 const param = () => ({
   value: 1,

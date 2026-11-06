@@ -3,7 +3,7 @@
 //
 //   node tools/measure.mjs variant-a-game
 //
-// Writes <variant>/src/measured.json (read by the game config) and reports/measure-<variant>.md.
+// Writes <variant>/src/data/measured.json (read by the game config) and reports/measure-<variant>.md.
 // All output values are CSS px = asset px / 2 (assets are exported at 2x).
 import { readdir, writeFile, mkdir } from 'node:fs/promises';
 import { join, relative, resolve } from 'node:path';
@@ -262,7 +262,7 @@ const t0 = performance.now();
 const result = await MEASURERS[variant](join(ROOT, variant));
 const json = { generatedBy: `node tools/measure.mjs ${variant}`, unit: 'CSS px (asset px / 2)', ...result };
 
-await writeFile(join(ROOT, variant, 'src/measured.json'), JSON.stringify(json, null, 2) + '\n');
+await writeFile(join(ROOT, variant, 'src/data/measured.json'), JSON.stringify(json, null, 2) + '\n');
 await mkdir(join(ROOT, 'reports'), { recursive: true });
 const md = markdown(variant, result);
 await writeFile(join(ROOT, 'reports', `measure-${variant}.md`), md);

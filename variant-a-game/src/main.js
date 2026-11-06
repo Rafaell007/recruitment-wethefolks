@@ -1,17 +1,17 @@
 // Entry point of the Gut Run ad.
 // Will hold the state machine LOADING → START → GET_READY → PLAYING → CRASH → FAIL | WIN (M4+).
-import './styles.css';
+import './styles/main.css';
 import { gsap } from 'gsap';
-import { initStage } from './stage.js';
-import { mountDesignOverlay, debugFlags } from './debug.js';
-import { createCanvas } from './render.js';
-import { createGame } from './game.js';
-import { createLoop } from './loop.js';
-import { LEVEL } from './level.js';
-import { createIntro } from './intro.js';
-import { createEndcard } from './endcard.js';
-import { createAudio } from './audio.js';
-import { watchVisibility } from './visibility.js';
+import { initStage } from './view/stage.js';
+import { mountDesignOverlay, debugFlags } from './dev/debug.js';
+import { createCanvas } from './view/render.js';
+import { createGame } from './core/game.js';
+import { createLoop } from './core/loop.js';
+import { LEVEL } from './core/level.js';
+import { createIntro } from './ui/intro.js';
+import { createEndcard } from './ui/endcard.js';
+import { createAudio } from './platform/audio.js';
+import { watchVisibility } from './platform/visibility.js';
 import gutUrl from '../assets-opt/01_game/gameplay.png';
 import playerUrl from '../assets-opt/01_game/player.png';
 import musicUrl from '../assets-opt/music/background_music/funny-game-loop.mp3';

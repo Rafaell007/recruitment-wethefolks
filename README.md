@@ -35,7 +35,7 @@ reports/              generated: measurements, compression table, size report
 Tools (only needed to regenerate what is already committed):
 
 ```bash
-npm run measure:a    # positions and sizes from assets + designs → variant-a-game/src/measured.json (~3 min)
+npm run measure:a    # positions and sizes from assets + designs → variant-a-game/src/data/measured.json (~3 min)
 npm run compress:a   # assets/ → assets-opt/ (needs ffmpeg-static, an optional dependency, for MP3)
 npm run size         # weight report of dist/ (also runs automatically after npm run build)
 ```

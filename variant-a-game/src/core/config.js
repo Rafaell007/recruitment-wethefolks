@@ -1,6 +1,6 @@
 // All game constants in one place. Positions come from measured.json (tools/measure.mjs);
 // physics numbers are first guesses, tuned in M8.
-import { variantA as M } from './measured.json';
+import { variantA as M } from '../data/measured.json';
 
 export const STAGE = { w: 360, h: 640 };
 

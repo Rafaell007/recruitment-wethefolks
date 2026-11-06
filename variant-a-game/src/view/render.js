@@ -1,8 +1,8 @@
 // Canvas for the playfield (gut, obstacles, player). Lives in #game, between the texture and border.png.
-import { STAGE, PLAYER, GUT, PHYSICS, BLEED_GUT_BAND } from './config.js';
-import { LEVEL, PLAYER_HIT } from './level.js';
-import hitboxes from './hitboxes.json';
-import { debugFlags } from './debug.js';
+import { STAGE, PLAYER, GUT, PHYSICS, BLEED_GUT_BAND } from '../core/config.js';
+import { LEVEL, PLAYER_HIT } from '../core/level.js';
+import hitboxes from '../data/hitboxes.json';
+import { debugFlags } from '../dev/debug.js';
 
 const MAX_DPR = 2; // 3x phones: ~2.25x more pixels to fill each frame for almost no visible gain
 

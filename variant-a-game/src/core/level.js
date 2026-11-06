@@ -1,8 +1,8 @@
 // The level: all 15 obstacles, each exactly once per run (D13: a fixed, hand-made level).
 // x = left edge in gut-world coordinates (on screen: x − scroll), y = top edge on the stage.
-import M from './measured.json';
+import M from '../data/measured.json';
 import { GUT, SPEED, PLAYER } from './config.js';
-import hitboxes from './hitboxes.json';
+import hitboxes from '../data/hitboxes.json';
 
 // Obstacle size in CSS px (asset px / 2), straight from the measured PNGs.
 const size = (name) => M.images[`01_game/${name}.png`].size;

@@ -2,7 +2,7 @@
 // so it can be tested and reset without touching the page.
 import { STAGE, PLAYER, GUT, PHYSICS, GET_READY } from './config.js';
 import { LEVEL, PLAYER_HIT as HIT, rampSpeed } from './level.js';
-import hitboxes from './hitboxes.json';
+import hitboxes from '../data/hitboxes.json';
 import { circleHitsMask } from './collision.js';
 
 const CX = HIT.cx; // fixed x line of the circle's centre

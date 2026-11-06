@@ -3,7 +3,7 @@
 // the run starts on an empty gut.
 // Every tween is kept and killed in reset(), so a replay starts clean (no leftover tweens).
 import { gsap } from 'gsap';
-import { START_PROPS } from './level.js';
+import { START_PROPS } from '../core/level.js';
 
 const reducedMotion = () =>
   !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);

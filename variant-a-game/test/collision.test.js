@@ -1,8 +1,8 @@
 // Circle vs mask on small hand-made masks (asset px), plus the real start position.
 import { test, expect } from 'vitest';
-import { circleHitsMask } from '../src/collision.js';
-import hb from '../src/hitboxes.json';
-import { variantA as m } from '../src/measured.json';
+import { circleHitsMask } from '../src/core/collision.js';
+import hb from '../src/data/hitboxes.json';
+import { variantA as m } from '../src/data/measured.json';
 
 // 2x2 asset px square at x 4–6, y 4–6 (= stage px 2–3) in a 10x10 mask.
 const square = { w: 10, h: 10, rows: Array.from({ length: 10 }, (_, y) => (y === 4 || y === 5 ? [4, 6] : [])) };

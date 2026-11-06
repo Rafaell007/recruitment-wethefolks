@@ -1,7 +1,7 @@
 // One run of game.js on fixed steps: get ready, jump physics, a single end, a clean reset.
 import { test, expect, vi } from 'vitest';
-import { createGame } from '../src/game.js';
-import { STEP, GET_READY, PHYSICS } from '../src/config.js';
+import { createGame } from '../src/core/game.js';
+import { STEP, GET_READY, PHYSICS } from '../src/core/config.js';
 
 // Runs fixed steps until cond() or the limit (a stuck game must fail the test, not hang it).
 // Returns the simulated time in seconds.

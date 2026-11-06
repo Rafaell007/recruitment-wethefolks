@@ -205,6 +205,9 @@ console.log('left pre-cut in bg-big', offset);
 const measured = {
   cta: { x: half((layers.left.cta.x + layers.right.cta.x) / 2), y: half((layers.left.cta.y + layers.right.cta.y) / 2) },
   boxOpacity: box.opacity,
+  // For the dev overlay: each part's frame interior inside layout.png, in design px.
+  design: { w: design.width, h: design.height },
+  frames: Object.fromEntries(Object.entries(frames).map(([k, v]) => [k, { x: v.x, y: v.y, w: v.w, h: v.h }])),
 };
 await mkdir(join(DIR, 'src', 'data'), { recursive: true });
 await writeFile(join(DIR, 'src', 'data', 'measured.json'), JSON.stringify(measured, null, 2) + '\n');

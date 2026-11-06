@@ -12,13 +12,13 @@ Gzip is shown for reference: it is roughly what travels over the wire; images an
 
 | file | raw | gzip |
 |---|---:|---:|
-| left/assets/left-DBYkxAaS.js | 0.1 KB | 0.1 KB |
+| left/assets/left-B9HbCO3q.js | 0.2 KB | 0.2 KB |
 | left/left.html | 0.3 KB | 0.2 KB |
 | preview.html | 0.5 KB | 0.2 KB |
-| right/assets/right-DBYkxAaS.js | 0.1 KB | 0.1 KB |
+| right/assets/right-BzNexWO5.js | 0.2 KB | 0.2 KB |
 | right/right.html | 0.3 KB | 0.2 KB |
-| top/assets/top-DBYkxAaS.js | 0.1 KB | 0.1 KB |
+| top/assets/top-DO6b55yM.js | 0.2 KB | 0.2 KB |
 | top/top.html | 0.3 KB | 0.2 KB |
-| **total shipped (6 files, without 1 preview file(s))** | **1.4 KB** | **1.1 KB** |
+| **total shipped (6 files, without 1 preview file(s))** | **1.6 KB** | **1.3 KB** |
 
-**OK**: 0.0% of the budget used.
+**OK**: 0.1% of the budget used.

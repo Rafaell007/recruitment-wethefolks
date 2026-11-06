@@ -17,15 +17,11 @@ import { readdir, mkdir, rm, stat, copyFile, writeFile } from 'node:fs/promises'
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { dirname, join, relative, resolve, extname } from 'node:path';
-import sharp from 'sharp';
-import { psnr } from './lib/image.mjs';
+import { MIN_PSNR, encodeBest } from './lib/encode.mjs';
 
 const run = promisify(execFile);
 const ROOT = resolve(import.meta.dirname, '..');
 
-const MIN_PSNR = 40; // dB; above ~40 dB differences are not visible on flat ad artwork
-const PNG_QUALITIES = [80, 90, 100];
-const JPG_QUALITIES = [80, 88];
 const MP3_MAX_KBPS = 128;
 
 const variant = process.argv[2];
@@ -38,39 +34,8 @@ const outDir = join(ROOT, variant, 'assets-opt');
 
 const outName = (rel) => rel.split('/').map((part) => part.toLowerCase().replace(/\s+/g, '-')).join('/');
 
-const decode = async (input) => {
-  const { data, info } = await sharp(input).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
-  return { data, width: info.width, height: info.height };
-};
-
-/** Tries encoders in order (smallest settings first) and returns the first one that passes MIN_PSNR. */
-async function firstGood(original, attempts) {
-  for (const { label, encode } of attempts) {
-    const buf = await encode();
-    if (buf.length >= original.bytes) continue;
-    const q = psnr(original.pixels, await decode(buf));
-    if (q.psnr >= MIN_PSNR) return { buf, method: label, ...q };
-  }
-  return null;
-}
-
 async function compressImage(src, dst, type) {
-  const bytes = (await stat(src)).size;
-  const original = { bytes, pixels: await decode(src) };
-  const attempts =
-    type === 'png'
-      ? [
-          ...PNG_QUALITIES.map((quality) => ({
-            label: `png palette q${quality}`,
-            encode: () => sharp(src).png({ palette: true, quality, effort: 10, compressionLevel: 9 }).toBuffer(),
-          })),
-          { label: 'png lossless', encode: () => sharp(src).png({ compressionLevel: 9, effort: 10, adaptiveFiltering: true }).toBuffer() },
-        ]
-      : JPG_QUALITIES.map((quality) => ({
-          label: `mozjpeg q${quality}`,
-          encode: () => sharp(src).jpeg({ mozjpeg: true, quality }).toBuffer(),
-        }));
-  const best = await firstGood(original, attempts);
+  const best = await encodeBest(src, type, { maxBytes: (await stat(src)).size });
   if (!best) {
     await copyFile(src, dst);
     return { method: 'copied (no smaller encoding passed the quality check)' };

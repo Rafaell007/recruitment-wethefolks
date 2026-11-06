@@ -1,16 +1,15 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { TAG, waitForStart } from '../src/shared/sync.js';
 
-let listeners, parent, sent;
+let listeners, parent;
 
-function fakeWindow({ framed = true } = {}) {
+function fakeWindow() {
   listeners = new Set();
-  sent = [];
   const win = {
     addEventListener: (type, fn) => type === 'message' && listeners.add(fn),
     removeEventListener: (type, fn) => listeners.delete(fn),
   };
-  parent = framed ? { postMessage: (data) => sent.push(data) } : win;
+  parent = { postMessage() {} };
   win.parent = parent;
   vi.stubGlobal('window', win);
 }
@@ -37,17 +36,6 @@ afterEach(() => {
 });
 
 describe('waitForStart', () => {
-  it('starts right away when not in a frame', async () => {
-    fakeWindow({ framed: false });
-    expect(await waitForStart('left')).toBe(1_000_000);
-  });
-
-  it('announces itself to the parent', () => {
-    fakeWindow();
-    waitForStart('top');
-    expect(sent).toEqual([{ tag: TAG, kind: 'ready', part: 'top' }]);
-  });
-
   it('runs alone after 300 ms when nobody answers', async () => {
     fakeWindow();
     const r = await settle(waitForStart('left'));

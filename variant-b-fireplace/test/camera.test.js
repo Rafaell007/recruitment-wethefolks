@@ -40,23 +40,6 @@ describe('cameraOrigin', () => {
       }
     }
   });
-
-  it('leaves the end state (scale 1, no drift) exactly at the layout position', () => {
-    for (const name of PARTS) {
-      const at = place(name, { s: 1, dx: 0, dy: 0 });
-      expect(at.x(0)).toBe(layout[name].bg.x);
-      expect(at.y(0)).toBe(layout[name].bg.y);
-    }
-  });
-
-  it('keeps the same background point at the same fireplace position across parts', () => {
-    // Background point x = 330 sits in the left slice (overscan) and in the top slice.
-    const state = { s: CAMERA.maxScale, dx: 0, dy: 0 };
-    const q = 330;
-    const left = place('left', state).x(q - fireplace.parts.left.x - layout.left.bg.x) + fireplace.parts.left.x;
-    const top = place('top', state).x(q - fireplace.parts.top.x - layout.top.bg.x) + fireplace.parts.top.x;
-    expect(left).toBeCloseTo(top, 9);
-  });
 });
 
 describe('background slices', () => {

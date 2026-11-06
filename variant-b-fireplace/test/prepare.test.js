@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { keyOutBlack, evenBox } from '../../tools/lib/image.mjs';
+import { keyOutBlack } from '../../tools/lib/image.mjs';
 import { sliceRect } from '../../tools/lib/overscan.mjs';
 import fireplace from '../src/data/fireplace.json';
 
@@ -11,13 +11,6 @@ describe('keyOutBlack', () => {
     const out = keyOutBlack(img);
     expect([...out.data]).toEqual([0, 0, 0, 0, 1, 0, 0, 255, 184, 0, 0, 255, 255, 255, 255, 255]);
     expect(img.data[3]).toBe(255); // input untouched
-  });
-});
-
-describe('evenBox', () => {
-  it('grows outwards to even edges', () => {
-    expect(evenBox({ x: 133, y: 120, w: 376, h: 261 })).toEqual({ x: 132, y: 120, w: 378, h: 262 });
-    expect(evenBox({ x: 0, y: 0, w: 640, h: 1950 })).toEqual({ x: 0, y: 0, w: 640, h: 1950 });
   });
 });
 

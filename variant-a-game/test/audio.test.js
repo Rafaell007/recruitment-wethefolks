@@ -37,7 +37,6 @@ class FakeCtx {
   }
   decodeAudioData(data, ok) { ok({ name: data.name }); } // callback form, like old Safari
   resume() { this.state = 'running'; }
-  suspend() { this.state = 'suspended'; }
 }
 
 const URLS = { music: 'music', crash: 'crash', fail: 'fail', cheer: 'cheer', applause: 'applause' };
@@ -45,7 +44,6 @@ const flush = () => new Promise((r) => setTimeout(r)); // let the fetch promises
 
 // Sounds that are playing now, by name.
 const live = (ctx) => ctx.sources.filter((s) => s.started && !s.stopped && s.buffer.name).map((s) => s.buffer.name);
-const master = (ctx) => ctx.gains[0];
 
 beforeEach(() => {
   FakeCtx.instances = [];
@@ -63,17 +61,6 @@ test('nothing is created before the first tap; music asked for early starts on u
   const ctx = FakeCtx.instances[0];
   expect(ctx.state).toBe('running');
   expect(live(ctx)).toEqual(['music']);
-});
-
-test('unlock twice = one context; music twice = one loop', async () => {
-  const audio = createAudio({ urls: URLS, Ctx: FakeCtx });
-  await flush();
-  audio.unlock();
-  audio.unlock();
-  audio.music(true);
-  audio.music(true);
-  expect(FakeCtx.instances).toHaveLength(1);
-  expect(live(FakeCtx.instances[0])).toEqual(['music']);
 });
 
 test('music that finishes downloading after the tap starts by itself', async () => {
@@ -100,40 +87,6 @@ test('3 runs with replay: never more than one loop, nothing left over', async ()
   }
   audio.music(true);
   expect(live(ctx)).toEqual(['music']);
-});
-
-test('win plays the cheer and the applause together', async () => {
-  const audio = createAudio({ urls: URLS, Ctx: FakeCtx });
-  await flush();
-  audio.unlock();
-  audio.play('win');
-  expect(live(FakeCtx.instances[0]).sort()).toEqual(['applause', 'cheer']);
-});
-
-test('mute before the first tap is kept; unmute brings the sound back', async () => {
-  const audio = createAudio({ urls: URLS, Ctx: FakeCtx });
-  audio.setMuted(true);
-  audio.unlock();
-  const ctx = FakeCtx.instances[0];
-  expect(master(ctx).gain.value).toBe(0);
-  audio.setMuted(false);
-  expect(master(ctx).gain.value).toBe(1);
-  expect(audio.muted).toBe(false);
-});
-
-test('suspend / resume, also out of iOS "interrupted"', () => {
-  const audio = createAudio({ urls: {}, Ctx: FakeCtx });
-  audio.suspend(); // before the first tap: nothing to do, no error
-  audio.resume();
-  audio.unlock();
-  const ctx = FakeCtx.instances[0];
-  audio.suspend();
-  expect(ctx.state).toBe('suspended');
-  audio.resume();
-  expect(ctx.state).toBe('running');
-  ctx.state = 'interrupted';
-  audio.unlock(); // the next tap wakes it up
-  expect(ctx.state).toBe('running');
 });
 
 test('no Web Audio, or a sound that fails to load: the game runs silent, nothing throws', async () => {

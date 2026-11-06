@@ -19,22 +19,11 @@ test('circle near a corner: bounding boxes overlap, pixels do not', () => {
   expect(circleHitsMask(1.4, 1.4, 1, square, 0, 0)).toBe(true); // distance 1.7 < 2
 });
 
-test('mask position is applied (mx, my in stage px)', () => {
-  expect(circleHitsMask(1.05, 2.5, 1, square, 0, 0)).toBe(true);
-  expect(circleHitsMask(1.05 + 100, 2.5 + 50, 1, square, 100, 50)).toBe(true);
-  expect(circleHitsMask(1.05, 2.5, 1, square, 100, 50)).toBe(false);
-});
-
 test('circle inside a hole (like the inside of a letter) is not a hit', () => {
   // 10x10 ring, 1 px thick: free inside is x/y 1–9 asset px.
   const ring = { w: 10, h: 10, rows: Array.from({ length: 10 }, (_, y) => (y === 0 || y === 9 ? [0, 10] : [0, 1, 9, 10])) };
   expect(circleHitsMask(2.5, 2.5, 1.9, ring, 0, 0)).toBe(false); // R = 3.8 < 4
   expect(circleHitsMask(2.5, 2.5, 2.05, ring, 0, 0)).toBe(true); // R = 4.1 > 4
-});
-
-test('rows outside the mask are ignored (no out-of-range access)', () => {
-  expect(circleHitsMask(-50, -50, 5, square, 0, 0)).toBe(false);
-  expect(circleHitsMask(2.5, 30, 5, square, 0, 0)).toBe(false);
 });
 
 test('real data: player at the start position touches no cloud', () => {

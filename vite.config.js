@@ -1,15 +1,20 @@
-import { resolve } from 'node:path';
+import { basename, resolve } from 'node:path';
 import { defineConfig } from 'vite';
 import { Features } from 'lightningcss';
 
-// One build per variant, each self-contained in dist/<variant>/ (in production every creative
-// is delivered on its own). Dev serves the whole repo with a landing page at /.
+// One build per creative, self-contained in dist/<dir>/. The fireplace parts are three separate
+// ads, so each is its own build rooted in its own folder: no shared JS chunk, and every path is
+// relative to the part's HTML, so the folder still works when zipped and unpacked under any name.
+// tools/build-b.mjs runs the fireplace builds.
+const fireplacePart = (part) => ({ dir: `variant-b-fireplace/${part}`, page: `${part}.html` });
+
 const VARIANTS = {
-  'variant-a': {
-    dir: 'variant-a-game',
-    pages: ['index.html'],
-  },
-  // 'variant-b': { dir: 'variant-b-fireplace', pages: ['top.html', 'left.html', 'right.html', 'preview.html'] },
+  'variant-a': { dir: 'variant-a-game', page: 'index.html' },
+  'variant-b-top': fireplacePart('top'),
+  'variant-b-left': fireplacePart('left'),
+  'variant-b-right': fireplacePart('right'),
+  // Built last into the parent folder, so it must not empty it.
+  'variant-b-preview': { dir: 'variant-b-fireplace', page: 'preview.html', keepOutDir: true },
 };
 
 const shared = {
@@ -45,9 +50,9 @@ export default defineConfig(({ command, mode }) => {
     build: {
       ...shared.build,
       outDir: resolve(import.meta.dirname, 'dist', variant.dir),
-      emptyOutDir: true,
+      emptyOutDir: !variant.keepOutDir,
       rolldownOptions: {
-        input: Object.fromEntries(variant.pages.map((p) => [p.replace(/\.html$/, ''), resolve(root, p)])),
+        input: { [basename(variant.page, '.html')]: resolve(root, variant.page) },
       },
     },
   };

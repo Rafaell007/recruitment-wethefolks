@@ -4,7 +4,9 @@
 //   node tools/size-report.mjs                  (all built variants in dist/)
 //   node tools/size-report.mjs variant-a-game   (one variant)
 //
-// Writes reports/size-<variant>.md.
+// Writes reports/size-<variant>.md. A variant made of several creatives (one folder each with its
+// own HTML, like the fireplace parts) also gets one line per creative; preview.html is our own test
+// page, not part of the ad, so it is listed but not counted against the budget.
 import { readdir, readFile, writeFile, mkdir } from 'node:fs/promises';
 import { gzipSync } from 'node:zlib';
 import { join, relative, resolve } from 'node:path';
@@ -13,6 +15,8 @@ const ROOT = resolve(import.meta.dirname, '..');
 const DIST = join(ROOT, 'dist');
 // The task says "under 3 MB"; we count 3,000,000 bytes (the stricter reading of "MB").
 const BUDGET = 3_000_000;
+
+const NOT_SHIPPED = new Set(['preview']);
 
 const kb = (bytes) => `${(bytes / 1024).toFixed(1)} KB`;
 
@@ -27,8 +31,21 @@ async function report(variant) {
     const buf = await readFile(file);
     rows.push({ rel: relative(dir, file).split('\\').join('/'), raw: buf.length, gzip: gzipSync(buf, { level: 9 }).length });
   }
-  const raw = rows.reduce((s, r) => s + r.raw, 0);
-  const gzip = rows.reduce((s, r) => s + r.gzip, 0);
+  const sum = (list, key) => list.reduce((s, r) => s + r[key], 0);
+  const shipped = rows.filter((r) => !NOT_SHIPPED.has(r.rel.replace(/\.html$/, '')));
+  const notShipped = rows.length - shipped.length;
+  const raw = sum(shipped, 'raw');
+  const gzip = sum(shipped, 'gzip');
+
+  const folderOf = (rel) => rel.split('/')[0];
+  const creatives = [...new Set(rows.filter((r) => /^[^/]+\/[^/]+\.html$/.test(r.rel)).map((r) => folderOf(r.rel)))]
+    .map((name) => [name, rows.filter((r) => r.rel.startsWith(`${name}/`))]);
+  const perCreative = creatives.length < 2 ? [] : [
+    '| creative (folder) | files | raw | gzip |',
+    '|---|---:|---:|---:|',
+    ...creatives.map(([name, list]) => `| ${name} | ${list.length} | ${kb(sum(list, 'raw'))} | ${kb(sum(list, 'gzip'))} |`),
+    '',
+  ];
   const ok = raw < BUDGET;
 
   const md = [
@@ -38,17 +55,18 @@ async function report(variant) {
     `Budget: ${(BUDGET / 1e6).toFixed(1)} MB (${BUDGET.toLocaleString('en')} bytes) for all shipped files, raw.`,
     'Gzip is shown for reference: it is roughly what travels over the wire; images and MP3 are already compressed, so they barely shrink.',
     '',
+    ...perCreative,
     '| file | raw | gzip |',
     '|---|---:|---:|',
     ...rows.map((r) => `| ${r.rel} | ${kb(r.raw)} | ${kb(r.gzip)} |`),
-    `| **total (${rows.length} files)** | **${kb(raw)}** | **${kb(gzip)}** |`,
+    `| **total shipped (${shipped.length} files${notShipped ? `, without ${notShipped} preview file(s)` : ''})** | **${kb(raw)}** | **${kb(gzip)}** |`,
     '',
     `**${ok ? 'OK' : 'OVER BUDGET'}**: ${((raw / BUDGET) * 100).toFixed(1)}% of the budget used.`,
     '',
   ].join('\n');
   await mkdir(join(ROOT, 'reports'), { recursive: true });
   await writeFile(join(ROOT, 'reports', `size-${variant}.md`), md);
-  console.log(`${variant}: ${rows.length} files, ${kb(raw)} raw, ${kb(gzip)} gzip – ${ok ? 'OK' : 'OVER BUDGET'} (${((raw / BUDGET) * 100).toFixed(1)}% of ${BUDGET.toLocaleString('en')} B)`);
+  console.log(`${variant}: ${shipped.length} files shipped, ${kb(raw)} raw, ${kb(gzip)} gzip – ${ok ? 'OK' : 'OVER BUDGET'} (${((raw / BUDGET) * 100).toFixed(1)}% of ${BUDGET.toLocaleString('en')} B)`);
   return ok;
 }
 

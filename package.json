@@ -10,8 +10,9 @@
   "scripts": {
     "dev": "vite",
     "dev:host": "vite --host",
-    "build": "npm run build:a",
+    "build": "npm run build:a && npm run build:b",
     "build:a": "vite build --mode variant-a && node tools/size-report.mjs variant-a-game",
+    "build:b": "node tools/build-b.mjs && node tools/size-report.mjs variant-b-fireplace",
     "preview": "vite preview",
     "measure:a": "node tools/measure.mjs variant-a-game",
     "compress:a": "node tools/compress.mjs variant-a-game",

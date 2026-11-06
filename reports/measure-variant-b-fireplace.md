@@ -31,4 +31,4 @@ Least-squares fit over panel rows without text, against the pre-cut background t
 
 ## Left pre-cut background vs bg-big
 
-Best 1:1 match of left/bg.jpg inside bg-big.jpg: offset 4, 12 asset px (mean difference 5.47). bg-big is 1680 = 320 + 4 + 1032 + 4 + 320 CSS px wide, so the left part starts at x = 0 of bg-big. The pre-cut file is shifted by 2, 6 CSS px; that shift is not reproduced: bg-big is exactly 975 px high, so only an offset of 0, 0 lets all three parts tile it.
+Best 1:1 match of left/bg.jpg inside bg-big.jpg: offset 4, 12 asset px (mean difference 5.47). bg-big is 1680 = 320 + 4 + 1032 + 4 + 320 CSS px wide: the background was laid under the design tool's artboards, 4 px apart. Those grey frames are not part of the ad (the parts sit next to each other), so the parts use bg-big x 4–1676, with no strip left out at the seams. The pre-cut file's own shift is not reproduced: bg-big is exactly 975 px high, so only y = 0 lets all three parts tile it.

@@ -15,10 +15,14 @@
     .fireplace {
       display: grid;
       grid-template-columns: 320px 1032px 320px;
-      grid-template-rows: 250px 721px;
-      gap: 4px;
-      width: 1680px;
+      grid-template-rows: 250px 725px;
+      width: 1672px;
+      transform-origin: 0 0;
+    }
+
+    .stage {
       margin: 0 auto;
+      overflow: hidden;
     }
 
     .fireplace iframe {
@@ -49,13 +53,29 @@
 </head>
 
 <body>
+  <div class="stage">
   <main class="fireplace">
     <iframe class="left" src="./left/left.html" width="320" height="975" scrolling="no" title="Fireplace left"></iframe>
     <iframe class="top" src="./top/top.html" width="1032" height="250" scrolling="no" title="Fireplace top"></iframe>
     <iframe class="right" src="./right/right.html" width="320" height="975" scrolling="no" title="Fireplace right"></iframe>
     <div class="site"></div>
   </main>
+  </div>
   <script>
+    // Narrower windows see the whole fireplace scaled down, like browser zoom; the parts inside
+    // still render at their own fixed size. ?actual shows it 1:1.
+    const stage = document.querySelector('.stage');
+    const fireplace = document.querySelector('.fireplace');
+    const actual = new URLSearchParams(location.search).has('actual');
+    function fit() {
+      const s = actual ? 1 : Math.min(1, document.documentElement.clientWidth / 1672);
+      fireplace.style.transform = `scale(${s})`;
+      stage.style.width = `${1672 * s}px`;
+      stage.style.height = `${975 * s}px`;
+    }
+    addEventListener('resize', fit);
+    fit();
+
     // Start coordinator: once all three parts are ready, give them one shared start time.
     const frames = [...document.querySelectorAll('iframe')].map((f) => f.contentWindow);
     const ready = new Set();

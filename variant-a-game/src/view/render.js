@@ -1,16 +1,14 @@
-// Canvas for the playfield (gut, obstacles, player). Lives in #game, between the texture and border.png.
 import { STAGE, PLAYER, GUT, PHYSICS, BLEED_GUT_BAND } from '../core/config.js';
 import { LEVEL, PLAYER_HIT } from '../core/level.js';
 import hitboxes from '../data/hitboxes.json';
 import { debugFlags } from '../dev/debug.js';
 
-const MAX_DPR = 2; // 3x phones: ~2.25x more pixels to fill each frame for almost no visible gain
+const MAX_DPR = 2; // 3x adds ~2.25x the pixels per frame for almost no visible gain
 
 const lerp = (a, b, t) => a + (b - a) * t;
 
-// Where the gut may show: the stage below the navy headline band, and in the side bleed only
-// the navy gut band (out there no clouds of border.png hide the gut's top and bottom).
-// The bleed rects overlap the stage by 1 px, so their joint can't leave a hairline.
+// The gut shows below the headline band, and in the side bleed only within the navy band
+// (no clouds out there to cover its top and bottom). 1 px overlap so the joints leave no hairline.
 function clipPlayfield(ctx, view) {
   const right = view.left + view.width;
   const L = BLEED_GUT_BAND.left;
@@ -22,18 +20,17 @@ function clipPlayfield(ctx, view) {
   ctx.clip();
 }
 
-// Draws only the visible slice of the 5056 px wide image. The source rect is clamped to the
-// image: older Safari draws nothing at all when it reaches outside.
+// Only the visible slice of the 5056 px image. The source rect is clamped because older
+// Safari draws nothing when it reaches outside the image.
 function drawGut(ctx, view, img, scroll) {
-  const k = img.naturalWidth / GUT.width; // 2: asset px per stage px
-  const x0 = Math.max(view.left, -scroll); // visible part of the image, in stage px
+  const k = img.naturalWidth / GUT.width;
+  const x0 = Math.max(view.left, -scroll);
   const x1 = Math.min(view.left + view.width, GUT.width - scroll);
   if (x1 <= x0) return;
   ctx.drawImage(img, (x0 + scroll) * k, 0, (x1 - x0) * k, img.naturalHeight,
     x0, 0, x1 - x0, STAGE.h);
 }
 
-// Obstacles whose image overlaps the visible part of the screen (stage px, interpolated scroll).
 function drawObstacles(ctx, view, images, scroll) {
   const right = view.left + view.width;
   for (const o of LEVEL) {
@@ -43,8 +40,7 @@ function drawObstacles(ctx, view, images, scroll) {
   }
 }
 
-// Start screen props (intro.js): drawn around their centre, so the pop shrinks them in place.
-// They live in gut-world coordinates like the obstacles, so they ride along once the gut moves.
+// Scaled around their centre, so the pop shrinks them in place.
 function drawProps(ctx, props, images, scroll) {
   for (const o of props) {
     if (o.alpha <= 0 || o.scale <= 0) continue;
@@ -59,8 +55,7 @@ function drawProps(ctx, props, images, scroll) {
   }
 }
 
-// Get ready: the player bobs gently (±1.5 px, 2 Hz), so the ignored taps don't look like a freeze.
-// Drawn only, the hitbox stays put; the first obstacles pass ~24 px below, far more than 1.5 px.
+// Gentle bob during get ready, so the ignored taps don't look like a freeze. Drawing only.
 const BOB = { amp: 1.5, hz: 2 };
 const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
 function bobOffset(state) {
@@ -68,8 +63,7 @@ function bobOffset(state) {
   return Math.sin(state.runTime * BOB.hz * 2 * Math.PI) * BOB.amp;
 }
 
-// ?debug=1: the masks the game really tests (tools/hitboxes.mjs), not the image rectangles.
-// Masks are in asset px, 2 per stage px.
+// ?debug=1: the masks the game really tests, not the image rectangles.
 function drawMask(ctx, mask, mx, my) {
   for (let y = 0; y < mask.rows.length; y++) {
     const row = mask.rows[y];
@@ -101,8 +95,8 @@ export function createCanvas(gameEl) {
   gameEl.appendChild(canvas);
   const ctx = canvas.getContext('2d');
 
-  // ?debug=1 draws on its own canvas on top of the whole stage: border.png lies above the game
-  // canvas and would hide the cloud masks, which are exactly the shape of its clouds.
+  // On its own canvas above the whole stage: border.png covers the game canvas and would hide
+  // the cloud masks.
   let dbg = null;
   if (debugFlags.debug) {
     const c = document.createElement('canvas');
@@ -113,13 +107,11 @@ export function createCanvas(gameEl) {
   const sized = dbg ? [canvas, dbg.canvas] : [canvas];
   let view = { left: 0, width: STAGE.w, ratio: 1 };
 
-  // fit = { scale, x, y } from stage.js, vw = visible screen width in CSS px.
   function resize(fit, vw) {
-    // Visible part of the screen in stage px. With side bleed it is wider than the stage,
-    // so the gut continues into the bleed instead of ending in a hard vertical cut.
+    // Visible part of the screen in stage px: wider than the stage with side bleed,
+    // so the gut runs on into the bleed.
     const left = Math.min(0, -fit.x / fit.scale);
     const width = Math.max(STAGE.w, vw / fit.scale);
-    // Canvas pixels per stage px: stage scale × screen density, so it is sharp on every phone.
     const ratio = fit.scale * Math.min(window.devicePixelRatio || 1, MAX_DPR);
 
     for (const c of sized) {
@@ -132,11 +124,9 @@ export function createCanvas(gameEl) {
     view = { left, width, ratio };
   }
 
-  // state comes from game.js, alpha from the loop (0..1 between the last two physics steps).
   function draw(state, images, alpha, props = [], intro = { dy: 0, scale: 1, alpha: 1 }) {
     const v = view;
-    // 1 unit = 1 stage px; the canvas starts at v.left, so shift by it.
-    ctx.setTransform(v.ratio, 0, 0, v.ratio, -v.left * v.ratio, 0);
+    ctx.setTransform(v.ratio, 0, 0, v.ratio, -v.left * v.ratio, 0); // 1 unit = 1 stage px
     ctx.clearRect(v.left, 0, v.width, STAGE.h);
 
     ctx.save();
@@ -148,9 +138,7 @@ export function createCanvas(gameEl) {
 
     const p = state.player;
     const y = lerp(p.prevY, p.y, alpha);
-    // Visual tilt only (the hitbox is a circle): nose up when rising, down when falling.
     const tilt = (p.vy / PHYSICS.maxFall) * PLAYER.maxTilt;
-    // intro: the start screen entrance (intro.js), drawing only like the tilt and the bob.
     ctx.save();
     ctx.globalAlpha = intro.alpha;
     ctx.translate(PLAYER.x + PLAYER.w / 2, y + intro.dy + bobOffset(state) + PLAYER.h / 2);

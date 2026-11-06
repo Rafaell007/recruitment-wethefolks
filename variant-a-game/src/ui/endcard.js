@@ -1,12 +1,10 @@
-// Endcard entrance (GSAP). The layers are full-frame (360x640), so each one has to scale
-// around the centre of its visible part (bbox from tools/measure.mjs), not the stage centre.
-// Every tween lives in one timeline: reset() kills it, so a replay starts clean.
 import { gsap } from 'gsap';
 
 const reducedMotion = () =>
   !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 
-// Visible bbox [x, y, w, h] in design px → transform-origin at its centre.
+// The layers are full-frame (360x640), so each one scales around the centre of its visible
+// bbox [x, y, w, h] (measured), not around the stage centre.
 const centre = ([x, y, w, h]) => `${x + w / 2}px ${y + h / 2}px`;
 const BUBBLE = { fail: [34.5, 74, 290.5, 322.5], win: [34.5, 84, 290.5, 322.5] };
 const FAIL_BAC = [
@@ -16,14 +14,13 @@ const FAIL_BAC = [
   [69, 127, 51, 42],
   [207, 141.5, 29, 27.5],
 ];
-const KONFETTI_MOUTH = '112px 178px'; // opening of the party popper (design/03-win-endcard.png)
-const HAPPY_FEET = '180px 406px'; // bottom centre of happy.png's bbox: the hops land on it
+const KONFETTI_MOUTH = '112px 178px';
+const HAPPY_FEET = '180px 406px';
 
 export function createEndcard(cards) {
   let tl = null;
 
-  // Origins once, in CSS: GSAP only animates the transform itself. (Not as transformOrigin in
-  // gsap.from(): there the origin is tweened too, from this value to the layer's centre.)
+  // Set once here: a transformOrigin inside gsap.from() would be tweened as well.
   for (const [result, card] of Object.entries(cards)) {
     card.querySelector('.bubble').style.transformOrigin = centre(BUBBLE[result]);
   }
@@ -38,21 +35,18 @@ export function createEndcard(cards) {
     const q = (sel) => card.querySelectorAll(sel);
     card.hidden = false;
     tl = gsap.timeline();
-    tl.from(card, { opacity: 0, duration: 0.3, ease: 'power1.out' }); // fade over the frozen game
-    if (reducedMotion()) return; // only the fade: decorative motion off
+    tl.from(card, { opacity: 0, duration: 0.3, ease: 'power1.out' });
+    if (reducedMotion()) return;
 
     tl.from(q('.bubble'), { scale: 0.6, opacity: 0, duration: 0.5, ease: 'back.out(1.6)' }, 0.1);
     if (result === 'fail') {
-      // Sad poo drops in and bounces. 120 px: its top (y=183) starts at 63, still below the logo bar.
       tl.from(q('.sad'), { y: -120, opacity: 0, duration: 0.8, ease: 'bounce.out' }, 0.2)
         .from(q('.bac'), { scale: 0, duration: 0.4, ease: 'back.out(2)', stagger: 0.08 }, 0.45);
     }
     if (result === 'win') {
-      // The popper fires: confetti grows out of the cone's opening, fast start, soft stop.
       tl.from(q('.konfetti'), {
         scale: 0.3, opacity: 0, duration: 0.9, ease: 'expo.out',
       }, 0.15)
-        // Happy poo jumps up from below, then two small hops of joy (yoyo: up, down, up, down).
         .from(q('.happy'), {
           y: 60, opacity: 0, duration: 0.6, ease: 'back.out(2.5)',
         }, 0.3)
@@ -60,8 +54,7 @@ export function createEndcard(cards) {
     }
     tl.from(q('.hl'), { y: 20, opacity: 0, duration: 0.5, ease: 'power3.out' }, 0.7)
       .from(q('button'), { scale: 0.8, opacity: 0, duration: 0.4, ease: 'back.out(2)', stagger: 0.1 }, 0.95)
-      // Three gentle pulses of the main CTA, then it rests at its design size.
-      // repeat 5 = odd, so the yoyo ends back at scale 1 (no stop half-way up).
+      // Odd repeat count, so the yoyo ends back at scale 1.
       .to(q('.cta'), { scale: 1.04, duration: 0.6, ease: 'sine.inOut', yoyo: true, repeat: 5 }, '+=0.2');
   }
 

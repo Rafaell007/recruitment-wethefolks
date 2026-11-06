@@ -1,4 +1,4 @@
-// The fixed level (D13): every obstacle once, readable, and passed before the gut ends.
+// Every obstacle once, readable, and passed before the gut ends.
 import { test, expect } from 'vitest';
 import { readdirSync } from 'node:fs';
 import { LEVEL, PLAYER_HIT } from '../src/core/level.js';
@@ -20,7 +20,7 @@ test('every obstacle has a hitbox mask', () => {
   for (const o of LEVEL) expect(hitboxes.obstacles[o.name], o.name).toBeDefined();
 });
 
-// 236–566.5 = the band that is cloud-free over the whole width (notes/drafts/cloud-band.mjs),
+// 236–566.5 = the band that is cloud-free over the whole width,
 // so a text obstacle is never half hidden under the clouds.
 test('every obstacle sits fully inside the always cloud-free band (236–566.5)', () => {
   for (const o of LEVEL) {

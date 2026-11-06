@@ -1,8 +1,4 @@
-/* Mute toggle. The assets have no speaker icon, but the task asks for "a small mute toggle", so
-   this is a small inline SVG (the only graphic not from the assets, noted in the README). It sits
-   in the white logo bar, right of the logo (logo.png covers x 124–236), inside the safe area of
-   view/stage.js (right edge 328 <= 349). 44x44 = Apple's minimum touch target; the visible icon
-   is only 20 px. */
+/* 44x44 touch target, 20 px icon. */
 .mute {
   position: absolute;
   left: 284px;
@@ -12,7 +8,7 @@
   padding: 12px;
   border: 0;
   background: none;
-  color: var(--navy); /* navy of the headline band */
+  color: var(--navy);
   cursor: pointer;
 }
 

@@ -1,49 +1,42 @@
-// Sound for the ad: Web Audio, started only by the first tap (browser autoplay rules).
-// No DOM here: the mute button (UI) and visibility handling only call this API.
-
-// urls: name → URL (Vite's hashed asset URLs, passed in from main.js).
-// Ctx is injectable so the tests can pass a fake AudioContext.
-// webkitAudioContext: iOS < 14.5 (D10, support floor iOS 12).
+// Web Audio, created on the first tap (autoplay rules). Ctx is injectable for the tests.
 export function createAudio({ urls = {}, Ctx = window.AudioContext || window.webkitAudioContext } = {}) {
-  let ctx = null;    // created on the first tap (autoplay rules)
-  let master = null; // GainNode: mute = gain 0
-  const raw = {};     // name → ArrayBuffer (fetched before the first tap)
-  const buffers = {}; // name → AudioBuffer (decoded after unlock)
-  let musicWanted = false; // the game asked for music; it may still be decoding
+  let ctx = null;
+  let master = null;
+  const raw = {};     // name → ArrayBuffer, fetched before the first tap
+  const buffers = {}; // name → AudioBuffer, decoded after it
+  let musicWanted = false;
   let muted = false;
 
-  // Start downloading right away; nothing is decoded or played before the tap.
   for (const [name, url] of Object.entries(urls)) {
     fetch(url)
       .then((r) => r.arrayBuffer())
       .then((data) => {
         raw[name] = data;
-        if (ctx) decode(name); // arrived after the tap: decode now
+        if (ctx) decode(name);
       })
       .catch(() => {}); // a missing sound must never break the game
   }
 
-  // Called on every tap; creates the context only once, later taps only wake it up.
   function unlock() {
-    if (!Ctx) return; // no Web Audio at all: the game runs silent
+    if (!Ctx) return;
     if (!ctx) {
       ctx = new Ctx();
       master = ctx.createGain();
-      master.gain.value = muted ? 0 : 1; // mute clicked before the first tap
+      master.gain.value = muted ? 0 : 1;
       master.connect(ctx.destination);
-      // Old WebKit unlocks only after something is played inside the gesture.
+      // Old WebKit unlocks only once something has played inside the gesture.
       const s = ctx.createBufferSource();
       s.buffer = ctx.createBuffer(1, 1, 22050);
       s.connect(master);
       s.start(0);
-      decodeAll(); // ArrayBuffers fetched earlier → AudioBuffers
+      decodeAll();
     }
     resume();
   }
 
   function decode(name) {
     const data = raw[name];
-    delete raw[name]; // decodeAudioData detaches the ArrayBuffer: decode each one once
+    delete raw[name]; // decodeAudioData detaches the buffer
     // Callback form: Safari < 14.5 doesn't return a Promise.
     ctx.decodeAudioData(data, (buf) => {
       buffers[name] = buf;
@@ -55,13 +48,12 @@ export function createAudio({ urls = {}, Ctx = window.AudioContext || window.web
     Object.keys(raw).forEach(decode);
   }
 
-  const playing = new Set(); // every sound playing now: stopAll() reaches all of them
+  const playing = new Set();
   let musicNode = null;
 
-  // One sound with its own GainNode, so it can fade out on its own.
   function playBuffer(name, loop = false) {
     const buf = buffers[name];
-    if (!ctx || !buf) return null; // not decoded yet: skip (a late SFX would be off-sync)
+    if (!ctx || !buf) return null; // not decoded yet: a late sound effect would be off-sync
     const src = ctx.createBufferSource();
     const gain = ctx.createGain();
     src.buffer = buf;
@@ -76,10 +68,9 @@ export function createAudio({ urls = {}, Ctx = window.AudioContext || window.web
   }
 
   function startMusic() {
-    if (!musicNode) musicNode = playBuffer('music', true); // second call = no second loop
+    if (!musicNode) musicNode = playBuffer('music', true);
   }
 
-  // Short fade instead of a hard cut (a click in the speaker).
   function fadeOut(node, seconds) {
     const t = ctx.currentTime;
     node.gain.gain.setValueAtTime(node.gain.gain.value, t);
@@ -96,13 +87,11 @@ export function createAudio({ urls = {}, Ctx = window.AudioContext || window.web
     }
   }
 
-  // win = cheer + applause together (both files are in endcard_win/).
   const SOUNDS = { crash: ['crash'], fail: ['fail'], win: ['cheer', 'applause'] };
   function play(name) {
     SOUNDS[name].forEach((n) => playBuffer(n));
   }
 
-  // Replay: nothing may keep playing into the next run.
   function stopAll() {
     musicWanted = false;
     musicNode = null;
@@ -117,17 +106,15 @@ export function createAudio({ urls = {}, Ctx = window.AudioContext || window.web
     playing.clear();
   }
 
-  // Mute = master gain 0. Works before the first tap too: unlock() applies it.
   function setMuted(on) {
     muted = on;
-    if (master) master.gain.setTargetAtTime(on ? 0 : 1, ctx.currentTime, 0.015); // ~50 ms, no click
+    if (master) master.gain.setTargetAtTime(on ? 0 : 1, ctx.currentTime, 0.015); // no click
   }
 
-  // Tab / ad hidden: the whole audio clock stops, so loops and fades resume where they were.
   function suspend() {
     if (ctx && ctx.state === 'running') ctx.suspend();
   }
-  // Also wakes up iOS's 'interrupted' state (e.g. after a phone call); unlock() calls it on every tap.
+  // Also covers iOS's 'interrupted' state, e.g. after a phone call.
   function resume() {
     if (ctx && ctx.state !== 'running' && ctx.state !== 'closed') ctx.resume();
   }

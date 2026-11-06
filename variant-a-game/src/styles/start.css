@@ -1,35 +1,24 @@
-/* Start screen: the tutorial (headline tut.png + tapping hand), and the hand again as the
-   resume prompt of a paused run. The entrance itself is animated by ui/intro.js. */
-
-/* Until the intro starts: no flash of the headline/hand before the images load. */
 #stage:not(.is-intro) #tut,
 #stage:not(.is-intro) #gesture {
   visibility: hidden;
 }
 
-/* The tutorial and the headline leave on the first tap (a short CSS fade; it starts from
-   wherever the intro was, intro.js clears its inline styles on that tap).
-   Transition only on the way out: GSAP drives the opacity during the intro, and a transition
-   on the same property would lag behind every tween frame (and, on replay, leave the old 0). */
+/* Transition only on the way out: during the intro GSAP owns the opacity. */
 .is-running #tut,
 .is-running #gesture {
   opacity: 0;
   transition: opacity 0.25s ease-out;
 }
 
-/* Paused run (main.js): the hand comes back as the resume prompt. */
 .is-running.is-paused #gesture {
   opacity: 1;
 }
 
-/* Measured in design/01-start.png by tools/measure.mjs (asset 173x192 px). */
 .gesture {
   position: absolute;
   left: 147.5px;
   top: 452px;
   width: 86.5px;
   height: 96px;
-  /* Near the fingertip: the hand "presses" with the finger (intro.js). Set once here, a
-     transformOrigin inside gsap.from() would be tweened too. */
-  transform-origin: 30% 20%;
+  transform-origin: 30% 20%; /* fingertip */
 }

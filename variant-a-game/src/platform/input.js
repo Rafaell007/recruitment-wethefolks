@@ -1,5 +1,4 @@
-// Taps on the ad, across browsers. Pointer Events exist from iOS 13; iOS 12 (our support floor)
-// only has touch events, plus mouse events for desktop.
+// iOS 12 has no Pointer Events, only touch (and mouse on desktop).
 export function onTap(el, handler) {
   if (window.PointerEvent) {
     el.addEventListener('pointerdown', handler);
@@ -12,14 +11,12 @@ export function onTap(el, handler) {
   el.addEventListener('mousedown', handler);
 }
 
-// Finger lifted. iOS doesn't count touchstart / pointerdown as a gesture that may start audio,
-// so the audio is unlocked again here.
+// iOS doesn't count touchstart / pointerdown as a gesture that may start audio.
 export function onRelease(el, handler) {
   el.addEventListener(window.PointerEvent ? 'pointerup' : 'touchend', handler);
 }
 
-// Taps on a button must not reach the ad behind it: no game start, no jump, no resume from pause.
-// All three types, because iOS 12 sends touchstart / mousedown instead of pointerdown.
+// Taps on a button must not reach the ad behind it (no start, no jump, no resume).
 export function isolate(el) {
   ['pointerdown', 'touchstart', 'mousedown'].forEach((type) => {
     el.addEventListener(type, (e) => e.stopPropagation());

@@ -78,7 +78,7 @@ for (const name of OBSTACLES) {
   obstacles[name] = { w: img.width, h: img.height, rows: rowSpans(img) };
 }
 
-// Clouds: border.png is full-screen, but the player never leaves its column (D6), so only the
+// Clouds: border.png is full-screen, but the player never leaves its column, so only the
 // columns of the player's sprite are kept. The circle (incl. its shift when tilted) stays inside.
 const border = await loadRGBA(join(assets, 'border.png'));
 const from = measured.player.x * 2;

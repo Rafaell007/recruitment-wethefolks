@@ -1,5 +1,3 @@
-/* Gut Run styles, in cascade order. Positions are in design px of the 360x640 stage; the stage
-   is scaled as a whole by view/stage.js, so nothing here depends on the screen size. */
 @import './tokens.css';
 @import './base.css';
 @import './stage.css';

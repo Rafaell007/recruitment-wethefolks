@@ -1,14 +1,13 @@
-// Fixed-timestep game loop ("Fix Your Timestep!", G. Fiedler).
-// Physics runs in equal STEP slices whatever the screen's refresh rate;
-// render gets alpha (0..1) to draw between the last two physics states.
+// Fixed timestep ("Fix Your Timestep!", G. Fiedler): the same physics at 60, 90 or 120 Hz.
+// render() gets alpha 0..1 to interpolate between the last two states.
 import { STEP } from './config.js';
 
-const MAX_FRAME = 0.25; // s; after a long hitch drop the time instead of running hundreds of steps
+const MAX_FRAME = 0.25; // s, after a long hitch drop the time instead of catching up
 
 export function createLoop(update, render) {
-  let rafId = 0; // 0 = not running
-  let last = 0;  // timestamp of the previous frame (ms)
-  let acc = 0;   // time not yet simulated (s)
+  let rafId = 0;
+  let last = 0;
+  let acc = 0;
 
   function frame(now) {
     rafId = requestAnimationFrame(frame);
@@ -24,10 +23,10 @@ export function createLoop(update, render) {
 
   return {
     start() {
-      if (rafId) return; // idempotent: a second start() can't double the speed (replay bug)
+      if (rafId) return; // a second start() must not double the speed
       acc = 0;
       rafId = requestAnimationFrame((now) => {
-        last = now; // first frame: dt = 0, so no time jump after a pause
+        last = now; // no time jump after a pause
         frame(now);
       });
     },

@@ -133,3 +133,23 @@ export function locate(image, tpl, { step = 3, samples = 500, keep = 8, refine =
   }
   return Number.isFinite(winner.score) ? winner : null;
 }
+
+/**
+ * Some fireplace layers were exported without transparency: what should be transparent is pure
+ * black (0,0,0), with no blended edge pixels (checked: every other colour in them is artwork).
+ * Returns a copy where pure black is fully transparent; all other pixels are left as they are.
+ */
+export function keyOutBlack(img) {
+  const data = Buffer.from(img.data);
+  for (let i = 0; i < data.length; i += 4) {
+    if (data[i] === 0 && data[i + 1] === 0 && data[i + 2] === 0) data[i + 3] = 0;
+  }
+  return { data, width: img.width, height: img.height };
+}
+
+/** Grows a box outwards to even pixel edges, so it maps to whole CSS px at 2x. */
+export function evenBox(b) {
+  const x0 = b.x - (b.x % 2), y0 = b.y - (b.y % 2);
+  const x1 = b.x + b.w + ((b.x + b.w) % 2), y1 = b.y + b.h + ((b.y + b.h) % 2);
+  return { x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
+}

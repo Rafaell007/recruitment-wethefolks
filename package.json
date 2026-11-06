@@ -18,7 +18,9 @@
     "compress:a": "node tools/compress.mjs variant-a-game",
     "size": "node tools/size-report.mjs",
     "hitboxes:a": "node tools/hitboxes.mjs variant-a-game",
-    "test": "vitest run variant-a-game/test"
+    "measure:b": "node tools/measure-b.mjs",
+    "prepare:b": "node tools/prepare-b.mjs",
+    "test": "vitest run variant-a-game/test variant-b-fireplace/test"
   },
   "dependencies": {
     "gsap": "3.15.0"

@@ -28,9 +28,25 @@ index.html            dev landing page (not shipped)
 vite.config.js        one build per variant (`vite build --mode variant-a`)
 variant-a-game/       Variant A: design/ + assets/ (originals, untouched), assets-opt/ (shipped), src/, index.html
 variant-b-fireplace/  Variant B: design/ + assets/ (originals, untouched)
-tools/                measure.mjs, compress.mjs, size-report.mjs (see DECISIONS.md)
+tools/                measure.mjs, compress.mjs, hitboxes.mjs, size-report.mjs (see DECISIONS.md)
 reports/              generated: measurements, compression table, size report
 ```
+
+Variant A source (`variant-a-game/src/`):
+
+```
+main.js      wires everything together: load, intro, tap, end, replay, pause
+assets.js    images and sounds loaded from JS
+core/        game logic without the DOM: config, level, game state + physics, collision, fixed-step loop
+view/        stage scaling to the viewport, canvas drawing
+ui/          start screen intro, endcards, mute button (DOM + GSAP)
+platform/    browser APIs: Web Audio, visibility/pause, tap input with old iOS fallback
+dev/         ?overlay= design overlay (dev only, not in the build)
+data/        generated JSON: measured positions, hitbox masks
+styles/      CSS split by screen, colour tokens
+```
+
+Tests: `npm test` (Vitest, game logic, collision, level and audio).
 
 Tools (only needed to regenerate what is already committed):
 
@@ -53,7 +69,12 @@ Variant A assets went from 1969 KB to 975 KB. PNGs were converted to palette PNG
 
 ## What I would do next with more time
 
-_TODO_
+- **Test on real iPhones**, including an old one on iOS 12–13, to confirm the fallback paths instead of trusting forced tests in Chrome.
+- **Move the Playwright checks into the repo.** The pixel checks I ran during development (seams at the stage edge, endcard end state vs the static design, replay leaving no sounds or timers behind) live in local scripts. They should run with `npm test`.
+- **Ask the designer** about the "tab to run" typo, the missing "Bauchgrummeln" asset and which scale is right where the mockups differ from 50%.
+- **A rotate-your-phone hint** for landscape, once there is an asset for it.
+- **Lighter audio.** Music and applause are about 60% of the weight. A shorter music loop or a lower bitrate for the applause would cut the ad to around half its size, after a listening check.
+- **Load audio after the start screen.** The sounds (about 810 KB) are fetched at the same time as the images the start screen waits for. Fetching them once the start screen is visible would show it sooner on slow networks.
 
 ## Known issues and shortcuts
 

@@ -6,19 +6,25 @@ Gzip is shown for reference: it is roughly what travels over the wire; images an
 
 | creative (folder) | files | raw | gzip |
 |---|---:|---:|---:|
-| left | 2 | 0.5 KB | 0.4 KB |
+| left | 8 | 400.9 KB | 397.8 KB |
 | right | 2 | 0.5 KB | 0.4 KB |
 | top | 2 | 0.5 KB | 0.4 KB |
 
 | file | raw | gzip |
 |---|---:|---:|
-| left/assets/left-B9HbCO3q.js | 0.2 KB | 0.2 KB |
-| left/left.html | 0.3 KB | 0.2 KB |
+| left/assets/bg-BOF7QinP.jpg | 393.8 KB | 391.7 KB |
+| left/assets/box-B2Yc8wcx.png | 0.3 KB | 0.2 KB |
+| left/assets/cta-DgfsAA7C.png | 1.3 KB | 1.3 KB |
+| left/assets/hl-Nqreo0Qu.png | 1.6 KB | 1.7 KB |
+| left/assets/left-BCqGvH23.css | 0.1 KB | 0.1 KB |
+| left/assets/left-BsVD9uZy.js | 1.0 KB | 0.5 KB |
+| left/assets/logo-BGW4ipID.png | 2.1 KB | 2.0 KB |
+| left/left.html | 0.8 KB | 0.4 KB |
 | preview.html | 0.5 KB | 0.2 KB |
 | right/assets/right-BzNexWO5.js | 0.2 KB | 0.2 KB |
 | right/right.html | 0.3 KB | 0.2 KB |
 | top/assets/top-DO6b55yM.js | 0.2 KB | 0.2 KB |
 | top/top.html | 0.3 KB | 0.2 KB |
-| **total shipped (6 files, without 1 preview file(s))** | **1.6 KB** | **1.3 KB** |
+| **total shipped (12 files, without 1 preview file(s))** | **402.0 KB** | **398.7 KB** |
 
-**OK**: 0.1% of the budget used.
+**OK**: 13.7% of the budget used.

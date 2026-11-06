@@ -1,0 +1,19 @@
+html,
+body {
+  margin: 0;
+}
+
+#ad {
+  position: relative;
+  width: 320px;
+  height: 975px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+#ad img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+}

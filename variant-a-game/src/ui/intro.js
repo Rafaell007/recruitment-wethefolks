@@ -37,7 +37,7 @@ export function createIntro({ gesture, tut, stage, onFrame }) {
   }
 
   // A tap gesture on a loop: press down a little, spring back, short rest. The origin sits near
-  // the fingertip (styles.css), so the hand "presses" with the finger.
+  // the fingertip (styles/start.css), so the hand "presses" with the finger.
   function idle() {
     if (reducedMotion()) return; // decorative: the static hand still explains the tap
     hand = gsap.timeline({ repeat: -1, repeatDelay: 0.6 })

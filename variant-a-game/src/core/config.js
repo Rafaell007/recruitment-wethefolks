@@ -22,7 +22,7 @@ export const GUT = {
   clipTop: M.playfieldClipTop + 1,         // 169.5
 };
 
-// Navy gut band of the side bleed (outermost columns of border.png, see styles.css .bleed).
+// Navy gut band of the side bleed (outermost columns of border.png, see styles/stage.css .bleed).
 export const BLEED_GUT_BAND = {
   left: { top: 223, bottom: 574 },
   right: { top: 226, bottom: 571.5 },

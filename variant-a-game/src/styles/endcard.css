@@ -1,0 +1,68 @@
+/* Fail and win endcards. The entrance is animated by ui/endcard.js; this is the final state. */
+
+/* Above every game layer (incl. .bleed-edge), below the mute button. */
+.endcard {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 360px;
+  height: 640px;
+}
+
+/* The navy of bg.jpg as a plain box instead of the image: a box has no soft outer pixel row
+   (see .bleed-edge), so nothing of the frozen game shows through at the stage edge. Starts at
+   the bottom of the logo bar (y=58), so the logo stays visible as in the designs. It runs 120 px
+   past the stage on the sides and 200 px below: more than any phone's bleed (worst case 23 px at
+   the sides, 59 px below). Not wider on purpose: the endcard fades in, and a huge layer that
+   fades costs GPU memory on phones. */
+.endcard::before {
+  content: '';
+  position: absolute;
+  left: -120px;
+  right: -120px;
+  top: 58px;
+  bottom: -200px;
+  background: var(--navy);
+}
+
+/* Very wide windows (desktop preview) see past that box: the bleed behind turns navy too. */
+.is-end .bleed {
+  background: linear-gradient(to bottom, var(--white) 0 698px, var(--navy) 698px);
+}
+
+/* Cut-out buttons: size = asset at 50%, top-left corner from the design (the design draws them
+   at 0.97; the 50% rule wins, the top-left corner keeps them in line with the headline). */
+.endcard button {
+  position: absolute;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.endcard button img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+#fail .cta {
+  left: 39.5px;
+  top: 483px;
+  width: 186px;
+  height: 38.5px;
+}
+
+#fail .replay {
+  left: 39.5px;
+  top: 539px;
+  width: 185.5px;
+  height: 40.5px;
+}
+
+#win .cta {
+  left: 30.5px;
+  top: 560.5px;
+  width: 214px;
+  height: 45.5px;
+}

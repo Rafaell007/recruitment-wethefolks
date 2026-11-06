@@ -1,0 +1,108 @@
+/* The 360x640 design stage and what surrounds it on screens of other proportions. */
+#stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 360px;
+  height: 640px;
+  transform-origin: 0 0;
+}
+
+.layer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 360px;
+  height: 640px;
+}
+
+/* The bean texture belongs to the playfield: in design/01-start.png it is not visible in the
+   headline band, only below the top edge of the frame (y=168.5, top of border.png's bbox).
+   The asset itself starts at y=104.5, so it has to be clipped. */
+.texture {
+  /* Safari before 13.1 (iOS 12–13.3) only knows the prefixed property. */
+  -webkit-clip-path: inset(168.5px 0 0 0);
+  clip-path: inset(168.5px 0 0 0);
+}
+
+/* Bleed: fills whatever the stage leaves uncovered when the screen's proportions differ
+   from 360x640. It continues the design's edge colours outwards and scales with the stage,
+   so the bands always line up with the art. The frame's clouds are not symmetric, so the
+   left half uses the colours of border.png's left edge and the right half those of its
+   right edge (measured on the outermost pixel column). The stage covers the middle, where
+   the two halves meet. The box starts 640px above the stage: every stop is design y + 640px. */
+.bleed,
+.bleed-edge {
+  position: absolute;
+  left: -360px;
+  top: -640px;
+  width: 1080px;
+  height: 1920px;
+  /* The first background is painted on top. The right-edge bands cover only the right half;
+     the left-edge bands run under the full width, so the joint between the two halves never
+     shows a gap (below and above the stage both halves have the same colour anyway). */
+  background:
+    /* right half — right edge, on top */
+    linear-gradient(
+      to bottom,
+      var(--white) 0 698px,          /* logo bar, 0–58 */
+      var(--navy) 698px 808.5px,     /* headline band, 58–168.5 */
+      var(--frame) 808.5px 830.5px,  /* top frame strip, 168.5–190.5 */
+      var(--cloud) 830.5px 866px,    /* top clouds, 190.5–226 */
+      var(--navy) 866px 1211.5px,    /* gut background, 226–571.5 */
+      var(--cloud) 1211.5px 1257px,  /* bottom clouds, 571.5–617 */
+      var(--frame) 1257px            /* bottom frame strip, 617–640 (and everything below) */
+    ) right / 50% 100% no-repeat,
+    /* full width — left edge, underneath */
+    linear-gradient(
+      to bottom,
+      var(--white) 0 698px,       /* logo bar, design y 0–58 (and everything above) */
+      var(--navy) 698px 808.5px,  /* headline band, 58–168.5 */
+      var(--frame) 808.5px 821px, /* top frame strip, 168.5–181 */
+      var(--cloud) 821px 863px,   /* top clouds, 181–223 */
+      var(--navy) 863px 1214px,   /* gut background, 223–574 */
+      var(--cloud) 1214px 1255px, /* bottom clouds, 574–615 */
+      var(--frame) 1255px         /* bottom frame strip, 615–640 (and everything below) */
+    );
+}
+
+/* The bands are horizontal, so the bleed can be made much wider at no cost: 10 stage widths on
+   each side, for very wide windows. The left/right split (50%) still falls on the stage centre.
+   .bleed-edge only covers the stage's own edge, so it keeps the narrower box. */
+.bleed {
+  left: -3600px;
+  width: 7560px;
+}
+
+/* Edge cover: the same bands once more, on top of the art layers, with a hole the size of the
+   stage minus 1 design px. Why: when the browser scales an image it softens the image's outer
+   pixel row (it becomes semi-transparent), so the navy bg.jpg under the white logo bar and the
+   pink frame shows through as a thin grey/dark seam (verified by screenshots with bg.jpg and
+   logo.png hidden one at a time). The cover paints over that 1 px with the exact colour the art
+   has at its edge. Exception: along the gut band at the sides (left 223–574, right 226–571.5)
+   the hole runs out past the box edge (-1 / 1081 px, not on it, so no edge is shared), because the
+   game canvas spans the whole visible width (view/render.js) and the gut must show in the side
+   bleed too (navy bg under navy bleed cannot make a seam anyway). evenodd = the inner polygon is
+   cut out of the outer one. */
+.bleed-edge {
+  /* Prefixed copy for Safari before 13.1 (iOS 12–13.3): without any clip this element would
+     paint the flat bands over the whole stage. */
+  -webkit-clip-path: polygon(
+    evenodd,
+    0 0, 1080px 0, 1080px 1920px, 0 1920px, 0 0,
+    361px 641px, 719px 641px,
+    719px 866px, 1081px 866px, 1081px 1211.5px, 719px 1211.5px,
+    719px 1279px, 361px 1279px,
+    361px 1214px, -1px 1214px, -1px 863px, 361px 863px,
+    361px 641px
+  );
+  clip-path: polygon(
+    evenodd,
+    0 0, 1080px 0, 1080px 1920px, 0 1920px, 0 0,
+    361px 641px, 719px 641px,
+    719px 866px, 1081px 866px, 1081px 1211.5px, 719px 1211.5px,
+    719px 1279px, 361px 1279px,
+    361px 1214px, -1px 1214px, -1px 863px, 361px 863px,
+    361px 641px
+  );
+}

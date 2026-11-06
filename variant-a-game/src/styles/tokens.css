@@ -1,0 +1,9 @@
+/* Edge colours of the art, measured on the assets (not on the mockups: their navy is #0a1e49,
+   one step off what bg.jpg really renders). The bleed continues the art with them, so they have
+   to match the pixels next to it exactly. */
+:root {
+  --white: #ffffff; /* logo bar (logo.png) */
+  --navy: #0b1e49; /* bg.jpg: headline band, gut background, endcards */
+  --frame: #d89c95; /* frame strips of border.png */
+  --cloud: #ffd9d3; /* clouds of border.png at the outermost column */
+}

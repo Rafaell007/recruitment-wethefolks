@@ -18,7 +18,7 @@ const shared = {
   css: {
     // The CSS minifier (Lightning CSS) believes Safari 12 needs no -webkit-clip-path and deletes
     // the prefixed line we wrote by hand; on iOS 12–13.3 the stage would then be covered by the
-    // edge cover. Vendor prefixes are therefore left exactly as written in styles.css.
+    // edge cover. Vendor prefixes are therefore left exactly as written in the stylesheets.
     lightningcss: { exclude: Features.VendorPrefixes },
   },
   // Relative URLs: the ad has to work from whatever folder or CDN path the ad server puts it in.

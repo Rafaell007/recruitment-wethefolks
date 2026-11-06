@@ -57,7 +57,16 @@ _TODO_
 
 ## Known issues and shortcuts
 
-_TODO_
+Variant A:
+
+- **"tab to run" typo.** `gesture.png` says "tab to run" instead of "tap to run" (the task text says "tap"). The concept slide mixes both spellings in one sentence ("Per Tap springt es hoch, ohne Tab fällt es herunter"), so it looks like a copy typo that went into the artwork. The task says not to redraw or replace assets, so I shipped it as is and would flag it to the designer.
+- **9 text obstacles, 10 phrases in the concept.** The concept slide lists 10 phrases, but there are only 9 text assets (no "Bauchgrummeln"). The game uses txt1–txt9, each once per run.
+- **Mute icon is the only graphic that isn't from the asset pack.** The task asks for a mute toggle, but there is no speaker asset. It is a small inline SVG in the frame colour.
+- **Layout follows the 50% rule, not the mockups.** Some layers in the mockups are drawn at a different scale than 50% of their asset: obstacles on the start screen at 0.68–0.94, CTA and replay on the endcards at about 0.97. I render everything at 50% as the rules say and take positions from the mockups. That is why headlines and buttons are slightly larger than in the designs.
+- **iPhone silent switch mutes the game.** iOS treats Web Audio as "ambient" sound, so with the ringer switch off there is no sound even though the ad isn't muted.
+- **Landscape pauses the game.** The ad is portrait only. On a phone turned sideways the game pauses and the "tap to run" hint comes back until it is rotated again. There is no "rotate your phone" screen because there is no asset for one.
+- **Flat colour next to the clouds.** On very tall or wide screens the space beside the stage is filled with the edge colours of the design. Next to the wavy cloud border that fill is flat, and the bean texture stops at the stage edge.
+- **No iPhone test.** On a real device I tested on an Android phone (Xiaomi). The build targets iOS 12, with fallbacks for missing `dvh`, missing `ResizeObserver` and old Web Audio, but those paths were only tested by forcing them in Chrome, not on an iPhone.
 
 ## How I used AI
 

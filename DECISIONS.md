@@ -5,9 +5,13 @@ Sizes are in CSS px (asset px / 2) unless noted.
 ## Both variants
 
 - **Vite, one build per variant.** Each ad ends up self-contained in `dist/<variant>/` with its own copy of GSAP, because in production every creative is delivered on its own. `base: './'` so it runs from any CDN path; no data-URI inlining, so the weight report stays honest.
+
 - **GSAP from npm, bundled and pinned (3.15.0).** No external request when the ad loads; ~28 KB gzip.
+
 - **Support floor: iOS 12+.** Ads are paid per impression, so a creative that breaks on an older phone is wasted budget. iOS 17 and older are still ~8.6% of iOS traffic (StatCounter, Aug 2026). In practice: Vite's `build.target` rewrites `?.`/`??`, fallbacks for `dvh`, `ResizeObserver`, Pointer Events and the old `webkitAudioContext`.
+
 - **Positions are measured by a script, not by eye.** `tools/measure.mjs` finds every sprite in the design PNGs by template matching and writes `src/data/measured.json`, which the code reads.
+
 - **Compression by a script, originals untouched.** `tools/compress.mjs` writes `assets-opt/`: PNGs palette-quantised and accepted only at PSNR ≥ 40 dB (results 44–68 dB), the 320 kbps sound effects re-encoded to 128 kbps, the 64 kbps music copied as is. Resolution stays 2x. Variant A assets: 1969 KB → 975 KB.
 
 ## Variant A – Gut Run

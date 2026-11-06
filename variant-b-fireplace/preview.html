@@ -5,12 +5,56 @@
   <meta charset="utf-8" />
   <title>Fireplace preview</title>
   <link rel="icon" href="data:," />
+  <style>
+    html,
+    body {
+      margin: 0;
+      background: #282728;
+    }
+
+    .fireplace {
+      display: grid;
+      grid-template-columns: 320px 1032px 320px;
+      grid-template-rows: 250px 721px;
+      gap: 4px;
+      width: 1680px;
+      margin: 0 auto;
+    }
+
+    .fireplace iframe {
+      display: block;
+      border: 0;
+    }
+
+    .left {
+      grid-column: 1;
+      grid-row: 1 / 3;
+    }
+
+    .top {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    .right {
+      grid-column: 3;
+      grid-row: 1 / 3;
+    }
+
+    .site {
+      grid-column: 2;
+      grid-row: 2;
+    }
+  </style>
 </head>
 
 <body>
-  <iframe src="./left/left.html" width="320" height="975" scrolling="no" title="Fireplace left"></iframe>
-  <iframe src="./top/top.html" width="1032" height="250" scrolling="no" title="Fireplace top"></iframe>
-  <iframe src="./right/right.html" width="320" height="975" scrolling="no" title="Fireplace right"></iframe>
+  <main class="fireplace">
+    <iframe class="left" src="./left/left.html" width="320" height="975" scrolling="no" title="Fireplace left"></iframe>
+    <iframe class="top" src="./top/top.html" width="1032" height="250" scrolling="no" title="Fireplace top"></iframe>
+    <iframe class="right" src="./right/right.html" width="320" height="975" scrolling="no" title="Fireplace right"></iframe>
+    <div class="site"></div>
+  </main>
 </body>
 
 </html>

@@ -30,7 +30,7 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run build
-      - run: cp index.html dist/index.html
+      - run: cp index.html dist/index.html && cp -r media dist/media
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

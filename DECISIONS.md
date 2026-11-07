@@ -69,7 +69,7 @@ Sizes are in CSS px (asset px / 2) unless noted.
 - **Positions come from the asset layers.** Most layers are exported full-frame (640x1950 / 2064x500), so their position is already in the file. A script crops them to their content and writes `src/data/layout.json`. The mockup is drawn at ~0.98 scale, so where it differs by a pixel the assets win (50% rule). Checked with `?overlay=1`.
 - **The CTA has no full-frame export,** so its position is measured in the mockup: the average of the left and right part, since it is the same button.
 - **Box, CTA and the skyscraper headlines came without transparency** (on black). The black was pure, with no soft edges, so it's keyed out exactly. The box opacity (0.92) was fitted against the mockup and baked into the PNG.
-- **The top headline is the asset as delivered,** even though its text differs from the mockup. Redrawing it isn't allowed.
+- **The top headline is the asset as delivered,** even though its text differs from the mockup. I gave the delivered asset priority and treated the mockup as a preview of the overall look. Which copy is right would be a question for the designer or the client.
 
 ### Animation
 - **One timeline per part, the same in all three.** Intro (about 3.5 s): the moss fades in and starts zooming, logos scale in, the top headline builds line by line, the text panel opens from below, the skyscraper headlines rise, the CTA appears last.

@@ -15,10 +15,19 @@
   height: 640px;
 }
 
-/* The design shows no beans in the headline band, but the asset starts at y=104.5. */
+/* The design shows no beans in the headline band, but the asset starts at y=104.5. At the
+   bottom the asset stops at y=561 with the last row of beans cut in half, while the design runs
+   them on to the clouds. Cut at y=547.5, a row with no beans, and fill the rest with a copy
+   moved down 348px, which also has an empty row on that line. */
 .texture {
-  -webkit-clip-path: inset(168.5px 0 0 0); /* Safari < 13.1 */
-  clip-path: inset(168.5px 0 0 0);
+  -webkit-clip-path: inset(168.5px 0 92.5px 0); /* Safari < 13.1 */
+  clip-path: inset(168.5px 0 92.5px 0);
+}
+
+.texture-fill {
+  transform: translateY(348px);
+  -webkit-clip-path: inset(199.5px 0 348px 0);
+  clip-path: inset(199.5px 0 348px 0);
 }
 
 /* Bleed: continues the outermost pixel column of border.png past the stage, left and right

@@ -112,7 +112,7 @@ Budget: 3 MB for all shipped files.
 
 | | raw | gzip |
 |---|---:|---:|
-| Variant A (`dist/variant-a-game/`) | 1103.0 KB (37.6%) | 985.4 KB |
+| Variant A (`dist/variant-a-game/`) | 1103.2 KB (37.7%) | 985.5 KB |
 | Variant B (`dist/variant-b-fireplace/`, three parts) | 1472.8 KB (50.3%) | 1334.1 KB |
 
 Variant A assets went from 1969 KB to 975 KB. PNGs were converted to palette PNG (quality 80, checked at ≥ 44 dB PSNR against the originals). Sound effects went from 320 to 128 kbps MP3. The music loop was already 64 kbps and is shipped unchanged. Most of the weight is audio: music 452 KB plus applause 236 KB. JS with GSAP is 122 KB (41 KB gzip). Full tables are in `reports/`.

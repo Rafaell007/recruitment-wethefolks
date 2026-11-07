@@ -55,6 +55,35 @@ Sizes are in CSS px (asset px / 2) unless noted.
 
 ## Variant B – Fireplace
 
-- **The product is part of the background.** The packshots are painted into `bg-big.jpg`, with no separate layer, so "product slides in" can't be done literally without cutting the image apart. The shared camera zoom (background 1.08 → 1) moves the products into their final place instead.
+### Three separate ads
+- **Each part is its own build in its own folder** (`top/top.html` + `top/assets/` and so on), with its own copy of GSAP and nothing shared between them, because in production they are delivered as three separate ads. That costs ~28 KB gzip of GSAP per part, but any folder can be handed over on its own.
+- **`preview.html` is only a test page.** It puts the three parts in iframes like in `layout.png`, with the empty website area in the middle. It doesn't count towards the weight. On windows narrower than the fireplace (1672 px) it scales down to fit; `?actual` shows it 1:1.
+- **Fixed sizes from the task** (1032x250 and 320x975). Real fireplaces only run on wide screens, so the parts don't stretch.
 
-_TODO_
+### Background
+- **One `bg-big.jpg`, not the pre-cut `bg.jpg` files.** I measured the pre-cut ones: they don't line up at the seams and aren't cut from `bg-big.jpg` either. With one image there is only one moss surface, and the seams line up by construction.
+- **The parts sit edge to edge with no gaps.** The thin grey frames in `layout.png` are artboard borders, not spacing; the task describes the parts as one surface side by side. The fireplace takes 1672 of the 1680 px of `bg-big.jpg` (4 px left over on each side).
+- **Cut losslessly, one slice per part.** Each part gets only the area of `bg-big.jpg` it can show during the zoom, plus 2 px of margin, cut with jpegtran without re-encoding. Re-encoding at q80 measured only 35–38.5 dB and needed q90+ to look right, which was heavier than the lossless cut. Checked in Chrome at 100–200% display scaling: the three parts side by side differ from `bg-big.jpg` drawn as one image by at most 1/255.
+
+### Layout
+- **Positions come from the asset layers.** Most layers are exported full-frame (640x1950 / 2064x500), so their position is already in the file; a script crops them to their content and writes `src/data/layout.json`. The mockup is drawn at ~0.98 scale, so where it differs by a pixel the assets win (50% rule). Checked with `?overlay=1`.
+- **The CTA has no full-frame export,** so its position is measured in the mockup: the average of the left and right part, since it is the same button.
+- **Box, CTA and the skyscraper headlines came without transparency** (on black). The black was pure, with no soft edges, so it's keyed out exactly. The box opacity (0.92) was fitted against the mockup and baked into the PNG.
+- **The top headline is the asset as delivered,** even though its text differs from the mockup. Redrawing it isn't allowed.
+
+### Animation
+- **One timeline per part, the same in all three.** Intro (about 3.5 s): the moss fades in and starts zooming, logos scale in, the top headline builds line by line, the text panel opens from below, the skyscraper headlines rise, the CTA appears last.
+- **The product is part of the background.** The packshots are painted into `bg-big.jpg`, with no separate layer, so "product slides in" can't be done literally without cutting the image apart. The camera zoom moves the products into their final place instead.
+- **One shared camera.** All three backgrounds zoom around the same point of `bg-big.jpg`, so they move as one surface and the seams stay aligned during the motion too.
+- **Calm phase:** a barely visible zoom (1.08 → 1) that runs evenly almost the whole time and lands softly on the design at 29 s, plus a small CTA pulse every 4 s until ~26 s. Then everything stops in the static design. I read "about 30 seconds" as the upper limit; a test checks that the timeline ends within 30 s exactly in the design. A back-and-forth "breathing" zoom looked odd, so the camera moves one way only.
+- **Only `transform` and `opacity` are animated,** with `will-change` only while something moves.
+- **Headline lines** are windows over the same image, cut where the alpha shows a gap between lines. Once they've arrived the original image takes over, so at rest there are no cut lines.
+- **`prefers-reduced-motion` shows the final state straight away,** also if the setting changes while the animation runs.
+
+### Sync and pause
+- **The parts start in sync through postMessage.** Each part reports "ready" once its images are decoded; the preview answers "hold", and when all three are ready sends one start time slightly in the future. Every part places its timeline by that time, so a part that got the message a bit later is still on the same frame. Without a preview (a real placement) nobody answers within 300 ms and a part starts on its own.
+- **Pause only on `visibilitychange`.** The three parts are always on screen together; pausing each on its own visibility (IntersectionObserver) would let them drift apart.
+- **Hidden until ready.** Each part stays invisible until its images are decoded, so it never flashes half-loaded before the intro.
+
+### Clickout
+- **The whole part opens the clickTag** in a new window, read at click time so a value set by the ad server later still applies. Each part is also a link for the keyboard (Tab, Enter).

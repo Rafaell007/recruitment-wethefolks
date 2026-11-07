@@ -4,5 +4,5 @@
     "top": { "x": 324, "y": 0, "w": 1032, "h": 250 },
     "right": { "x": 1356, "y": 0, "w": 320, "h": 975 }
   },
-  "camera": { "origin": [840, 487.5], "maxScale": 1.08, "maxDrift": 0 }
+  "camera": { "origin": [840, 487.5], "maxScale": 1.12, "maxDrift": 0 }
 }

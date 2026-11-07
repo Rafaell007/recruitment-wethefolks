@@ -6,34 +6,34 @@ Gzip is shown for reference: it is roughly what travels over the wire. Images an
 
 | creative (folder) | files | raw | gzip |
 |---|---:|---:|---:|
-| left | 8 | 475.8 KB | 429.1 KB |
-| right | 8 | 456.2 KB | 408.9 KB |
-| top | 5 | 541.0 KB | 496.3 KB |
+| left | 8 | 494.8 KB | 448.0 KB |
+| right | 8 | 473.1 KB | 425.7 KB |
+| top | 5 | 551.6 KB | 507.0 KB |
 
 | file | raw | gzip |
 |---|---:|---:|
-| left/assets/bg-BPsS0xde.jpg | 397.4 KB | 395.3 KB |
+| left/assets/bg-CHgIE2T-.jpg | 416.4 KB | 414.2 KB |
 | left/assets/box-B2Yc8wcx.png | 0.3 KB | 0.2 KB |
 | left/assets/cta-DgfsAA7C.png | 1.3 KB | 1.3 KB |
 | left/assets/hl-Nqreo0Qu.png | 1.6 KB | 1.7 KB |
 | left/assets/left-1CZ50uYn.css | 0.3 KB | 0.2 KB |
-| left/assets/left-DktXj0lg.js | 71.9 KB | 28.0 KB |
+| left/assets/left-hwMRElRj.js | 71.9 KB | 28.0 KB |
 | left/assets/logo-BGW4ipID.png | 2.1 KB | 2.0 KB |
 | left/left.html | 1.0 KB | 0.5 KB |
 | preview.html | 2.3 KB | 1.1 KB |
-| right/assets/bg-CfHDH9ZR.jpg | 378.0 KB | 375.3 KB |
+| right/assets/bg-lRIrmzqw.jpg | 395.0 KB | 392.1 KB |
 | right/assets/box-B2Yc8wcx.png | 0.3 KB | 0.2 KB |
 | right/assets/cta-DgfsAA7C.png | 1.3 KB | 1.3 KB |
 | right/assets/hl-DEkF4yXB.png | 1.4 KB | 1.5 KB |
 | right/assets/logo-BGW4ipID.png | 2.1 KB | 2.0 KB |
 | right/assets/right-1CZ50uYn.css | 0.3 KB | 0.2 KB |
-| right/assets/right-BJCcAUli.js | 71.9 KB | 28.0 KB |
+| right/assets/right-B3Yo8yE-.js | 71.9 KB | 28.0 KB |
 | right/right.html | 1.0 KB | 0.5 KB |
-| top/assets/bg-CKqrys1y.jpg | 410.5 KB | 410.1 KB |
+| top/assets/bg-ntrHOPwZ.jpg | 421.1 KB | 420.8 KB |
 | top/assets/hl-BdXaPKZC.png | 57.6 KB | 57.5 KB |
 | top/assets/top-1CZ50uYn.css | 0.3 KB | 0.2 KB |
-| top/assets/top-DpoU-YEw.js | 71.9 KB | 28.0 KB |
+| top/assets/top-BuMtXt23.js | 71.9 KB | 28.0 KB |
 | top/top.html | 0.7 KB | 0.5 KB |
-| **total shipped (21 files, without 1 preview file(s))** | **1473.0 KB** | **1334.3 KB** |
+| **total shipped (21 files, without 1 preview file(s))** | **1519.5 KB** | **1380.7 KB** |
 
-**OK**: 50.3% of the budget used.
+**OK**: 51.9% of the budget used.

@@ -6,9 +6,9 @@ Background slices: pixel-identical to bg-big inside the part (checked, max err 0
 
 | file | from | original file | shipped | method | PSNR | max err |
 |---|---|---:|---:|---|---:|---:|
-| left/bg.jpg | bg-big.jpg | 1948.3 KB | 397.4 KB | jpegtran lossless crop | 70.3 dB | 18 |
-| top/bg.jpg | bg-big.jpg | 1948.3 KB | 410.5 KB | jpegtran lossless crop | 66.1 dB | 26 |
-| right/bg.jpg | bg-big.jpg | 1948.3 KB | 378.0 KB | jpegtran lossless crop | 67.5 dB | 19 |
+| left/bg.jpg | bg-big.jpg | 1948.3 KB | 416.4 KB | jpegtran lossless crop | 69.7 dB | 34 |
+| top/bg.jpg | bg-big.jpg | 1948.3 KB | 421.1 KB | jpegtran lossless crop | 66.6 dB | 26 |
+| right/bg.jpg | bg-big.jpg | 1948.3 KB | 395.0 KB | jpegtran lossless crop | 67.6 dB | 19 |
 | top/hl.png | top/hl.png | 190.1 KB | 57.6 KB | png palette q80 | 42.7 dB | 82 |
 | box.png | box.png | 0.3 KB | 0.3 KB | png palette q80 | ∞ | 0 |
 | cta.png | cta.png | 1.4 KB | 1.3 KB | png palette q80 | 50.8 dB | 10 |
@@ -19,18 +19,18 @@ Background slices: pixel-identical to bg-big inside the part (checked, max err 0
 
 ## Background slices
 
-Camera: scale 1–1.08 around 840, 487.5, drift ±0 px (fireplace CSS px).
+Camera: scale 1–1.12 around 840, 487.5, drift ±0 px (fireplace CSS px).
 
 | part | part in fireplace | slice in fireplace | extra |
 |---|---|---|---|
-| left | 4, 0 (320 x 975) | 0, 0 (365 x 975) | left 4, right 41, bottom 0 |
-| top | 324, 0 (1032 x 250) | 320, 0 (1038 x 270) | left 4, right 2, bottom 20 |
-| right | 1356, 0 (320 x 975) | 1312, 0 (366 x 975) | left 44, right 2, bottom 0 |
+| left | 4, 0 (320 x 975) | 0, 0 (382 x 975) | left 4, right 58, bottom 0 |
+| top | 324, 0 (1032 x 250) | 320, 0 (1038 x 278) | left 4, right 2, bottom 28 |
+| right | 1356, 0 (320 x 975) | 1296, 0 (382 x 975) | left 60, right 2, bottom 0 |
 
 ## Images per ad
 
 | part | files | images total |
 |---|---|---:|
-| left | left/bg.jpg, left/logo.png, box.png, left/hl.png, cta.png | 402.7 KB |
-| top | top/bg.jpg, top/hl.png | 468.1 KB |
-| right | right/bg.jpg, right/logo.png, box.png, right/hl.png, cta.png | 383.1 KB |
+| left | left/bg.jpg, left/logo.png, box.png, left/hl.png, cta.png | 421.7 KB |
+| top | top/bg.jpg, top/hl.png | 478.7 KB |
+| right | right/bg.jpg, right/logo.png, box.png, right/hl.png, cta.png | 400.0 KB |

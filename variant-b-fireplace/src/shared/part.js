@@ -39,9 +39,14 @@ export async function mountPart(part, size) {
   const at = await waitForStart(part);
 
   const tl = gsap.timeline();
-  // Shared camera, one long move: quick with the intro, then slower and slower until it
-  // settles in the end state at 29 s. The product, baked into the background, eases in with it.
-  tl.fromTo(layers.bg, { scale: CAMERA.maxScale }, { scale: 1, duration: 29, ease: 'power1.out' }, 0);
+  // Shared camera, one long move in a single direction; the product, baked into the
+  // background, comes with it. Steady, barely-there zoom for most of the 30 s, then a soft
+  // landing on the design at 29 s. Speeds match where the two tweens meet (power1.out starts at 2× its average speed).
+  const LAND = 8;
+  const speed = (CAMERA.maxScale - 1) / (29 - LAND / 2);
+  const landFrom = 1 + (speed * LAND) / 2;
+  tl.fromTo(layers.bg, { scale: CAMERA.maxScale }, { scale: landFrom, duration: 29 - LAND, ease: 'none' }, 0);
+  tl.to(layers.bg, { scale: 1, duration: LAND, ease: 'power1.out' }, 29 - LAND);
   tl.from(layers.bg, { opacity: 0, duration: 0.6, ease: 'power1.out' }, 0);
   if (layers.logo) tl.from(layers.logo, { opacity: 0, scale: 0.85, duration: 0.8, ease: 'back.out(1.6)' }, 0.3);
 

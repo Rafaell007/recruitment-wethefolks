@@ -6,9 +6,9 @@ Gzip is shown for reference: it is roughly what travels over the wire; images an
 
 | creative (folder) | files | raw | gzip |
 |---|---:|---:|---:|
-| left | 8 | 475.5 KB | 428.9 KB |
-| right | 8 | 455.9 KB | 408.7 KB |
-| top | 5 | 540.7 KB | 496.2 KB |
+| left | 8 | 475.6 KB | 429.0 KB |
+| right | 8 | 456.0 KB | 408.7 KB |
+| top | 5 | 540.8 KB | 496.2 KB |
 
 | file | raw | gzip |
 |---|---:|---:|
@@ -16,7 +16,7 @@ Gzip is shown for reference: it is roughly what travels over the wire; images an
 | left/assets/box-B2Yc8wcx.png | 0.3 KB | 0.2 KB |
 | left/assets/cta-DgfsAA7C.png | 1.3 KB | 1.3 KB |
 | left/assets/hl-Nqreo0Qu.png | 1.6 KB | 1.7 KB |
-| left/assets/left-B3YkQdea.js | 71.7 KB | 27.9 KB |
+| left/assets/left-ByQcWGr6.js | 71.7 KB | 27.9 KB |
 | left/assets/left-CYSZ66dx.css | 0.3 KB | 0.2 KB |
 | left/assets/logo-BGW4ipID.png | 2.1 KB | 2.0 KB |
 | left/left.html | 0.8 KB | 0.4 KB |
@@ -27,13 +27,13 @@ Gzip is shown for reference: it is roughly what travels over the wire; images an
 | right/assets/hl-DEkF4yXB.png | 1.4 KB | 1.5 KB |
 | right/assets/logo-BGW4ipID.png | 2.1 KB | 2.0 KB |
 | right/assets/right-CYSZ66dx.css | 0.3 KB | 0.2 KB |
-| right/assets/right-Cm5r9Mjj.js | 71.7 KB | 27.9 KB |
+| right/assets/right-sxWG2OJ_.js | 71.7 KB | 27.9 KB |
 | right/right.html | 0.8 KB | 0.4 KB |
 | top/assets/bg-CKqrys1y.jpg | 410.5 KB | 410.1 KB |
 | top/assets/hl-BdXaPKZC.png | 57.6 KB | 57.5 KB |
 | top/assets/top-CYSZ66dx.css | 0.3 KB | 0.2 KB |
-| top/assets/top-sD0TU9yY.js | 71.7 KB | 27.9 KB |
+| top/assets/top-DeriocMK.js | 71.7 KB | 27.9 KB |
 | top/top.html | 0.6 KB | 0.4 KB |
-| **total shipped (21 files, without 1 preview file(s))** | **1472.1 KB** | **1333.8 KB** |
+| **total shipped (21 files, without 1 preview file(s))** | **1472.4 KB** | **1333.9 KB** |
 
-**OK**: 50.2% of the budget used.
+**OK**: 50.3% of the budget used.

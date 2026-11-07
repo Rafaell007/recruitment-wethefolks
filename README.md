@@ -131,11 +131,13 @@ Variant A:
 - **A short crash animation** (shake, vibration on Android) instead of the frozen frame.
 - **Tracking hooks** for start, win, fail, replay and CTA click.
 - **Ad server integration:** the platform's exit call instead of `window.open`, and `mraid.setOrientationProperties` to lock portrait in apps.
+- **Better landscape handling.** Right now a phone turned sideways just pauses the game. A mobile browser can't lock the orientation, so I'd agree with the designer or the client what should happen there: a "rotate your phone" screen (needs an asset) or a landscape layout.
 - **Trim the music** to a 20–30 s loop. A run takes ~17 s, the track is 58 s.
 
 Variant B:
 
 - **Sync without the preview page**, with the parts finding each other through `parent.frames`.
+- **Live text instead of text in images.** The headlines, box copy and CTA label are PNGs, so every copy change or translation needs a new export, and the text gets soft at 125–150% display scaling. With the campaign font they could be HTML text. The product pack could come as its own layer too (now it's part of the background).
 - **GSAP from the ad server's CDN** when it's available, the bundled copy as a fallback.
 
 Both:

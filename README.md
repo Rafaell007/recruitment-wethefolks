@@ -121,14 +121,26 @@ Variant B's asset folder is 3.5 MB, mostly because it holds the background twice
 
 ## What I would do next with more time
 
-- **Test on real iPhones**, including an old one on iOS 12–13, to confirm the fallback paths instead of trusting forced tests in Chrome.
-- **Move the Playwright checks into the repo.** The pixel checks I ran during development (seams at the stage edge, endcard end state vs the static design, replay leaving no sounds or timers behind) live in local scripts. They should run with `npm test`.
 - **Ask the designer** about the "tab to run" typo, the missing "Bauchgrummeln" asset and which scale is right where the mockups differ from 50%.
-- **Proper landscape handling.** In an app placement I'd ask the SDK to keep the ad in portrait (`mraid.setOrientationProperties({ allowOrientationChange: false, forceOrientation: 'portrait' })`). In a mobile browser the orientation can't be locked, so I'd ask the designer for a rotate-your-phone screen instead of the frozen stage.
-- **Lighter audio.** Music and applause are about 60% of the weight. A shorter music loop or a lower bitrate for the applause would cut the ad to around half its size, after a listening check.
-- **Load audio after the start screen.** The sounds (about 810 KB) are fetched at the same time as the images the start screen waits for. Fetching them once the start screen is visible would show it sooner on slow networks.
-- **Fireplace sync on a real ad server.** The parts sync through the page that holds them (the preview here). Ad servers often wrap each creative in more iframes. There the parts would find each other through `parent.frames` instead and agree on a start time among themselves.
-- **Fireplace checks in the repo too:** the Playwright scripts that compare the seams with `bg-big.jpg` at 100–200% display scaling, during and after the animation.
+
+Variant A:
+
+- **Crop the endcard layers** to their content at build time, as Variant B does. They are full-frame 720x1280 PNGs and mostly empty.
+- **Polite loading:** show the start screen first, load the endcards and the audio after it.
+- **Lock the endcard buttons for about 1 s,** so fast taps at the end of a run can't hit the CTA by accident.
+- **A short crash animation** (shake, vibration on Android) instead of the frozen frame.
+- **Tracking hooks** for start, win, fail, replay and CTA click.
+- **Ad server integration:** the platform's exit call instead of `window.open`, and `mraid.setOrientationProperties` to lock portrait in apps.
+- **Trim the music** to a 20–30 s loop. A run takes ~17 s, the track is 58 s.
+
+Variant B:
+
+- **Sync without the preview page**, with the parts finding each other through `parent.frames`.
+- **GSAP from the ad server's CDN** when it's available, the bundled copy as a fallback.
+
+Both:
+
+- **Move the Playwright pixel checks into the repo** and run them with `npm test` and in the Pages workflow.
 
 ## Known issues and shortcuts
 

@@ -12,6 +12,10 @@ export function splitLines(img, box, cuts) {
     const copy = img.cloneNode();
     copy.alt = '';
     gsap.set(copy, { x: 0, y: -top, width: box.w, height: box.h });
+    // The copy is the whole image: clip it to its own line, or the line above slides in with it.
+    const clip = `inset(${top}px 0 ${box.h - edges[i + 1]}px 0)`;
+    copy.style.webkitClipPath = clip;
+    copy.style.clipPath = clip;
     win.append(copy);
     return copy;
   });

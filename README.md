@@ -5,6 +5,15 @@ Two rich media ads built from the provided designer layouts and 2x assets:
 - **Variant A – Game Ad „Gut Run”**: mobile fullscreen tap-to-jump mini game (`variant-a-game/`)
 - **Variant B – Fireplace Ad**: three-part animated desktop skin (`variant-b-fireplace/`)
 
+## Try it online
+
+No setup needed, these are the production builds on GitHub Pages:
+
+- **Variant A, the game:** https://rafaell007.github.io/recruitment-wethefolks/variant-a-game/. Best on a phone, so scan the QR code. Sound starts after the first tap. Add `?debug=1` to see the hitboxes.
+- **Variant B, the fireplace:** https://rafaell007.github.io/recruitment-wethefolks/variant-b-fireplace/preview.html. Use a wide desktop window; reload to watch the intro again.
+
+<img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Frafaell007.github.io%2Frecruitment-wethefolks%2Fvariant-a-game%2F" alt="QR code for Variant A" width="160" height="160">
+
 Plain HTML, CSS and modern JavaScript (ES6+), built down to iOS 12 / Chrome 64. GSAP 3.15.0 is the only runtime library. Vite is used as dev server and bundler.
 
 ## Run it locally

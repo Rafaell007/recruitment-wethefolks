@@ -16,6 +16,8 @@ No setup needed, these are the production builds on GitHub Pages:
 
 Plain HTML, CSS and modern JavaScript (ES6+), built down to iOS 12 / Chrome 64. GSAP 3.15.0 is the only runtime library. Vite is used as dev server and bundler.
 
+Screen recordings, if you'd rather watch than click: [Variant A on an Android phone (with sound)](media/gut-run.mp4) and [Variant B, the full 30 s](media/fireplace.mp4).
+
 ## Run it locally
 
 You need Node.js 20.19 or newer. Then:
@@ -65,6 +67,7 @@ variant-a-game/       Variant A: design/ + assets/ (originals, untouched), asset
 variant-b-fireplace/  Variant B: design/ + assets/ (originals, untouched), assets-opt/ (shipped), top/ left/ right/ (one creative each), preview.html, src/
 tools/                measure*.mjs, compress.mjs, hitboxes.mjs, prepare-b.mjs, build-b.mjs, size-report.mjs (see DECISIONS.md)
 reports/              generated: measurements, compression table, size report
+media/                screen recordings of both variants
 ```
 
 Variant A source (`variant-a-game/src/`):

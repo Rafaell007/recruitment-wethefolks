@@ -16,8 +16,6 @@ No setup needed, these are the production builds on GitHub Pages:
 
 Plain HTML, CSS and modern JavaScript (ES6+), built down to iOS 12 / Chrome 64. GSAP 3.15.0 is the only runtime library. Vite is used as dev server and bundler.
 
-Screen recordings, if you'd rather watch than click: [Variant A on an Android phone (with sound)](media/gut-run.mp4) and [Variant B, the full 30 s](media/fireplace.mp4).
-
 ## Run it locally
 
 You need Node.js 20.19 or newer. Then:

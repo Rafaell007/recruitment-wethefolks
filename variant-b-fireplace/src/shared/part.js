@@ -15,6 +15,9 @@ export async function mountPart(part, size) {
   ad.style.width = `${size.width}px`;
   ad.style.height = `${size.height}px`;
   ad.addEventListener('click', openClickTag);
+  ad.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') openClickTag();
+  });
   mountDesignOverlay(ad, part, size);
 
   const layers = {};

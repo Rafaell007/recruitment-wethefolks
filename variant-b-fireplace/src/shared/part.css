@@ -9,6 +9,12 @@ body {
   cursor: pointer;
 }
 
+/* Drawn inside: each part fills its iframe, an outside outline would be cut off. */
+#ad:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: -3px;
+}
+
 #ad img {
   position: absolute;
   left: 0;

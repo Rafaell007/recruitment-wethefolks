@@ -25,6 +25,7 @@ Sizes are in CSS px (asset px / 2) unless noted.
 - **An edge cover against seams.** A scaled image's outer pixel row turns semi-transparent, and the navy background showed through as a thin line along the stage edge. A copy of the bleed sits on top with a hole 1 px smaller than the stage.
 - **The ad measures its own box (`#ad`, 100dvh), not the phone,** because it runs inside the publisher's iframe. A `ResizeObserver` re-fits on rotation, toolbar changes and iframe resizes.
 - **Portrait only.** A phone turned sideways pauses the game like a hidden tab.
+- **Desktop shows a phone-shaped frame.** A fullscreen mobile ad isn't served to desktops, but reviewers open it there. With a mouse as the main input, the ad is capped to the design's 360:640 shape on a grey page. Touch devices still fill the whole screen.
 
 ### Gameplay
 - **The start screen is the mockup 1:1.** Its four obstacles are props: on the first tap they pop away, the gut eases into motion and the poo hovers for 1.5 s over an empty gut ("get ready"). The run itself then contains every obstacle exactly once.

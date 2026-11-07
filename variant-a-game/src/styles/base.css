@@ -27,6 +27,20 @@ body {
   -webkit-touch-callout: none;
 }
 
+/* Desktop preview: a phone-shaped ad in the middle of an empty page. */
+@media (hover: hover) and (pointer: fine) {
+  body {
+    background: #ececec;
+  }
+
+  #ad {
+    right: 0;
+    margin: 0 auto;
+    max-width: calc(100vh * 360 / 640);
+    max-width: calc(100dvh * 360 / 640);
+  }
+}
+
 img {
   pointer-events: none;
   -webkit-user-drag: none;

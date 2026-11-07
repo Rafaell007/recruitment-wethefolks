@@ -8,7 +8,7 @@ import { variantA as m } from '../src/data/measured.json';
 const square = { w: 10, h: 10, rows: Array.from({ length: 10 }, (_, y) => (y === 4 || y === 5 ? [4, 6] : [])) };
 
 test('circle exactly touching the left edge is not a hit, 0.05 px overlap is', () => {
-  // r = 1 stage px = 2 asset px; centre at stage x 1 → right edge at asset x 4 = square's left edge.
+  // r = 1 stage px = 2 asset px, so with the centre at stage x 1 → right edge at asset x 4 = square's left edge.
   expect(circleHitsMask(1, 2.5, 1, square, 0, 0)).toBe(false);
   expect(circleHitsMask(1.05, 2.5, 1, square, 0, 0)).toBe(true);
 });

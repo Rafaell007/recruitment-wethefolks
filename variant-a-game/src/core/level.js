@@ -5,7 +5,7 @@ import hitboxes from '../data/hitboxes.json';
 
 const size = (name) => M.images[`01_game/${name}.png`].size;
 
-// The mockup draws obstacles at 0.68–0.94 scale; we render them at 50% of the asset,
+// The mockup draws obstacles at 0.68–0.94 scale, but we render them at 50% of the asset,
 // centred on the mockup's box.
 function fromDesign(name) {
   const d = M.images[`01_game/${name}.png`].inDesign;

@@ -28,7 +28,7 @@ describe('sliceRect', () => {
         for (const d of [-camera.maxDrift, 0, camera.maxDrift]) {
           for (const x of [part.x, part.x + part.w]) {
             const sx = source(x, camera.origin[0], s, d);
-            // Outside bg-big there is nothing to show; everything inside must be in the slice.
+            // Outside bg-big there is nothing to show, but everything inside must be in the slice.
             if (sx >= 0) expect(sx).toBeGreaterThanOrEqual(r.x);
             if (sx <= bounds.w) expect(sx).toBeLessThanOrEqual(r.x + r.w);
           }

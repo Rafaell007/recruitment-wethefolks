@@ -59,7 +59,7 @@ async function locateScaled(file, design) {
   const fine = [];
   for (const { scale } of coarse.slice(0, 2)) fine.push(...(await sweep(scale - 0.04, scale + 0.04, 0.01)));
   fine.sort((p, q) => p.hit.score - q.hit.score);
-  // The fast pass scores a sparse sample; confirm the best three scales with a full-precision search.
+  // The fast pass scores a sparse sample, then the best three scales are confirmed with a full-precision search.
   let best = null;
   for (const { scale } of fine.slice(0, 3)) {
     const r = await at(scale);
@@ -200,7 +200,7 @@ async function measureVariantA(variantDir) {
       stage: { w: css(DW), h: css(DH) },
       player: playerBox,
       gut: { ...gutOffset, scrollLength: css(gut.width - DW) },
-      // The gut strip reaches above the playfield; it is clipped at the top edge of border.png.
+      // The gut strip reaches above the playfield and is clipped at the top edge of border.png.
       playfieldClipTop: css(borderBox.y),
       bounds,
     },
@@ -238,12 +238,12 @@ function markdown(variant, m) {
       '',
       `- Stage: ${a.stage.w}x${a.stage.h}`,
       `- Player on start screen: x ${a.player.x}, y ${a.player.y}, ${a.player.w}x${a.player.h}, centre (${a.player.cx}, ${a.player.cy})`,
-      `- Gut strip: scroll x ${a.gut.scrollX}, y offset ${a.gut.offsetY} (score ${a.gut.score}); scroll length to the end of the gut ${a.gut.scrollLength}`,
+      `- Gut strip: scroll x ${a.gut.scrollX}, y offset ${a.gut.offsetY} (score ${a.gut.score}), scroll length to the end of the gut ${a.gut.scrollLength}`,
       `- Playfield clip top (top edge of border.png): ${a.playfieldClipTop}`,
       `- Cloud limits at the player's centre column: top ${a.bounds.centerColumn.top}, bottom ${a.bounds.centerColumn.bottom} (free ${a.bounds.centerColumn.free})`,
       `- Cloud limits across the player's sprite width: top ${a.bounds.spriteColumns.top}, bottom ${a.bounds.spriteColumns.bottom} (free ${a.bounds.spriteColumns.free})`,
       '',
-      `Match score = mean absolute RGB difference (0–255) over the sprite's opaque pixels; below ${MATCH_THRESHOLD} counts as found.`,
+      `Match score = mean absolute RGB difference (0–255) over the sprite's opaque pixels. Below ${MATCH_THRESHOLD} counts as found.`,
     );
   }
   return lines.join('\n') + '\n';

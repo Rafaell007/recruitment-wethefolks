@@ -10,7 +10,7 @@ Two rich media ads built from the provided designer layouts and 2x assets:
 No setup needed, these are the production builds on GitHub Pages:
 
 - **Variant A, the game:** https://rafaell007.github.io/recruitment-wethefolks/variant-a-game/. Best on a phone, so scan the QR code. Sound starts after the first tap. Add `?debug=1` to see the hitboxes.
-- **Variant B, the fireplace:** https://rafaell007.github.io/recruitment-wethefolks/variant-b-fireplace/preview.html. Use a wide desktop window; reload to watch the intro again.
+- **Variant B, the fireplace:** https://rafaell007.github.io/recruitment-wethefolks/variant-b-fireplace/preview.html. Use a wide desktop window and reload to watch the intro again.
 
 <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Frafaell007.github.io%2Frecruitment-wethefolks%2Fvariant-a-game%2F" alt="QR code for Variant A" width="160" height="160">
 
@@ -36,7 +36,7 @@ Open http://localhost:5173/. The landing page links to both variants:
 Tips for looking at it:
 
 - **Variant A is a mobile ad.** On a computer, open DevTools device mode (F12, then Ctrl+Shift+M) and pick a phone. To try it on a real phone on the same Wi-Fi, run `npm run dev:host` instead and open the "Network" URL it prints. Sound starts after the first tap.
-- **Variant B needs a wide screen.** The fireplace is 1672 px wide. On a smaller window the preview page scales it down; add `?actual` to the URL to see it 1:1. Reload the page to watch the intro again.
+- **Variant B needs a wide screen.** The fireplace is 1672 px wide. On a smaller window the preview page scales it down. Add `?actual` to the URL to see it 1:1. Reload the page to watch the intro again.
 - **Debug views (dev server only):**
   - `?debug=1` on the game draws the hitboxes.
   - `?overlay=start`, `?overlay=fail` or `?overlay=win` on the game lays the matching design over the build.
@@ -94,7 +94,7 @@ shared/dev/         ?overlay=1 design overlay (dev server only, not in the build
 data/               generated JSON: layout, camera, measurements
 ```
 
-Tests (`npm test`, Vitest) cover game logic, collision, level and audio for A; timeline length and end state, sync, camera and background slices for B.
+Tests (`npm test`, Vitest) cover game logic, collision, level and audio for A, and timeline length and end state, sync, camera and background slices for B.
 
 Tools (only needed to regenerate what is already committed):
 
@@ -159,4 +159,4 @@ I used Claude Code the whole time, a bit like a second developer sitting next to
 - **"Possible to finish" isn't "fun to play".** A script said the level could be finished, but when I played it, the get-ready moment ended right above the worm. I moved the start-screen obstacles out of the run.
 - **It read the mockup's frames as gaps.** `layout.png` has a thin grey frame around each part of the fireplace, and Claude took those for 4 px gaps between the parts. Everything after that was built around them. I noticed the moss didn't look like one surface. The task says the parts sit side by side, so the gaps went and the background was cut again.
 - **It tested only the easy screens, then fixed things on paper.** The fireplace was checked at 100% and 200% screen zoom only. On my laptop at 125% I saw a faint line in the top headline's shadow. Claude's first idea was to round the cut positions, and measuring showed that made it worse. In the end the headline gets cut into lines only while it animates in, and then the normal image takes over. Now every check also runs at 125% and 150%.
-- **It wanted to test everything.** Claude kept writing tests for things you see in a second just by using the ad: does a tap make the poo jump, does mute turn the sound off. It got to 38 tests, and they only made every change slower. My rule became: only test what you can't easily check by eye. That means hard rules from the task (each obstacle exactly once, the animation is done within 30 s), data that comes out of a script, and timing logic. 25 tests are left, and they still catch it when I break the code on purpose.
+- **It wanted to test everything.** Claude kept writing tests for things you see in a second just by using the ad: does a tap make the poo jump, does mute turn the sound off. It got to 38 tests, and they only made every change slower. My rule became: only test what you can't easily check by eye. That means hard rules from the task (each obstacle exactly once, the animation is done within 30 s), data that comes out of a script, and timing logic. 29 tests now, and they still catch it when I break the code on purpose.

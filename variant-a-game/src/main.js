@@ -24,7 +24,7 @@ const audio = createAudio({ urls: SOUNDS });
 initMute(document.getElementById('mute'), audio);
 
 let endDelay = null;
-let paused = false; // a run frozen while hidden; the next tap resumes it
+let paused = false; // a run frozen while hidden, resumed by the next tap
 let hidden = false;
 let introReady = false;
 

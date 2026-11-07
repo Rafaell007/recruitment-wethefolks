@@ -27,7 +27,7 @@ export function alphaBBox(img, minAlpha = 1) {
 /**
  * PSNR between two RGBA images of the same size, in dB.
  * RGB is premultiplied by alpha first, so colour changes inside fully transparent pixels
- * (invisible on screen) do not count as error; alpha itself is compared as a fourth channel.
+ * (invisible on screen) do not count as error. Alpha itself is compared as a fourth channel.
  */
 export function psnr(a, b) {
   if (a.width !== b.width || a.height !== b.height) throw new Error('psnr: size mismatch');
@@ -96,7 +96,7 @@ export function locate(image, tpl, { step = 3, samples = 500, keep = 8, refine =
     return similar / pts.length;
   };
 
-  // `bar`: the score a position has to beat to matter; the (slower) contrast check only runs then.
+  // `bar`: the score a position has to beat to matter. Only then does the (slower) contrast check run.
   const score = (ox, oy, set, bar) => {
     let s = 0;
     for (const [x, y, r, g, b] of set.opaque) {
@@ -137,7 +137,7 @@ export function locate(image, tpl, { step = 3, samples = 500, keep = 8, refine =
 /**
  * Some fireplace layers were exported without transparency: what should be transparent is pure
  * black (0,0,0), with no blended edge pixels (checked: every other colour in them is artwork).
- * Returns a copy where pure black is fully transparent; all other pixels are left as they are.
+ * Returns a copy where pure black is fully transparent and every other pixel is left as it is.
  */
 export function keyOutBlack(img) {
   const data = Buffer.from(img.data);

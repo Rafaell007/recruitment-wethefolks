@@ -5,8 +5,8 @@ import { CAMERA } from './camera.js';
 // layers: { bg, hl: { lines, whole }, logo?, box?, cta? } — the top banner has only bg and hl.
 export function buildTimeline(layers) {
   const tl = gsap.timeline();
-  // Shared camera, one long move in a single direction; the product, baked into the
-  // background, comes with it. Steady, barely-there zoom for most of the 30 s, then a soft
+  // Shared camera, one long move in a single direction. The product is baked into the
+  // background, so it comes along. Steady, barely-there zoom for most of the 30 s, then a soft
   // landing on the design at 29 s. Speeds match where the two tweens meet
   // (power1.out starts at 2× its average speed).
   const LAND = 8;
@@ -35,7 +35,7 @@ export function buildTimeline(layers) {
     rise(layers.hl, 0.8); // top banner headline
   }
 
-  // A gentle CTA pulse every 4 s; stops before the 30 s mark.
+  // A gentle CTA pulse every 4 s that stops before the 30 s mark.
   if (layers.cta) {
     for (let t = 5; t < 26; t += 4) {
       tl.to(layers.cta, { scale: 1.04, duration: 0.4, ease: 'sine.inOut', yoyo: true, repeat: 1 }, t);

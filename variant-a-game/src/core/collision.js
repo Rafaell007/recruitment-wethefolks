@@ -1,6 +1,6 @@
 // Circle (stage px) against a mask from hitboxes.json placed at (mx, my).
 // Masks are in asset px (2 per stage px) and store opaque runs per row: [start, end, start, end, …].
-// In each row the circle covers its widest chord inside that row; touching edges is not a hit.
+// In each row the circle covers its widest chord inside that row. Edges that only touch are not a hit.
 export function circleHitsMask(cx, cy, r, mask, mx, my) {
   const u = (cx - mx) * 2;
   const v = (cy - my) * 2;

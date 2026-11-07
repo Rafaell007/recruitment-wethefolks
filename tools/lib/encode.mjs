@@ -2,7 +2,7 @@
 import sharp from 'sharp';
 import { psnr } from './image.mjs';
 
-export const MIN_PSNR = 40; // dB; above ~40 dB differences are not visible on flat ad artwork
+export const MIN_PSNR = 40; // dB. Above ~40 dB the differences are not visible on flat ad artwork
 const PNG_QUALITIES = [80, 90, 100];
 const JPG_QUALITIES = [80, 88];
 

@@ -8,7 +8,7 @@
 //   The slices are cut losslessly with jpegtran (JPEG blocks copied, nothing re-encoded): bg-big is
 //   already a compressed photo of noisy moss, and re-encoding it fell below 40 dB at q80 and only
 //   passed at sizes above the lossless cut. jpegtran snaps the cut's top-left corner to the 16 px
-//   JPEG block grid, so a slice may start a few px earlier than asked; layout.json uses the real
+//   JPEG block grid, so a slice may start a few px earlier than asked, and layout.json uses the real
 //   corner. Run through npx (pinned) so its old download tooling stays out of the project's deps.
 // - box.png, cta.png and the side copy (hl.png) were exported without transparency: pure black
 //   becomes transparent, every other pixel stays as it is. The panel also gets the opacity measured
@@ -63,14 +63,14 @@ async function ship(name, pixels, type, sourceFile) {
   console.log(`${name.padEnd(16)} ${pixels.width}x${pixels.height}  ${(best.buf.length / 1024).toFixed(1)} KB  ${best.method}  ${best.psnr.toFixed(1)} dB`);
 }
 
-/** Crops a full-frame layer to its pixels and ships it; returns its place in the part in CSS px. */
+/** Crops a full-frame layer to its pixels, ships it and returns its place in the part in CSS px. */
 async function layer(name, img, sourceFile) {
   const box = evenBox(alphaBBox(img));
   await ship(name, crop(img, box), 'png', sourceFile);
   return { src: name, x: box.x / 2, y: box.y / 2, w: box.w / 2, h: box.h / 2 };
 }
 
-/** Lossless crop of bg-big; returns the slice's real rect in fireplace CSS px. */
+/** Lossless crop of bg-big. Returns the slice's real rect in fireplace CSS px. */
 async function backgroundSlice(name, big, want, part) {
   const dst = join(OUT, name);
   await mkdir(dirname(dst), { recursive: true });

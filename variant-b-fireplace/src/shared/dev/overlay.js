@@ -1,4 +1,4 @@
-// ?overlay=1  design over the part, dev only; key O cycles 50% fade / difference / hidden.
+// ?overlay=1  design over the part, dev only. Key O cycles 50% fade / difference / hidden.
 import measured from '../../data/measured.json';
 
 // layout.png shows all three parts, so each part shows only its own frame, scaled by that

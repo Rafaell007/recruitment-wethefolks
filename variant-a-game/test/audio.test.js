@@ -9,7 +9,7 @@ const param = () => ({
   linearRampToValueAtTime() {},
 });
 
-// Just enough of AudioContext for audio.js; it records what was created and played.
+// Just enough of AudioContext for audio.js. It records what was created and played.
 class FakeCtx {
   constructor() {
     FakeCtx.instances.push(this);
@@ -51,7 +51,7 @@ beforeEach(() => {
 });
 afterEach(() => vi.unstubAllGlobals());
 
-test('nothing is created before the first tap; music asked for early starts on unlock', async () => {
+test('nothing is created before the first tap, and music asked for early starts on unlock', async () => {
   const audio = createAudio({ urls: URLS, Ctx: FakeCtx });
   await flush();
   audio.music(true);

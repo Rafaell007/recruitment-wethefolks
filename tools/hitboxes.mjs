@@ -4,7 +4,7 @@
 //
 //   node tools/hitboxes.mjs variant-a-game
 //
-// Writes <variant>/src/data/hitboxes.json. Everything is in asset px (2x); the game converts.
+// Writes <variant>/src/data/hitboxes.json. Everything is in asset px (2x) and the game converts.
 import { readFile, writeFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { loadRGBA } from './lib/image.mjs';
@@ -14,7 +14,7 @@ const ALPHA = 128; // the same "is this pixel visible" threshold as the cloud li
 
 // One row of the mask = list of opaque runs [x0, x1) in asset px.
 // Collision later asks: does the player's circle cover any run in the rows it spans?
-// Only columns [from, to) are scanned; the runs are stored relative to `from`.
+// Only columns [from, to) are scanned, and the runs are stored relative to `from`.
 function rowSpans(img, from = 0, to = img.width) {
   const rows = [];
   for (let y = 0; y < img.height; y++) {

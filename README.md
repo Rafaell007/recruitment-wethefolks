@@ -9,19 +9,43 @@ Plain HTML, CSS and modern JavaScript (ES6+), built down to iOS 12 / Chrome 64. 
 
 ## Run it locally
 
-Requires Node.js ≥ 20.19.
+You need Node.js 20.19 or newer. Then:
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open the URL Vite prints (default http://localhost:5173/) – the landing page links to each variant.
-To test on a phone in the same Wi-Fi: `npm run dev:host` and open the network URL on the phone.
+Open http://localhost:5173/. The landing page links to both variants:
 
-Variant B: the landing page opens `variant-b-fireplace/preview.html`, which places the three parts like in `design/layout.png` and starts them in sync. On windows narrower than 1672 px the preview is scaled down to fit; `?actual` shows it 1:1. Each part also runs on its own (`top/top.html`, `left/left.html`, `right/right.html`), and `?overlay=1` (dev server only) lays the design over it; key O switches fade / difference / off.
+| What | URL |
+|---|---|
+| Variant A, the game | http://localhost:5173/variant-a-game/ |
+| Variant B, all three parts together | http://localhost:5173/variant-b-fireplace/preview.html |
+| Variant B, one part on its own | `…/variant-b-fireplace/top/top.html`, `…/left/left.html`, `…/right/right.html` |
 
-Production build: `npm run build` → self-contained ads in `dist/<variant>/` (relative paths, no shared files between ads). The fireplace parts each get their own folder (`dist/variant-b-fireplace/top/` etc.) with no files shared between them, so zipping one folder gives an upload-ready creative.
+Tips for looking at it:
+
+- **Variant A is a mobile ad.** On a computer, open DevTools device mode (F12, then Ctrl+Shift+M) and pick a phone. To try it on a real phone on the same Wi-Fi, run `npm run dev:host` instead and open the "Network" URL it prints. Sound starts after the first tap.
+- **Variant B needs a wide screen.** The fireplace is 1672 px wide. On a smaller window the preview page scales it down; add `?actual` to the URL to see it 1:1. Reload the page to watch the intro again.
+- **Debug views (dev server only):**
+  - `?debug=1` on the game draws the hitboxes.
+  - `?overlay=start`, `?overlay=fail` or `?overlay=win` on the game lays the matching design over the build.
+  - `?overlay=1` on a fireplace part does the same with `layout.png`.
+  - With an overlay on, the O key switches between fade, difference and off.
+
+### Production build
+
+```bash
+npm run build
+npm run preview
+```
+
+`npm run build` writes the shipped ads to `dist/` and prints the weight report. `npm run preview` serves them at http://localhost:4173/variant-a-game/ and http://localhost:4173/variant-b-fireplace/preview.html.
+
+Every ad is self-contained, with relative paths and no files shared between ads. The three fireplace parts each get their own folder (`dist/variant-b-fireplace/top/` and so on), so zipping one folder gives an upload-ready creative.
+
+Tests: `npm test`.
 
 ## Repository layout
 
@@ -61,7 +85,7 @@ shared/dev/         ?overlay=1 design overlay (dev server only, not in the build
 data/               generated JSON: layout, camera, measurements
 ```
 
-Tests: `npm test` (Vitest: game logic, collision, level and audio for A; timeline length and end state, sync, camera and background slices for B).
+Tests (`npm test`, Vitest) cover game logic, collision, level and audio for A; timeline length and end state, sync, camera and background slices for B.
 
 Tools (only needed to regenerate what is already committed):
 

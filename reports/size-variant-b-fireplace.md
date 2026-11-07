@@ -6,34 +6,34 @@ Gzip is shown for reference: it is roughly what travels over the wire; images an
 
 | creative (folder) | files | raw | gzip |
 |---|---:|---:|---:|
-| left | 8 | 401.0 KB | 397.8 KB |
-| right | 8 | 385.1 KB | 381.2 KB |
-| top | 5 | 469.8 KB | 468.7 KB |
+| left | 8 | 475.4 KB | 428.9 KB |
+| right | 8 | 455.8 KB | 408.6 KB |
+| top | 5 | 540.5 KB | 496.1 KB |
 
 | file | raw | gzip |
 |---|---:|---:|
-| left/assets/bg-BOF7QinP.jpg | 393.8 KB | 391.7 KB |
+| left/assets/bg-BPsS0xde.jpg | 397.4 KB | 395.3 KB |
 | left/assets/box-B2Yc8wcx.png | 0.3 KB | 0.2 KB |
 | left/assets/cta-DgfsAA7C.png | 1.3 KB | 1.3 KB |
 | left/assets/hl-Nqreo0Qu.png | 1.6 KB | 1.7 KB |
-| left/assets/left-kzYP_Thc.js | 1.1 KB | 0.5 KB |
-| left/assets/left-tkTP_GGR.css | 0.1 KB | 0.1 KB |
+| left/assets/left-CgjD611Y.css | 0.3 KB | 0.2 KB |
+| left/assets/left-D9Jy8z9Q.js | 71.6 KB | 27.9 KB |
 | left/assets/logo-BGW4ipID.png | 2.1 KB | 2.0 KB |
 | left/left.html | 0.8 KB | 0.4 KB |
-| preview.html | 1.6 KB | 0.8 KB |
-| right/assets/bg-CnK9vGP6.jpg | 378.0 KB | 375.3 KB |
+| preview.html | 2.3 KB | 1.1 KB |
+| right/assets/bg-CfHDH9ZR.jpg | 378.0 KB | 375.3 KB |
 | right/assets/box-B2Yc8wcx.png | 0.3 KB | 0.2 KB |
 | right/assets/cta-DgfsAA7C.png | 1.3 KB | 1.3 KB |
 | right/assets/hl-DEkF4yXB.png | 1.4 KB | 1.5 KB |
 | right/assets/logo-BGW4ipID.png | 2.1 KB | 2.0 KB |
-| right/assets/right-WNGGqadd.js | 1.1 KB | 0.5 KB |
-| right/assets/right-tkTP_GGR.css | 0.1 KB | 0.1 KB |
+| right/assets/right-CgjD611Y.css | 0.3 KB | 0.2 KB |
+| right/assets/right-DuJymunt.js | 71.6 KB | 27.9 KB |
 | right/right.html | 0.8 KB | 0.4 KB |
 | top/assets/bg-CKqrys1y.jpg | 410.5 KB | 410.1 KB |
 | top/assets/hl-BdXaPKZC.png | 57.6 KB | 57.5 KB |
-| top/assets/top-DcJMqFD9.js | 1.1 KB | 0.5 KB |
-| top/assets/top-tkTP_GGR.css | 0.1 KB | 0.1 KB |
+| top/assets/top-CgjD611Y.css | 0.3 KB | 0.2 KB |
+| top/assets/top-Xje5Whyk.js | 71.6 KB | 27.9 KB |
 | top/top.html | 0.6 KB | 0.4 KB |
-| **total shipped (21 files, without 1 preview file(s))** | **1255.9 KB** | **1247.7 KB** |
+| **total shipped (21 files, without 1 preview file(s))** | **1471.7 KB** | **1333.5 KB** |
 
-**OK**: 42.9% of the budget used.
+**OK**: 50.2% of the budget used.

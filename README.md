@@ -37,9 +37,9 @@ Tips for looking at it:
 
 - **Variant A is a mobile ad.** On a computer, open DevTools device mode (F12, then Ctrl+Shift+M) and pick a phone. To try it on a real phone on the same Wi-Fi, run `npm run dev:host` instead and open the "Network" URL it prints. Sound starts after the first tap.
 - **Variant B needs a wide screen.** The fireplace is 1672 px wide. On a smaller window the preview page scales it down. Add `?actual` to the URL to see it 1:1. Reload the page to watch the intro again.
-- **Debug views (dev server only):**
-  - `?debug=1` on the game draws the hitboxes.
-  - `?overlay=start`, `?overlay=fail` or `?overlay=win` on the game lays the matching design over the build.
+- **Debug views:**
+  - `?debug=1` on the game draws the hitboxes. It works in the production build too.
+  - Dev server only: `?overlay=start`, `?overlay=fail` or `?overlay=win` on the game lays the matching design over the build.
   - `?overlay=1` on a fireplace part does the same with `layout.png`.
   - With an overlay on, the O key switches between fade, difference and off.
 
@@ -112,7 +112,7 @@ Budget: 3 MB for all shipped files.
 
 | | raw | gzip |
 |---|---:|---:|
-| Variant A (`dist/variant-a-game/`) | 1102.6 KB (37.6%) | 985.3 KB |
+| Variant A (`dist/variant-a-game/`) | 1102.8 KB (37.6%) | 985.4 KB |
 | Variant B (`dist/variant-b-fireplace/`, three parts) | 1472.8 KB (50.3%) | 1334.1 KB |
 
 Variant A assets went from 1969 KB to 975 KB. PNGs were converted to palette PNG (quality 80, checked at ≥ 44 dB PSNR against the originals). Sound effects went from 320 to 128 kbps MP3. The music loop was already 64 kbps and is shipped unchanged. Most of the weight is audio: music 452 KB plus applause 236 KB. JS with GSAP is 122 KB (41 KB gzip). Full tables are in `reports/`.

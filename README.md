@@ -3,7 +3,7 @@
 Two rich media ads built from the provided designer layouts and 2x assets:
 
 - **Variant A – Game Ad „Gut Run”**: mobile fullscreen tap-to-jump mini game (`variant-a-game/`)
-- **Variant B – Fireplace Ad**: three-part animated desktop skin (`variant-b-fireplace/`) – *in progress*
+- **Variant B – Fireplace Ad**: three-part animated desktop skin (`variant-b-fireplace/`)
 
 Plain HTML, CSS and modern JavaScript (ES6+), built down to iOS 12 / Chrome 64. GSAP 3.15.0 is the only runtime library. Vite is used as dev server and bundler.
 
@@ -19,7 +19,9 @@ npm run dev
 Open the URL Vite prints (default http://localhost:5173/) – the landing page links to each variant.
 To test on a phone in the same Wi-Fi: `npm run dev:host` and open the network URL on the phone.
 
-Production build: `npm run build` → self-contained ads in `dist/<variant>/` (relative paths, no shared files between ads).
+Variant B: the landing page opens `variant-b-fireplace/preview.html`, which places the three parts like in `design/layout.png` and starts them in sync. On windows narrower than 1672 px the preview is scaled down to fit; `?actual` shows it 1:1. Each part also runs on its own (`top/top.html`, `left/left.html`, `right/right.html`), and `?overlay=1` (dev server only) lays the design over it; key O switches fade / difference / off.
+
+Production build: `npm run build` → self-contained ads in `dist/<variant>/` (relative paths, no shared files between ads). The fireplace parts each get their own folder (`dist/variant-b-fireplace/top/` etc.) with no files shared between them, so zipping one folder gives an upload-ready creative.
 
 ## Repository layout
 
@@ -27,8 +29,8 @@ Production build: `npm run build` → self-contained ads in `dist/<variant>/` (r
 index.html            dev landing page (not shipped)
 vite.config.js        one build per variant (`vite build --mode variant-a`)
 variant-a-game/       Variant A: design/ + assets/ (originals, untouched), assets-opt/ (shipped), src/, index.html
-variant-b-fireplace/  Variant B: design/ + assets/ (originals, untouched)
-tools/                measure.mjs, compress.mjs, hitboxes.mjs, size-report.mjs (see DECISIONS.md)
+variant-b-fireplace/  Variant B: design/ + assets/ (originals, untouched), assets-opt/ (shipped), top/ left/ right/ (one creative each), preview.html, src/
+tools/                measure*.mjs, compress.mjs, hitboxes.mjs, prepare-b.mjs, build-b.mjs, size-report.mjs (see DECISIONS.md)
 reports/              generated: measurements, compression table, size report
 ```
 
@@ -46,13 +48,28 @@ data/        generated JSON: measured positions, hitbox masks
 styles/      CSS split by screen, colour tokens
 ```
 
-Tests: `npm test` (Vitest, game logic, collision, level and audio).
+Variant B source (`variant-b-fireplace/src/`):
+
+```
+shared/part.js      mounts a part: size, layer positions, clickTag, keyboard, starts the motion
+shared/timeline.js  the intro and the calm phase, one GSAP timeline of at most 30 s
+shared/camera.js    one shared zoom origin, so the background moves as one surface
+shared/sync.js      postMessage handshake with the preview page, so the parts start together
+shared/motion.js    runs the timeline: start time, pause when hidden, reduced motion
+shared/lines.js     splits a headline image into lines for the line-by-line reveal
+shared/dev/         ?overlay=1 design overlay (dev server only, not in the build)
+data/               generated JSON: layout, camera, measurements
+```
+
+Tests: `npm test` (Vitest: game logic, collision, level and audio for A; timeline length and end state, sync, camera and background slices for B).
 
 Tools (only needed to regenerate what is already committed):
 
 ```bash
 npm run measure:a    # positions and sizes from assets + designs → variant-a-game/src/data/measured.json (~3 min)
 npm run compress:a   # assets/ → assets-opt/ (needs ffmpeg-static, an optional dependency, for MP3)
+npm run measure:b    # mockup positions and box opacity → variant-b-fireplace/src/data/measured.json
+npm run prepare:b    # background slices (lossless) and layer cut-outs → assets-opt/ + src/data/layout.json
 npm run size         # weight report of dist/ (also runs automatically after npm run build)
 ```
 
@@ -63,9 +80,11 @@ Budget: 3 MB for all shipped files.
 | | raw | gzip |
 |---|---:|---:|
 | Variant A (`dist/variant-a-game/`) | 1102.6 KB (37.6%) | 985.3 KB |
-| Variant B | _TODO_ | |
+| Variant B (`dist/variant-b-fireplace/`, three parts) | 1472.8 KB (50.3%) | 1334.1 KB |
 
 Variant A assets went from 1969 KB to 975 KB. PNGs were converted to palette PNG (quality 80, checked at ≥ 44 dB PSNR against the originals). Sound effects went from 320 to 128 kbps MP3. The music loop was already 64 kbps and is shipped unchanged. Most of the weight is audio: music 452 KB plus applause 236 KB. JS with GSAP is 122 KB (41 KB gzip). Full tables are in `reports/`.
+
+Variant B's asset folder is 3.5 MB, mostly because it holds the background twice (`bg-big.jpg` plus three pre-cut `bg.jpg`). Only `bg-big.jpg` is shipped, cut losslessly (jpegtran) into one slice per part, just big enough for the zoom. Re-encoding it instead would have cost quality: at q80 it measured 35–38.5 dB. The panels, buttons and headlines are cropped to their content and saved as palette PNGs. Each part is about 0.5 MB, of which the background is ~0.4 MB and the JS with GSAP 72 KB (28 KB gzip).
 
 ## What I would do next with more time
 
@@ -75,6 +94,8 @@ Variant A assets went from 1969 KB to 975 KB. PNGs were converted to palette PNG
 - **Proper landscape handling.** In an app placement I'd ask the SDK to keep the ad in portrait (`mraid.setOrientationProperties({ allowOrientationChange: false, forceOrientation: 'portrait' })`). In a mobile browser the orientation can't be locked, so I'd ask the designer for a rotate-your-phone screen instead of the frozen stage.
 - **Lighter audio.** Music and applause are about 60% of the weight. A shorter music loop or a lower bitrate for the applause would cut the ad to around half its size, after a listening check.
 - **Load audio after the start screen.** The sounds (about 810 KB) are fetched at the same time as the images the start screen waits for. Fetching them once the start screen is visible would show it sooner on slow networks.
+- **Fireplace sync on a real ad server.** The parts sync through the page that holds them (the preview here). Ad servers often wrap each creative in more iframes. There the parts would find each other through `parent.frames` instead and agree on a start time among themselves.
+- **Fireplace checks in the repo too:** the Playwright scripts that compare the seams with `bg-big.jpg` at 100–200% display scaling, during and after the animation.
 
 ## Known issues and shortcuts
 
@@ -89,6 +110,12 @@ Variant A:
 - **Flat colour next to the clouds.** On very tall or wide screens the space beside the stage is filled with the edge colours of the design. Next to the wavy cloud border that fill is flat, and the bean texture stops at the stage edge.
 - **No iPhone test.** On a real device I tested on an Android phone (Xiaomi). The build targets iOS 12, with fallbacks for missing `dvh`, missing `ResizeObserver` and old Web Audio, but those paths were only tested by forcing them in Chrome, not on an iPhone.
 
+Variant B:
+
+- **The top headline differs from the mockup.** The asset says something different from the headline in `layout.png`. I shipped the asset (no redrawing) and kept its position.
+- **Headline seam during its entrance.** The top headline rises line by line from three cut windows. At fractional display scaling (Windows 125% / 150%) a faint line can show in its shadow at the cuts for the 1–2 s of the movement. After that the windows are replaced by the original image, so at rest there is no seam (measured 0/255).
+- **Fixed sizes.** The parts have the sizes from the task (1032x250 and 320x975), so the whole fireplace needs a window of at least 1672 px. On narrower windows the preview page scales everything down.
+
 ## How I used AI
 
 I worked with Claude Code as a pair programmer: research (browser support, ad specs), the measurement, compression and hitbox scripts, the game engine modules, and Playwright checks that read real pixels in Chrome. I wrote the layout and UI parts myself and went through every module before committing it. Where it went wrong:
@@ -97,3 +124,6 @@ I worked with Claude Code as a pair programmer: research (browser support, ad sp
 - **It guessed instead of measuring.** A thin grey line showed along the stage edge. Claude judged it by eye from a screenshot and snapped the scale to whole pixels. That looked right on one screenshot, but the line was still there. From then on I made it a rule: visual problems get a measuring script, not a guess. A Playwright script that scanned the edge pixels with layers hidden one by one found the real cause: the browser softens the outer pixel row of scaled images. The fix is the edge cover described in DECISIONS.md.
 - **It assumed instead of checking.** On tall phones the space around the stage is filled by extending the colours at the edges of the design. Claude's first version sampled only the left edge and mirrored that gradient to the right, on the assumption that the design is symmetric. It wasn't, and the pink frame band ended in a visible step on the right. I caught it on a screenshot and told Claude to measure both sides instead of guessing. Measuring the outer columns of `border.png` showed the bands really differ (169–190.5 px on the left, 169–181 px on the right), so each side now has its own gradient.
 - **"Solvable" isn't "playable".** A path search said the first level was passable, but in play the get-ready hover ended right above the worm. I moved the start-screen obstacles out of the run.
+- **It read the mockup's artboard frames as part of the layout.** `layout.png` draws a thin grey frame around each part, and Claude took them for 4 px gaps between the parts. The plan, the background slices and the preview were all built on that. I noticed the background didn't read as one surface. The task says the parts "run side by side" as "one surface", so the gaps went and the slices were cut again.
+- **It measured only the easy screens, then fixed "by logic".** The fireplace seam checks ran at 100% and 200% display scaling only, and I caught a seam in the top headline's shadow at 125%, which is common on Windows laptops. Claude then proposed rounding the headline cuts to whole device pixels. Measuring showed that made it worse (at 150%: 14 → 57/255), because a rounded cut lands in the middle of an asset pixel. We kept the measured cuts and swap in the original image once the lines have arrived. Since then every pixel check runs at 100, 125, 150 and 200%.
+- **It wanted to test everything.** Claude kept adding unit tests for things anyone sees in a second of using the ad: that a tap makes the poo jump, that mute silences the sound, where the camera ends up. That was 38 tests that only slowed every change down. I set a rule: a test only where a person can't easily check by eye, meaning a hard requirement of the task (each obstacle exactly once, animation ends within 30 s), data produced by a script, or timing logic. 25 tests are left, and they still catch deliberately broken code.

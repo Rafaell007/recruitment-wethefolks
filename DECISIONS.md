@@ -55,4 +55,6 @@ Sizes are in CSS px (asset px / 2) unless noted.
 
 ## Variant B – Fireplace
 
+- **The product is part of the background.** The packshots are painted into `bg-big.jpg`, with no separate layer, so "product slides in" can't be done literally without cutting the image apart. The shared camera zoom (background 1.08 → 1) moves the products into their final place instead.
+
 _TODO_

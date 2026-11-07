@@ -29,11 +29,6 @@ body {
   overflow: hidden;
 }
 
-/* Hidden until the images are decoded and the start is synced: no flash of the end state. */
-#ad:not(.is-ready) {
-  visibility: hidden;
-}
-
 #ad.is-moving img {
   will-change: transform, opacity;
 }

@@ -157,7 +157,7 @@ Variant A:
 
 Variant B:
 
-- **The top headline differs from the mockup.** The asset says something different from the headline in `layout.png`. I shipped the asset (no redrawing) and kept its position.
+- **The top headline differs from the mockup.** The asset reads "STARK BEI / HUSTENREIZ & / HALSSCHMERZEN.", left-aligned. `layout.png` shows "NATÜRLICH STARK / BEI HUSTENREIZ & / HALSSCHMERZEN.", centred. The text is baked into the image, so matching the mockup would mean redrawing it. I shipped the asset as it is and kept its position.
 - **Headline seam during its entrance.** The top headline rises line by line from three cut windows. At fractional display scaling (Windows 125% / 150%) a faint line can show in its shadow at the cuts for the 1–2 s of the movement. After that the windows are replaced by the original image, so at rest there is no seam (measured 0/255).
 - **Fixed sizes.** The parts have the sizes from the task (1032x250 and 320x975), so the whole fireplace needs a window of at least 1672 px. On narrower windows the preview page scales everything down.
 
